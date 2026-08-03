@@ -1,0 +1,631 @@
+/* ==========================================================================
+   Controller — phone view.
+   Portrait for joining and waiting; the placement screen is built for the
+   phone turned sideways, which is how you actually hold it to read a timeline.
+   ========================================================================== */
+
+.phone {
+  min-height: 100dvh;
+}
+
+.shell {
+  position: relative;
+  z-index: 1;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom));
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  animation: screen-in 260ms var(--ease) both;
+}
+
+.screen__title {
+  margin: 0.2rem 0 0.5rem;
+  font-size: 2.1rem;
+  color: var(--text);
+}
+
+.section-label { display: block; margin: 1.6rem 0 0.6rem; }
+
+.note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.error {
+  min-height: 1.2rem;
+  margin: 0.75rem 0 0;
+  color: var(--danger);
+  font-size: 0.88rem;
+}
+
+@keyframes screen-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.dock {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+/* --------------------------------------------------------------------------
+   Join
+   -------------------------------------------------------------------------- */
+
+.join {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  gap: 0.9rem;
+}
+
+.join__mark {
+  margin: 0;
+  font-size: 3.2rem;
+  color: var(--accent);
+}
+
+.join__tag {
+  margin: 0 0 1.4rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.field input {
+  width: 100%;
+  min-height: 56px;
+  padding: 0 1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+}
+
+.field input::placeholder { color: var(--muted); opacity: 0.65; }
+
+.field input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+#code-input {
+  font-family: var(--font-mono);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   Roster
+   -------------------------------------------------------------------------- */
+
+.roster {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.roster__item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-weight: 600;
+}
+
+.roster__item--you { border-color: var(--accent); }
+.roster__item--offline { opacity: 0.4; }
+
+.roster__tag {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.roster__score {
+  margin-left: auto;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   Steal — multiple choice
+   -------------------------------------------------------------------------- */
+
+.choices {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  margin: 0.6rem 0 1.2rem;
+}
+
+.choice {
+  min-height: 52px;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 160ms var(--ease), background 160ms var(--ease), transform 140ms var(--spring);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.choice:active { transform: scale(0.97); }
+
+.choice--selected {
+  border-color: var(--accent);
+  background: var(--surface-hi);
+  color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   Waiting timeline (vertical — you're only reading it)
+   -------------------------------------------------------------------------- */
+
+.mytimeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+}
+
+.trow {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.trow__year {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--accent);
+  min-width: 3.4rem;
+}
+
+.trow__meta { min-width: 0; }
+
+.trow__title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.25;
+}
+
+.trow__artist {
+  margin: 0.1rem 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.waiting__wave {
+  height: 44px;
+  margin-top: 1.2rem;
+}
+
+/* The steal button earns its glow only while the window is open. */
+.btn--steal {
+  background: transparent;
+  border-color: var(--line-strong);
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: 0.06em;
+}
+
+.btn--steal:not(:disabled) {
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+  color: var(--on-accent-2);
+  animation: steal-glow 2.2s ease-in-out infinite;
+}
+
+.btn--steal:not(:disabled):hover {
+  box-shadow: 0 0 0 4px var(--accent-2-glow);
+}
+
+@keyframes steal-glow {
+  0%, 100% { box-shadow: 0 0 0 0 transparent; }
+  50% { box-shadow: 0 0 24px 3px var(--accent-2-glow); }
+}
+
+/* ==========================================================================
+   PLACEMENT — the reel
+   Oldest left, newest right. Gaps open up as the slider moves, and the
+   mystery card rides above the row, translating to the selected gap.
+   ========================================================================== */
+
+.screen--place {
+  gap: 0.5rem;
+}
+
+.place__head { flex: 0 0 auto; }
+
+.place__title {
+  margin: 0.15rem 0 0;
+  font-size: 1.6rem;
+  color: var(--text);
+}
+
+.reel {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 168px;
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  padding: 0 0.25rem;
+}
+
+.reel::-webkit-scrollbar { display: none; }
+
+.reel__track {
+  display: flex;
+  align-items: stretch;
+  gap: 0.4rem;
+  margin: 0 auto;
+  padding: 2.4rem 0 0.5rem;
+}
+
+/* A placed card. */
+.rcard {
+  flex: 0 0 auto;
+  width: 104px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.55rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, var(--surface-hi), var(--surface));
+}
+
+.rcard__year {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.rcard__title {
+  margin: 0;
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.rcard__artist {
+  margin: 0;
+  font-size: 0.68rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/*
+ * A slot between two cards. Every slot is the same width and always present,
+ * so the row geometry never reflows — that keeps the sliding card's target
+ * position stable and makes every possible answer visible at a glance.
+ */
+.rgap {
+  flex: 0 0 auto;
+  width: 104px;
+  border-radius: var(--radius);
+  border: 1px dashed var(--line-strong);
+  transition: border-color 200ms var(--ease), background 200ms var(--ease);
+}
+
+.rgap--open {
+  border-color: var(--accent);
+  background: var(--surface-hi);
+}
+
+/* The card being placed. Floats above the row and translates between gaps. */
+.reel__card {
+  position: absolute;
+  top: 0.35rem;
+  left: 0;
+  width: 104px;
+  height: 92px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  border: 1px solid var(--accent);
+  background:
+    repeating-linear-gradient(135deg, rgba(74, 111, 165, 0.09) 0 3px, transparent 3px 10px),
+    linear-gradient(160deg, var(--surface), var(--surface-hi));
+  box-shadow: 0 8px 22px rgba(27, 42, 63, 0.20), 0 0 0 4px var(--accent-glow);
+  /* Snappy enough to feel attached to the thumb, springy enough to read as a
+     physical snap into the slot. */
+  transition: transform 220ms var(--spring);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.reel__mark {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--accent);
+  opacity: 0.75;
+}
+
+/* Slider ------------------------------------------------------------------ */
+
+.scrub {
+  flex: 0 0 auto;
+  padding: 0.25rem 0.25rem 0;
+}
+
+.scrub__input {
+  width: 100%;
+  height: 34px;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.scrub__input::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent));
+}
+
+.scrub__input::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent));
+}
+
+/* Deliberately oversized: this is the control you use with a thumb. */
+.scrub__input::-webkit-slider-thumb {
+  appearance: none;
+  width: 30px;
+  height: 30px;
+  margin-top: -13px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--bg);
+  box-shadow: 0 0 16px var(--accent-glow);
+}
+
+.scrub__input::-moz-range-thumb {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--bg);
+  box-shadow: 0 0 16px var(--accent-glow);
+}
+
+.scrub__label {
+  margin: 0.1rem 0 0;
+  text-align: center;
+  color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   Reveal
+   -------------------------------------------------------------------------- */
+
+.reveal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 0.6rem;
+  text-align: center;
+}
+
+.reveal__emoji { font-size: 3rem; line-height: 1; }
+
+.reveal__headline {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+.reveal__headline--good { color: var(--accent); }
+.reveal__headline--bad { color: var(--danger); }
+
+.reveal--bad { animation: nudge 400ms var(--ease) both; }
+
+@keyframes nudge {
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-3px); }
+  100% { transform: none; }
+}
+
+.reveal__art {
+  width: 104px;
+  height: 104px;
+  border-radius: var(--radius);
+  object-fit: cover;
+}
+
+.reveal__year {
+  font-family: var(--font-display);
+  font-size: 3.4rem;
+  line-height: 0.95;
+  color: var(--accent);
+}
+
+.reveal__track { margin: 0; font-weight: 700; font-size: 1.05rem; }
+.reveal__artist { margin: 0; color: var(--muted); font-size: 0.9rem; }
+
+/* Countdown to the automatic next turn. */
+.nextbar {
+  height: 3px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.nextbar i {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent));
+  transform-origin: left center;
+  animation: drain linear forwards;
+}
+
+@keyframes drain {
+  to { transform: scaleX(0); }
+}
+
+/* --------------------------------------------------------------------------
+   Confetti
+   -------------------------------------------------------------------------- */
+
+.confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confetti i {
+  position: absolute;
+  top: -12px;
+  width: 8px;
+  height: 14px;
+  border-radius: 1px;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   Toast
+   -------------------------------------------------------------------------- */
+
+.phone-toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 60;
+  width: calc(100% - 2.5rem);
+  max-width: 380px;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--surface-hi);
+  color: var(--text);
+  font-size: 0.88rem;
+  text-align: center;
+  animation: screen-in 220ms var(--ease) both;
+}
+
+/* --------------------------------------------------------------------------
+   Landscape — the placement screen is designed for this.
+   -------------------------------------------------------------------------- */
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .shell {
+    max-width: 100%;
+    padding: 0.75rem 1.25rem calc(0.75rem + env(safe-area-inset-bottom));
+  }
+
+  .screen__title, .place__title { font-size: 1.35rem; margin-bottom: 0.2rem; }
+
+  .place__head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+
+  .reel { min-height: 0; }
+  .reel__track { padding-top: 2.2rem; }
+
+  .dock {
+    padding-top: 0.5rem;
+    flex-direction: row;
+    gap: 0.6rem;
+  }
+
+  .dock .btn { min-height: 48px; }
+
+  /* Reveal goes side-by-side so nothing needs scrolling. */
+  .reveal {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 0.4rem 1.2rem;
+    text-align: left;
+    justify-items: start;
+  }
+
+  .reveal__emoji { grid-row: span 2; font-size: 2.4rem; }
+  .reveal__art { display: none; }
+  .reveal__year { font-size: 2.6rem; }
+
+  .join { gap: 0.6rem; }
+  .join__mark { font-size: 2.2rem; }
+  .join__tag { margin-bottom: 0.6rem; }
+  .field input { min-height: 46px; }
+  .btn { min-height: 48px; }
+}

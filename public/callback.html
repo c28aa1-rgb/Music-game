@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Connecting Spotify…</title>
+  <link rel="stylesheet" href="/theme.css" />
+  <style>
+    .wrap {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 2rem;
+      text-align: center;
+    }
+    .wrap h1 { margin: 0 0 0.6rem; font-size: 2.4rem; }
+    .wrap p { margin: 0; color: var(--tonearm-silver); max-width: 28rem; line-height: 1.6; }
+    .wrap a { color: var(--label-gold); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div>
+      <h1 class="display" id="headline">Connecting Spotify</h1>
+      <p id="detail">One moment.</p>
+    </div>
+  </div>
+
+  <script src="/spotify-auth.js"></script>
+  <script>
+    SpotifyAuth.completeLogin()
+      .then((returnTo) => { location.replace(returnTo); })
+      .catch((err) => {
+        document.getElementById('headline').textContent = 'Spotify did not connect';
+        document.getElementById('detail').innerHTML =
+          `${err.message} <br /><br /><a href="/tv">Back to the TV screen</a>`;
+      });
+  </script>
+</body>
+</html>

@@ -1,0 +1,3647 @@
+[
+  {
+    "id": "spotify:track:4YCnTYbq3oL1Lqpyxg33CU",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02d3eefe1def522fa7598f717e",
+    "title": "The Twist",
+    "artist": "Chubby Checker",
+    "year": 1960,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:2G2YzndIA6jeWFPBXhUjh5",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e024694c5b97d3a88efb5fc71b5",
+    "title": "Be My Baby",
+    "artist": "The Ronettes",
+    "year": 1963,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:4pbG9SUmWIvsROVLF0zF9s",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02582d56ce20fe0146ffa0e5cf",
+    "title": "I Want to Hold Your Hand",
+    "artist": "The Beatles",
+    "year": 1963,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7tf64lNC31lWlTsih0nfZf",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0210d709d905d269d37a41d4c4",
+    "title": "Good Vibrations",
+    "artist": "The Beach Boys",
+    "year": 1966,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:1H5IfYyIIAlgDX8zguUzns",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02b26c34d79e4cdaa73672a0b1",
+    "title": "Suspicious Minds",
+    "artist": "Elvis Presley",
+    "year": 1969,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:38zsOOcu31XbbYj9BIPUF1",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e024b292ed7c7360a04d3d6b74a",
+    "title": "Your Song",
+    "artist": "Elton John",
+    "year": 1970,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1fDsrQ23eTAVFElUMaf38X",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e020085dd4362653ef4c54ebbeb",
+    "title": "American Pie",
+    "artist": "Don McLean",
+    "year": 1971,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2TVxnKdb3tqe1nhQWwwZCO",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02d03ab2da904d8251a87bbc31",
+    "title": "Tiny Dancer",
+    "artist": "Elton John",
+    "year": 1971,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3gdewACMIVMEWVbyb8O9sY",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e023009007708ab5134936a58b3",
+    "title": "Rocket Man",
+    "artist": "Elton John",
+    "year": 1972,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2vMQmBmcmFsdLQQgXl3PtE",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02882f6401de034bf0ad4079ba",
+    "title": "Waterloo",
+    "artist": "ABBA",
+    "year": 1974,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:2TxCwUlqaOH3TIyJqGgR91",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0292d0747a634fcc351c6ac3c2",
+    "title": "Mamma Mia",
+    "artist": "ABBA",
+    "year": 1975,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0GjEhVFGZW8afUYGChu3Rr",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0270f7a1b35d5165c85b95a0e0",
+    "title": "Dancing Queen",
+    "artist": "ABBA",
+    "year": 1976,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5ubvP9oKmxLUVq506fgLhk",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02bdcea025a483b9642f17a9f8",
+    "title": "Stayin' Alive",
+    "artist": "Bee Gees",
+    "year": 1977,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:7rIovIsXE6kMn629b7kDig",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e022a1049b6d0d2b4c3c0abe7a8",
+    "title": "I Will Survive",
+    "artist": "Gloria Gaynor",
+    "year": 1978,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4YOJFyjqh8eAcbKFfv88mV",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e026effa8520bc566806f680860",
+    "title": "Y.M.C.A.",
+    "artist": "Village People",
+    "year": 1978,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4qL9VYPB4XwJKAOq4xn2Mh",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02966507d369a0de6da093d5f1",
+    "title": "Le Freak",
+    "artist": "CHIC",
+    "year": 1978,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7J1uxwnxfQLu4APicE5Rnj",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0232a7d87248d1b75463483df5",
+    "title": "Billie Jean",
+    "artist": "Michael Jackson",
+    "year": 1982,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:3BovdzfaX4jb5KFQwoPfAw",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0232a7d87248d1b75463483df5",
+    "title": "Beat It",
+    "artist": "Michael Jackson",
+    "year": 1982,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2LlQb7Uoj1kKyGhlkBf9aC",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0232a7d87248d1b75463483df5",
+    "title": "Thriller",
+    "artist": "Michael Jackson",
+    "year": 1982,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4y1LsJpmMti1PfRQV9AWWe",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02ce023ce7dfdd5199bcdfd5a1",
+    "title": "Girls Just Want to Have Fun",
+    "artist": "Cyndi Lauper",
+    "year": 1983,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5WDLRQ3VCdVrKw0njWe5E5",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02813629baee66b2ec5f90ebee",
+    "title": "Careless Whisper",
+    "artist": "George Michael",
+    "year": 1984,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1ZPlNanZsJSPK5h9YZZFbZ",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0299d424b0873a9a714279a9f3",
+    "title": "Like a Virgin",
+    "artist": "Madonna",
+    "year": 1984,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0ikz6tENMONtK6qGkOrU3c",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02a2fc41b0dd6ce4f0d16a4c46",
+    "title": "Wake Me Up Before You Go-Go",
+    "artist": "Wham!",
+    "year": 1984,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2WfaOiMkCvy7F5fcp2zZ8L",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e8dd4db47e7177c63b0b7d53",
+    "title": "Take On Me",
+    "artist": "a-ha",
+    "year": 1985,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:4PTG3Z6ehGkBFwjybzWkR8",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0215ebbedaacef61af244262a8",
+    "title": "Never Gonna Give You Up",
+    "artist": "Rick Astley",
+    "year": 1987,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:2M9ro2krNb7nr7HSprkEgo",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0290b8a540137ee2a718a369f9",
+    "title": "Fast Car",
+    "artist": "Tracy Chapman",
+    "year": 1988,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:2v7ywbUzCgcVohHaKUcacV",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02744ce5f9db16330eb4027f26",
+    "title": "Like a Prayer",
+    "artist": "Madonna",
+    "year": 1989,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:5GHY1DFWKz3Prg2V0Iodqo",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02919c02d20d8634f96ccd75ae",
+    "title": "Nothing Compares 2 U",
+    "artist": "Sinead O'Connor",
+    "year": 1990,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:3WFgRhgECxQYyy8Ldhk2PG",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02d92f642943d7eab422fdaf13",
+    "title": "Vogue",
+    "artist": "Madonna",
+    "year": 1990,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6php91A59VFhwtv6qU6Bkh",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e029dba826356f23bd3575a9432",
+    "title": "Wannabe",
+    "artist": "Spice Girls",
+    "year": 1996,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0lnxrQAd9ZxbhBBe7d8FO8",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02184227f002623fc19f44551a",
+    "title": "MMMBop",
+    "artist": "Hanson",
+    "year": 1997,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1Jaah2tmN9Hv81A87KZ1MU",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0284bb2b1e87d5ba0bac8871a2",
+    "title": "Torn",
+    "artist": "Natalie Imbruglia",
+    "year": 1997,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5blxCItxB2A0AGH2pIwFFz",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e2d88ce9b368639664aa7847",
+    "title": "...Baby One More Time",
+    "artist": "Britney Spears",
+    "year": 1998,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:2goLsvvODILDzeeiT4dAoR",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0206ce0d1f846c525e847d60e7",
+    "title": "Believe",
+    "artist": "Cher",
+    "year": 1998,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:47BBI51FKFwOMlIiX6m8ya",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e022160c02bc56f192df0f4986b",
+    "title": "I Want It That Way",
+    "artist": "Backstreet Boys",
+    "year": 1999,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0Ph6L4l8dYUuXFmb71Ajnd",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e7e9b85cc1f021ec12130d80",
+    "title": "Livin' la Vida Loca",
+    "artist": "Ricky Martin",
+    "year": 1999,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5xEM5hIgJ1jjgcEBfpkt2F",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02f7ec724fbf97a30869d06240",
+    "title": "Complicated",
+    "artist": "Avril Lavigne",
+    "year": 2002,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:00Mb3DuaIH1kjrwOku9CGU",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02f7ec724fbf97a30869d06240",
+    "title": "Sk8er Boi",
+    "artist": "Avril Lavigne",
+    "year": 2002,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6I9VzXrHxO9rA9A5euc8Ak",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02efc6988972cb04105f002cd4",
+    "title": "Toxic",
+    "artist": "Britney Spears",
+    "year": 2003,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3xrn9i8zhNZsTtcoWgQEAd",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0203dadde4d9d305c1c3e0d91c",
+    "title": "Since U Been Gone",
+    "artist": "Kelly Clarkson",
+    "year": 2004,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0LzrhCZFXW94Y8nwtTuRlw",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027c7136a182372ccdffb3d3c4",
+    "title": "Hollaback Girl",
+    "artist": "Gwen Stefani",
+    "year": 2005,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3d0WouFnFmr0K3kjeza3fF",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0285432abc16fd92be0d435cb9",
+    "title": "Hips Don't Lie",
+    "artist": "Shakira",
+    "year": 2006,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:30cSNer6TV8x2utjULVeQ5",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02d744a51e193d52170070062b",
+    "title": "SOS",
+    "artist": "Rihanna",
+    "year": 2006,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:49FYlytm3dAAraYgpoJZux",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02f9f27162ab1ed45b8d7a7e98",
+    "title": "Umbrella",
+    "artist": "Rihanna",
+    "year": 2007,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:7wZUrN8oemZfsEd1CGkbXE",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0234fd9eb8cd48e518598aec55",
+    "title": "Bleeding Love",
+    "artist": "Leona Lewis",
+    "year": 2007,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1Vazr394PPfV5sqWl4KjK7",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02a47dc777d622879e33141ae2",
+    "title": "Poker Face",
+    "artist": "Lady Gaga",
+    "year": 2008,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2x7MyWybabEz6Y6wvHuwGE",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02613aaa3ae566d9f36008aed0",
+    "title": "Just Dance",
+    "artist": "Lady Gaga",
+    "year": 2008,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0SiywuOBRcynK0uKGWdCnn",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e025c9890c0456a3719eeecd8aa",
+    "title": "Bad Romance",
+    "artist": "Lady Gaga",
+    "year": 2009,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5Q0Nhxo0l2bP3pNjpGJwV1",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02d6c3ad6a2a27471e1d5e8103",
+    "title": "Party in the U.S.A.",
+    "artist": "Miley Cyrus",
+    "year": 2009,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2H1047e0oMSj10dgp7p2VG",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02382514f0114ba8f4a16d5db4",
+    "title": "I Gotta Feeling",
+    "artist": "Black Eyed Peas",
+    "year": 2009,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1c8gk2PeTE04A1pIDH9YMk",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027e7e5dd9d1ab19fcded8a17f",
+    "title": "Rolling in the Deep",
+    "artist": "Adele",
+    "year": 2010,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:3yXdq79wD4nTG6X5ND7eXC",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0280eb449094622e2a021548ed",
+    "title": "Firework",
+    "artist": "Katy Perry",
+    "year": 2010,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1zwMYTA5nlNjZxYrvBB2pV",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027e7e5dd9d1ab19fcded8a17f",
+    "title": "Someone Like You",
+    "artist": "Adele",
+    "year": 2011,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4wCmqSrbyCgxEXROQE6vtV",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e1d47c00ddecbfb810c807ed",
+    "title": "Somebody That I Used to Know",
+    "artist": "Gotye",
+    "year": 2011,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:3TGRqZ0a2l1LRblBkJoaDx",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02a111f7769013f1731e9c697c",
+    "title": "Call Me Maybe",
+    "artist": "Carly Rae Jepsen",
+    "year": 2012,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:60nZcImufyMA1MKQY3dcCH",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e89d2c2a3db129062b3b4e4f",
+    "title": "Happy",
+    "artist": "Pharrell Williams",
+    "year": 2013,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3sAIY2jtHpUHKfwDSSVgMM",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0247d4f2d511f40ce8bd79561b",
+    "title": "Roar",
+    "artist": "Katy Perry",
+    "year": 2013,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2sa5MZ9vFV1hN4Sf4ZCiwj",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e022f79b45bd0c5edf068e14ef4",
+    "title": "Counting Stars",
+    "artist": "OneRepublic",
+    "year": 2013,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5xTtaWoae3wi06K5WfVUUH",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e029abdf14e6058bd3903686148",
+    "title": "Shake It Off",
+    "artist": "Taylor Swift",
+    "year": 2014,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1p80LdxRV74UKvL8gnD7ky",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e029abdf14e6058bd3903686148",
+    "title": "Blank Space",
+    "artist": "Taylor Swift",
+    "year": 2014,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:32OlwWuMpZ6b0aN2RZOeMS",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e029860171ddfee17f77a570cf6",
+    "title": "Uptown Funk",
+    "artist": "Mark Ronson",
+    "year": 2014,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:2s1sdSqGcKxpPr5lCl7jAV",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02b55ed804149fffbb5e35ff34",
+    "title": "Chandelier",
+    "artist": "Sia",
+    "year": 2014,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:00ikRnfV36fFD6b01N4R43",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0239d14bdf465d472caa07517c",
+    "title": "Sorry",
+    "artist": "Justin Bieber",
+    "year": 2015,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2L8B3sLZ2GW6x5ajeiH8bS",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0272773a8aacf060d6a6c62f34",
+    "title": "Love Yourself",
+    "artist": "Justin Bieber",
+    "year": 2015,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3S4px9f4lceWdKf0gWciFu",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0209fc2936525fc269032451c9",
+    "title": "Cheap Thrills",
+    "artist": "Sia",
+    "year": 2016,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7qiZfU4dY1lWllzX7mPBI3",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02ba5db46f4b838ef6027e6f96",
+    "title": "Shape of You",
+    "artist": "Ed Sheeran",
+    "year": 2017,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0tgVpDi06FyKpA1z0VMD4v",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02ba5db46f4b838ef6027e6f96",
+    "title": "Perfect",
+    "artist": "Ed Sheeran",
+    "year": 2017,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3e9HZxeyfWwjeyPAMmWSSQ",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0256ac7b86e090f307e218e9c8",
+    "title": "thank u, next",
+    "artist": "Ariana Grande",
+    "year": 2018,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:2TIlqbIneP0ZY1O0EzYLlc",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02b280aea74eef855675d7b93b",
+    "title": "Someone You Loved",
+    "artist": "Lewis Capaldi",
+    "year": 2018,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3KkXRkHbMCARz0aVfEt68P",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e2e352d89826aef6dbd5ff8f",
+    "title": "Sunflower",
+    "artist": "Post Malone",
+    "year": 2018,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0VjIjW4GlUZAMYd2vXMi3b",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e028863bc11d2aa12b54f5aeb36",
+    "title": "Blinding Lights",
+    "artist": "The Weeknd",
+    "year": 2019,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:2Fxmhks0bxGSBdJ92vM42m",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0250a3147b4edd7701a876c6ce",
+    "title": "bad guy",
+    "artist": "Billie Eilish",
+    "year": 2019,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6UelLqGlWMcVH1E5c4H7lY",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0225180571abce9472f61bd722",
+    "title": "Watermelon Sugar",
+    "artist": "Harry Styles",
+    "year": 2019,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2KBcmXI4fxbxHkml0VqCL7",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02fb5ef742da4b87b5bff099ad",
+    "title": "Dance Monkey",
+    "artist": "Tones and I",
+    "year": 2019,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6WrI0LAC5M1Rw2MnX2ZvEg",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02252ba339f802d9cf88122757",
+    "title": "Don't Start Now",
+    "artist": "Dua Lipa",
+    "year": 2019,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5nujrmhLynf4yMoMtj8AQF",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e024aa538a481e67131c214135a",
+    "title": "Levitating",
+    "artist": "Dua Lipa",
+    "year": 2020,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:4ZtFanR9U6ndgddUvNcjcG",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02a91c10fe9472d9bd89802e5a",
+    "title": "good 4 u",
+    "artist": "Olivia Rodrigo",
+    "year": 2021,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:7lPN2DXiMsVn7XUKtOW1CS",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e028ffc294c1c4362e8472d14cd",
+    "title": "drivers license",
+    "artist": "Olivia Rodrigo",
+    "year": 2021,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4RVwu0g32PAqgUiJoXsdF8",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e022a038d3bf875d23e4aeaa84e",
+    "title": "Happier Than Ever",
+    "artist": "Billie Eilish",
+    "year": 2021,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4Dvkj6JhhA12EX05fT7y2e",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0282ce362511fb3d9dda6578ee",
+    "title": "As It Was",
+    "artist": "Harry Styles",
+    "year": 2022,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:0V3wPSX9ygBnCm8psDIegu",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02bb54dde68cd23e2a268ae0f5",
+    "title": "Anti-Hero",
+    "artist": "Taylor Swift",
+    "year": 2022,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4a3D8glGZxhlJfOs1Czc3c",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0229c7b49b598ad95440726df8",
+    "title": "About Damn Time",
+    "artist": "Lizzo",
+    "year": 2022,
+    "genre": "pop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7DSAEUvxU8FajXtRloy8M0",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0266fd0917f38d472c8576754e",
+    "title": "Flowers",
+    "artist": "Miley Cyrus",
+    "year": 2023,
+    "genre": "pop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:7BY005dacJkbO6EPiOh2wb",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e023c534611bd3658006378a2d7",
+    "title": "The House of the Rising Sun",
+    "artist": "The Animals",
+    "year": 1964,
+    "genre": "rock",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:2PzU4IB8Dr6mxV3lHuaG34",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0205c5be85b64eaff732f7cb0b",
+    "title": "(I Can't Get No) Satisfaction",
+    "artist": "The Rolling Stones",
+    "year": 1965,
+    "genre": "rock",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:0hBZCHzVNvboVLWS7aNKRO",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02b11b3fc3c89477a7dd473bd7",
+    "title": "Paint It, Black",
+    "artist": "The Rolling Stones",
+    "year": 1966,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5uvosCdMlFdTXhoazkTI5R",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0200d037dd3dfb578da4692088",
+    "title": "Light My Fire",
+    "artist": "The Doors",
+    "year": 1967,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2aoo2jlRnM3A0NyLQqMN2f",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02522088789d49e216d9818292",
+    "title": "All Along the Watchtower",
+    "artist": "Jimi Hendrix",
+    "year": 1968,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3lN8PP6R2IxbLP05QpYXng",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e2aacda30b100cc33d523be0",
+    "title": "Born to Be Wild",
+    "artist": "Steppenwolf",
+    "year": 1968,
+    "genre": "rock",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:2EqlS6tkEnglzr7tkKAAYD",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02dc30583ba717007b00cceb25",
+    "title": "Come Together",
+    "artist": "The Beatles",
+    "year": 1969,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7iN1s7xHE4ifF5povM6A48",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0284243a01af3c77b56fe01ab1",
+    "title": "Let It Be",
+    "artist": "The Beatles",
+    "year": 1970,
+    "genre": "rock",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:78lgmZwycJ3nzsdgmPPGNx",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0290a50cfe99a4c19ff3cbfbdb",
+    "title": "Immigrant Song",
+    "artist": "Led Zeppelin",
+    "year": 1970,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4MSqgoFS7e8LpsxeeMMVMu",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02012d727b175d4a91c792fb4c",
+    "title": "Paranoid",
+    "artist": "Black Sabbath",
+    "year": 1970,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5CQ30WqJwcep0pYcV4AMNc",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02c8a11e48c91a982d086afc69",
+    "title": "Stairway to Heaven",
+    "artist": "Led Zeppelin",
+    "year": 1971,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0cKk8BKEi7zXbdrYdyqBP5",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02fe24dcd263c08c6dd84b6e8c",
+    "title": "Behind Blue Eyes",
+    "artist": "The Who",
+    "year": 1971,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5SAUIWdZ04OxYfJFDchC7S",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02bc9b44e950d5440ff65ea926",
+    "title": "Smoke on the Water",
+    "artist": "Deep Purple",
+    "year": 1972,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5EWPGh7jbTNO2wakv8LjUI",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02128450651c9f0442780d8eb8",
+    "title": "Free Bird",
+    "artist": "Lynyrd Skynyrd",
+    "year": 1973,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0vFOzaXqZHahrZp6enQwQb",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02db216ca805faf5fe35df4ee6",
+    "title": "Money",
+    "artist": "Pink Floyd",
+    "year": 1973,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1SeYQC7vZTBWNESbDQXulh",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02a5f8f22c236f516c07e23546",
+    "title": "Sweet Home Alabama",
+    "artist": "Lynyrd Skynyrd",
+    "year": 1974,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6vLaKD0HUJ5UtIADG61Fa9",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02ba84c3e2d930822ae1c3ce22",
+    "title": "Bohemian Rhapsody",
+    "artist": "Queen",
+    "year": 1975,
+    "genre": "rock",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:0DJ6gxLxYn2EGv4DbN6hD1",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e026b6c69693df379530e652cff",
+    "title": "More Than a Feeling",
+    "artist": "Boston",
+    "year": 1976,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:40riOy7x9W7GXjyGp4pjAv",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e024637341b9f507521afa9a778",
+    "title": "Hotel California",
+    "artist": "Eagles",
+    "year": 1976,
+    "genre": "rock",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:54flyrjcdnQdco7300avMJ",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0293c65b02f4a72cd6eccf446d",
+    "title": "We Will Rock You",
+    "artist": "Queen",
+    "year": 1977,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4KfSdst7rW39C0sfhArdrz",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0266e2e0df78c4ec35a8ed20a0",
+    "title": "Barracuda",
+    "artist": "Heart",
+    "year": 1977,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2zYzyRzz6pRmhPzyfMEC8s",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0243058ea096fa35ac33c43587",
+    "title": "Highway to Hell",
+    "artist": "AC/DC",
+    "year": 1979,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5HNCy40Ni5BZJFw1TKzRsC",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02b694e89ba937dd2631ff584c",
+    "title": "Comfortably Numb",
+    "artist": "Pink Floyd",
+    "year": 1979,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:57JVGBtBLCfHw2muk5416J",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0207744e2ed983efa3e6620a47",
+    "title": "Another One Bites the Dust",
+    "artist": "Queen",
+    "year": 1980,
+    "genre": "rock",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:08mG3Y1vljYA6bvDt4Wqkj",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02ff191d7fbdb5a13eaf84132b",
+    "title": "Back in Black",
+    "artist": "AC/DC",
+    "year": 1980,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5RKQ5NdjSh2QzD4MaunT91",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0223290120a609a65e14cfe018",
+    "title": "Don't Stop Believin'",
+    "artist": "Journey",
+    "year": 1981,
+    "genre": "rock",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:2HHtWyy5CgaQbC7XSoOb0e",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e024e2755e7a96ec5e062c76aac",
+    "title": "Eye of the Tiger",
+    "artist": "Survivor",
+    "year": 1982,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1JSTJqkT5qHq8MDJnJbRE1",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02c8e97cafeb2acb85b21a777e",
+    "title": "Every Breath You Take",
+    "artist": "The Police",
+    "year": 1983,
+    "genre": "rock",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:6Fba9RZtC6vTY814JToDtP",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0243de9079ae02773c1fae9a26",
+    "title": "Jump",
+    "artist": "Van Halen",
+    "year": 1984,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:37ZJ0p5Jm13JPevGcx4SkF",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e021336b31b6a1799f0de5807ac",
+    "title": "Livin' on a Prayer",
+    "artist": "Bon Jovi",
+    "year": 1986,
+    "genre": "rock",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:7snQQk1zcKl8gZ92AnueZW",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0221ebf49b3292c3f0f575f0f5",
+    "title": "Sweet Child O' Mine",
+    "artist": "Guns N' Roses",
+    "year": 1987,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0G21yYKMZoHa30cYVi1iA8",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0221ebf49b3292c3f0f575f0f5",
+    "title": "Welcome to the Jungle",
+    "artist": "Guns N' Roses",
+    "year": 1987,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6ADSaE87h8Y3lccZlBJdXH",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02b7bea3d01f04e6d0408d2afe",
+    "title": "With or Without You",
+    "artist": "U2",
+    "year": 1987,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1aZLIbKEdsyqxyD6iNcrbA",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0243511b8c20112757edddc7ba",
+    "title": "Pour Some Sugar on Me",
+    "artist": "Def Leppard",
+    "year": 1987,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3VqHuw0wFlIHcIPWkhIbdQ",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e021f9edf15e43f4c2f4938b869",
+    "title": "Enter Sandman",
+    "artist": "Metallica",
+    "year": 1991,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5ghIJDpPoe3CfHMGu71E6T",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e175a19e530c898d167d39bf",
+    "title": "Smells Like Teen Spirit",
+    "artist": "Nirvana",
+    "year": 1991,
+    "genre": "rock",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:4P5KoWXOxwuobLmHXLMobV",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e175a19e530c898d167d39bf",
+    "title": "Come As You Are",
+    "artist": "Nirvana",
+    "year": 1991,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:23NPGXlSaIqWzvxIRhM2oG",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e025590b4ee88187cb06a5b102d",
+    "title": "Under the Bridge",
+    "artist": "Red Hot Chili Peppers",
+    "year": 1991,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:57bgtoPSgt236HzfBOd8kj",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e029a9b1cc067e4460da04adce2",
+    "title": "Thunderstruck",
+    "artist": "AC/DC",
+    "year": 1990,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:70LcF31zb1H0PyJoS1Sx1r",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02ec548c00d3ac2f10be73366d",
+    "title": "Creep",
+    "artist": "Radiohead",
+    "year": 1993,
+    "genre": "rock",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:2EoOZnxNgtmZaD8uUmz2nD",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02ae6d8e36136353d550b2587d",
+    "title": "Black Hole Sun",
+    "artist": "Soundgarden",
+    "year": 1994,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6L89mwZXSOwYl76YXfX13s",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02db89b08034de626ebee6823d",
+    "title": "Basket Case",
+    "artist": "Green Day",
+    "year": 1994,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1qPbGZqppFwLwcBC1JQ6Vr",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e022f2eeee9b405f4d00428d84c",
+    "title": "Wonderwall",
+    "artist": "Oasis",
+    "year": 1995,
+    "genre": "rock",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:0jLnevC3Vn34qVWrAa4X6x",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02ff223e247f9a83529912d059",
+    "title": "Bitter Sweet Symphony",
+    "artist": "The Verve",
+    "year": 1997,
+    "genre": "rock",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:0fizxCEBkB1HnvMbibyPUP",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02d7c5d13d9e92bd1704de0a6f",
+    "title": "Californication",
+    "artist": "Red Hot Chili Peppers",
+    "year": 1999,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3tSmXSxaAnU1EPGKa6NytH",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e026741ca6e9ba6fdc166037321",
+    "title": "In the End",
+    "artist": "Linkin Park",
+    "year": 2000,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5W8YXBz9MTIDyrpYaCg2Ky",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02985bf5ede2fe4a048ee85f28",
+    "title": "Last Resort",
+    "artist": "Papa Roach",
+    "year": 2000,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1VuBmEauSZywQVtqbxNqka",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e3f4221446f724b575a9aafb",
+    "title": "Beautiful Day",
+    "artist": "U2",
+    "year": 2000,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2DlHlPMa4M17kufBvI2lEN",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0207bc7d2a745636c356b4d0aa",
+    "title": "Chop Suey!",
+    "artist": "System of a Down",
+    "year": 2001,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3dPQuX8Gs42Y7b454ybpMR",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027028981d09d2e5833c9c78ad",
+    "title": "Seven Nation Army",
+    "artist": "The White Stripes",
+    "year": 2003,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7dyluIqv7QYVTXXZiMWPHW",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02d3acd0f2186daa8e4cb0f65b",
+    "title": "Numb",
+    "artist": "Linkin Park",
+    "year": 2003,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5nIKYdgxzThw3xsSB7Wi62",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02800539c030715404d502a6e3",
+    "title": "Mr. Brightside",
+    "artist": "The Killers",
+    "year": 2004,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6nTiIhLmQ3FWhvrGafw2zj",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0208a1b1e0674086d3f1995e1b",
+    "title": "American Idiot",
+    "artist": "Green Day",
+    "year": 2004,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5GorCbAP4aL0EJ16frG2hd",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027f213369d5265a60af5f7e82",
+    "title": "Boulevard of Broken Dreams",
+    "artist": "Green Day",
+    "year": 2004,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:20I8RduZC2PWMWTDCZuuAN",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02a5d1c06a8172d4861367953c",
+    "title": "Take Me Out",
+    "artist": "Franz Ferdinand",
+    "year": 2004,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:35SJAMEdYx6YNqCaFPInIp",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0222c1b2b58a23408632527ab7",
+    "title": "Feel Good Inc.",
+    "artist": "Gorillaz",
+    "year": 2005,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6WrUT7FOAlDscRWU7ndmyd",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e022c8b5698137791e36e19a6a6",
+    "title": "Viva La Vida",
+    "artist": "Coldplay",
+    "year": 2008,
+    "genre": "rock",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:5VGlqQANWDKJFl0MBG3sg2",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e022519d01c0cca06f134eeadd8",
+    "title": "Use Somebody",
+    "artist": "Kings of Leon",
+    "year": 2008,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0ntQJM78wzOLVeCUAW7Y45",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e022519d01c0cca06f134eeadd8",
+    "title": "Sex on Fire",
+    "artist": "Kings of Leon",
+    "year": 2008,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7w87IxuO7BDcJ3YUqCyMTT",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02121d5f92cf90576907dfb1e5",
+    "title": "Pumped Up Kicks",
+    "artist": "Foster the People",
+    "year": 2010,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:58rFzMvW9kxNwMtGTgBQoP",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02a8f95e7f840c11edfa6cc3bd",
+    "title": "Radioactive",
+    "artist": "Imagine Dragons",
+    "year": 2012,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4Cg6vM2Y8xyzADYEgtZAG9",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e025f86208d498add973268e37a",
+    "title": "Ho Hey",
+    "artist": "The Lumineers",
+    "year": 2012,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5FVd6KXrgO9B3JPmC8OPst",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e024ae1c4c5c45aabe565499163",
+    "title": "Do I Wanna Know?",
+    "artist": "Arctic Monkeys",
+    "year": 2013,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0pqnGHJpmpxLKifKRmU6WP",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e025675e83f707f1d7271e5cf8a",
+    "title": "Believer",
+    "artist": "Imagine Dragons",
+    "year": 2017,
+    "genre": "rock",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7sZDbHZiuHEzS00vzCuhqS",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02a779a63c3f466d45b4fb2059",
+    "title": "Rapper's Delight",
+    "artist": "The Sugarhill Gang",
+    "year": 1979,
+    "genre": "hiphop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:5DuTNKFEjJIySAyJH1yNDU",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02798575ed938d0968a00ce887",
+    "title": "The Message",
+    "artist": "Grandmaster Flash & The Furious Five",
+    "year": 1982,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6qUEOWqOzu1rLPUPQ1ECpx",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e028eba18f886ca46ae6f948c54",
+    "title": "Walk This Way",
+    "artist": "Run-DMC",
+    "year": 1986,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:20s3FayrStM8GY0m4dRFsw",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02d9a71c225d94b8cb6638bb91",
+    "title": "Paid in Full",
+    "artist": "Eric B. & Rakim",
+    "year": 1987,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1ZYYVni68dmk8uwMhrLdC6",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e3e9eecbe3cb0a6dad2ada12",
+    "title": "Push It",
+    "artist": "Salt-N-Pepa",
+    "year": 1987,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6KIKRz9eSTXdNsGUnomdtW",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02c79a70e8167cc1a4fab83781",
+    "title": "Straight Outta Compton",
+    "artist": "N.W.A.",
+    "year": 1988,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1yo16b3u0lptm6Cs7lx4AD",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e022e3d1de8b2f61a477ae1ed6c",
+    "title": "Fight the Power",
+    "artist": "Public Enemy",
+    "year": 1989,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3XVozq1aeqsJwpXrEZrDJ9",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e020d441bd2334134eca6761fc4",
+    "title": "Ice Ice Baby",
+    "artist": "Vanilla Ice",
+    "year": 1990,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2yv7DB4kSq77eYGEUNrYZt",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e025b0fad02cc464c6aeace2417",
+    "title": "Mama Said Knock You Out",
+    "artist": "LL COOL J",
+    "year": 1990,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:27AHAtAirQapVldIm4c9ZX",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e021ffe5d4aa25c7bd1b1fc4847",
+    "title": "Jump",
+    "artist": "Kris Kross",
+    "year": 1992,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6JymsaWDHk2Yj4e0yNBIFH",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02c9f143444515b5106b0e4de5",
+    "title": "Jump Around",
+    "artist": "House of Pain",
+    "year": 1992,
+    "genre": "hiphop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:5Tbpp3OLLClPJF8t1DmrFD",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e029710731c9d7baec635f1bab1",
+    "title": "Nuthin' but a 'G' Thang",
+    "artist": "Dr. Dre",
+    "year": 1992,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:119c93MHjrDLJTApCVGpvx",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e025901aaa980d3e714bf01171c",
+    "title": "C.R.E.A.M.",
+    "artist": "Wu-Tang Clan",
+    "year": 1993,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2AP7m2dBb8ULTx4Gc1rdMc",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02f7a29d6fe5d39ec9313a19cb",
+    "title": "Juicy",
+    "artist": "The Notorious B.I.G.",
+    "year": 1994,
+    "genre": "hiphop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:7nYvUtkQMx1v80S2FH2s9J",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02f6b9b62ea130943d371b69ef",
+    "title": "Regulate",
+    "artist": "Warren G",
+    "year": 1994,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:39QBkWKnap8wRSW4WB9OK0",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02733af86f8dea9692a3f59d29",
+    "title": "Gin and Juice",
+    "artist": "Snoop Dogg",
+    "year": 1993,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3ia3dJETSOllPsv3LJkE35",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02d81a092eb373ded457d94eec",
+    "title": "California Love",
+    "artist": "2Pac",
+    "year": 1995,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1DIXPcTDzTj8ZMHt3PDt8p",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027438996f6fe67c59d75d4e43",
+    "title": "Gangsta's Paradise",
+    "artist": "Coolio",
+    "year": 1995,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5wLvXRcwv2pvQsuRjt9piO",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02eb67821b5a6463ffbf973d2b",
+    "title": "Hypnotize",
+    "artist": "The Notorious B.I.G.",
+    "year": 1997,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1ofhfV90EnYhEr7Un2fWiv",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02d81a092eb373ded457d94eec",
+    "title": "Changes",
+    "artist": "2Pac",
+    "year": 1998,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1BKT2I9x4RGKaKqW4up34s",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0211658b970e0518be491871df",
+    "title": "Ruff Ryders' Anthem",
+    "artist": "DMX",
+    "year": 1998,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0I3q5fE6wg7LIfHGngUTnV",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02153b3d6495031cb813a7451c",
+    "title": "Ms. Jackson",
+    "artist": "OutKast",
+    "year": 2000,
+    "genre": "hiphop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:3yfqSUWxFvZELEM4PmlwIR",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02dbb3dd82da45b7d7f31b1b42",
+    "title": "The Real Slim Shady",
+    "artist": "Eminem",
+    "year": 2000,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7iXF2W9vKmDoGAhlHdpyIa",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e029b19c107109de740bad72df5",
+    "title": "Forgot About Dre",
+    "artist": "Dr. Dre",
+    "year": 1999,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5Z01UMMf7V1o0MzF86s6WJ",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02eab40fc794b88b9d1e012578",
+    "title": "Lose Yourself",
+    "artist": "Eminem",
+    "year": 2002,
+    "genre": "hiphop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:7lQ8MOhq6IN2w8EYcFNSUk",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e026ca5c90113b30c3c43ffb8f4",
+    "title": "Without Me",
+    "artist": "Eminem",
+    "year": 2002,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3hpUL1gDZWiz8k4DtYhZsS",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e021504b699013ac5d9ed582b29",
+    "title": "Hot in Herre",
+    "artist": "Nelly",
+    "year": 2002,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2R9U8R4ZcOoDWg3jjHjQLr",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0215b62abc4b14254c4ad8621d",
+    "title": "Hey Ya!",
+    "artist": "OutKast",
+    "year": 2003,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4RY96Asd9IefaL3X4LOLZ8",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02f7f74100d5cc850e01172cbf",
+    "title": "In Da Club",
+    "artist": "50 Cent",
+    "year": 2003,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2NBQmPrOEEjA8VbeWOQGxO",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e803716268c173c3f9a0c057",
+    "title": "Drop It Like It's Hot",
+    "artist": "Snoop Dogg",
+    "year": 2004,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1PS1QMdUqOal0ai3Gt7sDQ",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02428d2255141c2119409a31b2",
+    "title": "Gold Digger",
+    "artist": "Kanye West",
+    "year": 2005,
+    "genre": "hiphop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:0Aqlt4N5h6rUtKnd09VXpr",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027a04820741410598e580ecee",
+    "title": "Grillz",
+    "artist": "Nelly",
+    "year": 2005,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:66TRwr5uJwPt15mfFkzhbi",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e028a6a328ced07af494400584b",
+    "title": "Crank That (Soulja Boy)",
+    "artist": "Soulja Boy",
+    "year": 2007,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0j2T0R9dR9qdJYsB7ciXhf",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0226f7f19c7f0381e56156c94a",
+    "title": "Stronger",
+    "artist": "Kanye West",
+    "year": 2007,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5YglDyAzDsnpDa6hlGzltg",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e026d608ed9749e633a241dc1bd",
+    "title": "Low",
+    "artist": "Flo Rida",
+    "year": 2007,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1ixbwbeBi5ufN4noUKmW5a",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02a17779330c5ff6def05087a7",
+    "title": "Paper Planes",
+    "artist": "M.I.A.",
+    "year": 2007,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2igwFfvr1OAGX9SKDCPBwO",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02fec1b815bb3c50a64a90fd10",
+    "title": "Empire State of Mind",
+    "artist": "JAY-Z",
+    "year": 2009,
+    "genre": "hiphop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:7LR85XLWw2yXqKBSI5brbG",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02fec1b815bb3c50a64a90fd10",
+    "title": "Run This Town",
+    "artist": "JAY-Z",
+    "year": 2009,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6lV2MSQmRIkycDScNtrBXO",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02caa23612279c2d059a0d3a82",
+    "title": "Airplanes",
+    "artist": "B.o.B",
+    "year": 2010,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:14I61w6cyYUHiV2n28IYdP",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0252e61456aa4995ba48d94e30",
+    "title": "Otis",
+    "artist": "JAY-Z",
+    "year": 2011,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7bYZBVrnRfqeaPbhRyEvK3",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02938f1c0cc7d36a671ed226a7",
+    "title": "Thrift Shop",
+    "artist": "Macklemore & Ryan Lewis",
+    "year": 2012,
+    "genre": "hiphop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:3dgQqOiQ9fCKVhNOedd2lf",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02adfb5909ec66db5fbb4d06c8",
+    "title": "Started From the Bottom",
+    "artist": "Drake",
+    "year": 2013,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3iVcZ5G6tvkXZkZKlMpIUs",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02cdb645498cd3d8a2db4d05e1",
+    "title": "Alright",
+    "artist": "Kendrick Lamar",
+    "year": 2015,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0wwPcA6wtMf6HUMpIRdeP7",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e029416ed64daf84936d89e671c",
+    "title": "Hotline Bling",
+    "artist": "Drake",
+    "year": 2015,
+    "genre": "hiphop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:5YEOzOojehCqxGQCcQiyR4",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02c598ea6ec584cafb062cafdf",
+    "title": "Panda",
+    "artist": "Desiigner",
+    "year": 2016,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1zi7xx7UVEFkmKfv06H8x0",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e029416ed64daf84936d89e671c",
+    "title": "One Dance",
+    "artist": "Drake",
+    "year": 2016,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3a1lNhkSLSkpJE4MSHpDu9",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0255404f712deb84d0650a4b41",
+    "title": "Congratulations",
+    "artist": "Post Malone",
+    "year": 2016,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0M9ydKzuF3oZTfYYPfaGX1",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e026275aeac316378b0dd4f31fd",
+    "title": "Bad and Boujee",
+    "artist": "Migos",
+    "year": 2016,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7KXjTSCq5nL1LoYtL7XAwS",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e028b52c6b9bc4e43d873869699",
+    "title": "HUMBLE.",
+    "artist": "Kendrick Lamar",
+    "year": 2017,
+    "genre": "hiphop",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:6KBYefIoo7KydImq1uUQlL",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02a0caffda54afd0a65995bbab",
+    "title": "Bodak Yellow",
+    "artist": "Cardi B",
+    "year": 2017,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0e7ipj03S05BNilyu5bRzt",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02b1c4b76e23414c9f20242268",
+    "title": "rockstar",
+    "artist": "Post Malone",
+    "year": 2017,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0VgkVdmE4gld66l8iyGjgx",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e0b64c8be3c4e804abcb2696",
+    "title": "Mask Off",
+    "artist": "Future",
+    "year": 2017,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6DCZcSspjsKoFjzjrWoCdn",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02f907de96b9a4fbc04accc0d5",
+    "title": "God's Plan",
+    "artist": "Drake",
+    "year": 2018,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2xLMifQCjDGFmkHkpNLD9h",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02daec894c14c0ca42d76eeb32",
+    "title": "SICKO MODE",
+    "artist": "Travis Scott",
+    "year": 2018,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3CA9pLiwRIGtUBiMjbZmRw",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02f907de96b9a4fbc04accc0d5",
+    "title": "Nice For What",
+    "artist": "Drake",
+    "year": 2018,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2YpeDb67231RjR0MgVLzsG",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e026239187793c9e492e687db01",
+    "title": "Old Town Road",
+    "artist": "Lil Nas X",
+    "year": 2019,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0nbXyq5TXYPCO7pr3N8S4I",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02820b43679aab8d3b47001f9c",
+    "title": "The Box",
+    "artist": "Roddy Ricch",
+    "year": 2019,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:55CHeLEfn5iJ0IIkgaa4si",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0220fbc17fcb9376bc76a1b510",
+    "title": "Savage",
+    "artist": "Megan Thee Stallion",
+    "year": 2020,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:30UFKKWSOC2Xr6KfWcyvsI",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e4bad4c6da09006e1d6bc000",
+    "title": "Rockstar",
+    "artist": "DaBaby",
+    "year": 2020,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1SC5rEoYDGUK4NfG82494W",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02f27e4bdc58ebe249a6b90da0",
+    "title": "Montero (Call Me By Your Name)",
+    "artist": "Lil Nas X",
+    "year": 2021,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:27NovPIUIRrOZoCHxABJwK",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e028a09f10b028a8bb55bfed9b8",
+    "title": "INDUSTRY BABY",
+    "artist": "Lil Nas X",
+    "year": 2021,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0wHFktze2PHC5jDt3B17DC",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e029ba41d0446dee0141062bbe1",
+    "title": "First Class",
+    "artist": "Jack Harlow",
+    "year": 2022,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2IGMVunIBsBLtEQyoI1Mu7",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e69a141e4ffe839c38c4c228",
+    "title": "Paint The Town Red",
+    "artist": "Doja Cat",
+    "year": 2023,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3SdTKo2uVsxFblQjpScoHy",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e021813ea8f590a0aab2820f922",
+    "title": "Stand by Me",
+    "artist": "Ben E. King",
+    "year": 1961,
+    "genre": "rnb",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:4fQMGlCawbTkH9yPPZ49kP",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0246007ceff2f1c33c9b9ec19c",
+    "title": "Green Onions",
+    "artist": "Booker T. & the M.G.'s",
+    "year": 1962,
+    "genre": "rnb",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:745H5CctFr12Mo7cqa1BMH",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e021a5b6271ae1c8497df20916e",
+    "title": "My Girl",
+    "artist": "The Temptations",
+    "year": 1964,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6rLqjzGV5VMLDWEnuUqi8q",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02fc466e0c9ac165ac85ddbedf",
+    "title": "Dancing in the Street",
+    "artist": "Martha Reeves & The Vandellas",
+    "year": 1964,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5haXbSJqjjM0TCJ5XkfEaC",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02c813101657895c26f990b719",
+    "title": "I Got You (I Feel Good)",
+    "artist": "James Brown",
+    "year": 1965,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5AoTuHE5P5bvC7BBppYnja",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e022c584610c45a37bb87e8a5be",
+    "title": "Respect",
+    "artist": "Aretha Franklin",
+    "year": 1967,
+    "genre": "rnb",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:3zBhihYUHBmGd2bcQIobrF",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e020acddc8ccf8d14858fbeddf5",
+    "title": "(Sittin' On) The Dock of the Bay",
+    "artist": "Otis Redding",
+    "year": 1968,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1tqT6DhmsrtQgyCKUwotiw",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02aff6573c5110e0732fbab3d8",
+    "title": "I Heard It Through the Grapevine",
+    "artist": "Marvin Gaye",
+    "year": 1968,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2VCUcIPY3i6pv9Nu9Vg6k3",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e028c4693bcc43c775189d447ec",
+    "title": "ABC",
+    "artist": "The Jackson 5",
+    "year": 1970,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3Um9toULmYFGCpvaIPFw7l",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02b36949bee43217351961ffbc",
+    "title": "What's Going On",
+    "artist": "Marvin Gaye",
+    "year": 1971,
+    "genre": "rnb",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:63xdwScd1Ai1GigAwQxE8y",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02a1fc113a6858d0824d9aaf38",
+    "title": "Let's Stay Together",
+    "artist": "Al Green",
+    "year": 1971,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1h2xVEoJORqrg71HocgqXd",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e029e447b59bd3e2cbefaa31d91",
+    "title": "Superstition",
+    "artist": "Stevie Wonder",
+    "year": 1972,
+    "genre": "rnb",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:3gsCAGsWr6pUm1Vy7CPPob",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02bc161bb58763f72fc71a3a01",
+    "title": "Killing Me Softly with His Song",
+    "artist": "Roberta Flack",
+    "year": 1973,
+    "genre": "rnb",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:4pNiE4LCVV74vfIBaUHm1b",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e022fee61bfec596bb6f5447c50",
+    "title": "Sir Duke",
+    "artist": "Stevie Wonder",
+    "year": 1976,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2grjqo0Frpf2okIBiifQKs",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e022e7558daae7a80e1f5819aa1",
+    "title": "September",
+    "artist": "Earth, Wind & Fire",
+    "year": 1978,
+    "genre": "rnb",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:0PQFPcSK1gnBGlbV4CZCG0",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02966507d369a0de6da093d5f1",
+    "title": "Good Times",
+    "artist": "CHIC",
+    "year": 1979,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2dCmGcEOQrMQhMMS8Vj7Ca",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0217f9e7e7784ed40b223e261c",
+    "title": "Super Freak",
+    "artist": "Rick James",
+    "year": 1981,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6sby78fghipoXHQLeeZFFH",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e028a2ce3f148f57584269c3782",
+    "title": "When Doves Cry",
+    "artist": "Prince",
+    "year": 1984,
+    "genre": "rnb",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:1uvyZBs4IZYRebHIB1747m",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e028a2ce3f148f57584269c3782",
+    "title": "Purple Rain",
+    "artist": "Prince",
+    "year": 1984,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:62LJFaYihsdVrrkgUOJC05",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0223cc0f0a925845a3de4aca38",
+    "title": "Kiss",
+    "artist": "Prince",
+    "year": 1986,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2tUBqZG2AbRi7Q0BIrVrEj",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02a520a167a62d5548cdb53101",
+    "title": "I Wanna Dance with Somebody",
+    "artist": "Whitney Houston",
+    "year": 1987,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3l3xTXsUXeWlkPqzMs7mPD",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0273d0d8625dcf1e48043cfbf9",
+    "title": "End of the Road",
+    "artist": "Boyz II Men",
+    "year": 1992,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4eHbdreAnSOrDDsFfc4Fpm",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02456c0b5d0316a80dc600802e",
+    "title": "I Will Always Love You",
+    "artist": "Whitney Houston",
+    "year": 1992,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6qspW4YKycviDFjHBOaqUY",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e023ae63e3e2d9da8366e33fdab",
+    "title": "Waterfalls",
+    "artist": "TLC",
+    "year": 1994,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0Q0IVlqMV64kNLlwjPj0Hl",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e025b7865be7f7fcc05faec6137",
+    "title": "Killing Me Softly",
+    "artist": "Fugees",
+    "year": 1996,
+    "genre": "rnb",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:0uEp9E98JB5awlA084uaIg",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e08b1250db5f75643f1508c9",
+    "title": "Doo Wop (That Thing)",
+    "artist": "Ms. Lauryn Hill",
+    "year": 1998,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1KGi9sZVMeszgZOWivFpxs",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0261ffafd5e31a37336531cf95",
+    "title": "No Scrubs",
+    "artist": "TLC",
+    "year": 1999,
+    "genre": "rnb",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:7H6ev70Weq6DdpZyyTmUXk",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e023718df75b57340c1947747e8",
+    "title": "Say My Name",
+    "artist": "Destiny's Child",
+    "year": 1999,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0KQx6HOpJueiSkztcS0r7D",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e026d684b553a40e4a11e1db96d",
+    "title": "Fallin'",
+    "artist": "Alicia Keys",
+    "year": 2001,
+    "genre": "rnb",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:2Mpj1Ul5OFPyyP4wB62Rvi",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02163cdae7f1e2c82786a84e3e",
+    "title": "Survivor",
+    "artist": "Destiny's Child",
+    "year": 2001,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5IVuqXILoxVWvWEPm82Jxr",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0245680a4a57c97894490a01c1",
+    "title": "Crazy in Love",
+    "artist": "Beyonce",
+    "year": 2003,
+    "genre": "rnb",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:5dNfHmqgr128gMY2tc5CeJ",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e024cb949e9f103f12d96797121",
+    "title": "Ignition - Remix",
+    "artist": "R. Kelly",
+    "year": 2003,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5rb9QrpfcKFHM1EUbSIurX",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02365b3fb800c19f7ff72602da",
+    "title": "Yeah!",
+    "artist": "Usher",
+    "year": 2004,
+    "genre": "rnb",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:7z3N2W7Xz1t2G2sAO8wFVH",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02365b3fb800c19f7ff72602da",
+    "title": "Burn",
+    "artist": "Usher",
+    "year": 2004,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3LmvfNUQtglbTrydsdIqFU",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02768bc8d9f078db929dfcfbd1",
+    "title": "We Belong Together",
+    "artist": "Mariah Carey",
+    "year": 2005,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6o1l9I0faXJN2iqulHrdCQ",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02ab051a2c680f39c0d9827706",
+    "title": "Crazy",
+    "artist": "Gnarls Barkley",
+    "year": 2006,
+    "genre": "rnb",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:1L5tZi0izXsi5Kk5OJf4W0",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02dc65d5638a3de4a0bdf3c05f",
+    "title": "Rehab",
+    "artist": "Amy Winehouse",
+    "year": 2006,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6RX5iL93VZ5fKmyvNXvF1r",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02026e88f624dfb96f2e1ef10b",
+    "title": "Irreplaceable",
+    "artist": "Beyonce",
+    "year": 2006,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6kopmMZiyLmw7h66uXcXR7",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e026a5beb0500ad6e3b0f7aea22",
+    "title": "Valerie",
+    "artist": "Mark Ronson",
+    "year": 2007,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5R9a4t5t5O0IsznsrKPVro",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02801c4d205accdba0a468a10b",
+    "title": "Single Ladies (Put a Ring on It)",
+    "artist": "Beyonce",
+    "year": 2008,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6IwKcFdiRQZOWeYNhUiWIv",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02ae33b6bc69fe5405f6884b7e",
+    "title": "No One",
+    "artist": "Alicia Keys",
+    "year": 2007,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7DfFc7a6Rwfi3YQMRbDMau",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027aede4855f6d0d738012e2e5",
+    "title": "Thinkin Bout You",
+    "artist": "Frank Ocean",
+    "year": 2012,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:25cUhiAod71TIQSNicOaW3",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02fe113f478616e62a8fe14108",
+    "title": "Adorn",
+    "artist": "Miguel",
+    "year": 2012,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4frLb7nWtsz2ymBE6k2GRP",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027fcead687e99583072cc217b",
+    "title": "Earned It",
+    "artist": "The Weeknd",
+    "year": 2015,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7fBv7CLKzipRk6EC6TWHOB",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027fcead687e99583072cc217b",
+    "title": "The Hills",
+    "artist": "The Weeknd",
+    "year": 2015,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:152lZdxL1OR0ZMW6KquMif",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e024ac041e0d889d3a2608210d5",
+    "title": "Location",
+    "artist": "Khalid",
+    "year": 2016,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3vQ4T78TTMOjQXGfXVKQJo",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e021c29562d6e8c1f55bb1311d5",
+    "title": "Redbone",
+    "artist": "Childish Gambino",
+    "year": 2016,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7MXVkk9YMctZqd1Srtv4MB",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e024718e2b124f79258be7bc452",
+    "title": "Starboy",
+    "artist": "The Weeknd",
+    "year": 2016,
+    "genre": "rnb",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:5oO3drDxtziYU2H1X23ZIp",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e026be9bac15995f089579074de",
+    "title": "Love On The Brain",
+    "artist": "Rihanna",
+    "year": 2016,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1Q7EgiMOuwDcB0PJC6AzON",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027aa8783ad8def37cc548a9cf",
+    "title": "Best Part",
+    "artist": "Daniel Caesar",
+    "year": 2017,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4squZv12LD9M8ooJfoVgZS",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027ce0faf0620ab9c1779e1fbf",
+    "title": "Boo'd Up",
+    "artist": "Ella Mai",
+    "year": 2018,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4SaGaLbcshvQ4admgCkYdP",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e025efca9025978990cc3f10a77",
+    "title": "Leave The Door Open",
+    "artist": "Silk Sonic",
+    "year": 2021,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3OHfY25tqY28d16oZczHc8",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02bc18bdade69ec5ef0bb25b17",
+    "title": "Kill Bill",
+    "artist": "SZA",
+    "year": 2022,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4PMqSO5qyjpvzhlLI5GnID",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02bc18bdade69ec5ef0bb25b17",
+    "title": "Good Days",
+    "artist": "SZA",
+    "year": 2020,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4iZ4pt7kvcaH6Yo8UoZ4s2",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02bc18bdade69ec5ef0bb25b17",
+    "title": "Snooze",
+    "artist": "SZA",
+    "year": 2022,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5FG7Tl93LdH117jEKYl3Cm",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02b5b1023769a6bf19b14d66ab",
+    "title": "Essence",
+    "artist": "WizKid",
+    "year": 2020,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4iJyoBOLtHqaGxP12qzhQI",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e6f407c7f3a0ec98845e4431",
+    "title": "Peaches",
+    "artist": "Justin Bieber",
+    "year": 2021,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:08uGhvS5MfBk7crUCpnjva",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e021529d9e76da10746e20dd012",
+    "title": "Blame It",
+    "artist": "Jamie Foxx",
+    "year": 2008,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2ZA4uMlSZjaoWGFqP1tsLI",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0230fd5c0c49d9c1913e7eb38b",
+    "title": "Ordinary People",
+    "artist": "John Legend",
+    "year": 2004,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3U4isOIWM3VvDubwSI3y7a",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02bdcc3b587b5249932bc415c2",
+    "title": "All of Me",
+    "artist": "John Legend",
+    "year": 2013,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0bHs3ly4Bv5BlzE3KrePfX",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02b0f1fad7abfc5b059cbe1bbd",
+    "title": "Golden",
+    "artist": "Jill Scott",
+    "year": 2004,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5rDkA2TFOImbiVenmnE9r4",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02c17beab3e27f18af397a00b2",
+    "title": "Ring of Fire",
+    "artist": "Johnny Cash",
+    "year": 1963,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6xatfNMI8NkY5XxRHAeiS4",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e020007db2341d9d1204c643696",
+    "title": "Stand by Your Man",
+    "artist": "Tammy Wynette",
+    "year": 1968,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5xMNjx7uqCzMpJZSo4Wq55",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e025693188cd64bf587c4ab938a",
+    "title": "A Boy Named Sue",
+    "artist": "Johnny Cash",
+    "year": 1969,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3mM14WXoPaLRjjkmxHe99L",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02105efc7e27696434d265db1b",
+    "title": "Coal Miner's Daughter",
+    "artist": "Loretta Lynn",
+    "year": 1970,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1YYhDizHx7PnDhAhko6cDS",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02795c9ba853f5a9f7a88b4e31",
+    "title": "Take Me Home, Country Roads",
+    "artist": "John Denver",
+    "year": 1971,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2SpEHTbUuebeLkgs9QB7Ue",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02220f3b1f40e3276662155f16",
+    "title": "Jolene",
+    "artist": "Dolly Parton",
+    "year": 1973,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6nRvgo4ySezQKD1D7NIqAu",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02220f3b1f40e3276662155f16",
+    "title": "I Will Always Love You",
+    "artist": "Dolly Parton",
+    "year": 1974,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0VwTeYNjcl30DyQlt3GPe0",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0263134b3cf76a63e91647e1bb",
+    "title": "Rhinestone Cowboy",
+    "artist": "Glen Campbell",
+    "year": 1975,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2uRVPeQbsEpRQD0DKr1WTo",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02bd6c73967aa419618f87fb5c",
+    "title": "Blue Eyes Crying in the Rain",
+    "artist": "Willie Nelson",
+    "year": 1975,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4WScDSwAa9m48pgHugVkCo",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02198158539283a215a43f1575",
+    "title": "Luckenbach, Texas",
+    "artist": "Waylon Jennings",
+    "year": 1977,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5KqldkCunQ2rWxruMEtGh0",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02c289ed4316aaab5a5b7376c1",
+    "title": "The Gambler",
+    "artist": "Kenny Rogers",
+    "year": 1978,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4w3tQBXhn5345eUXDGBWZG",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0249cb2d53994caada391cf39e",
+    "title": "9 to 5",
+    "artist": "Dolly Parton",
+    "year": 1980,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3MpK9vnxxgYvh0CNeGvx6G",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027f570d8b2e794f1493dca2ca",
+    "title": "On the Road Again",
+    "artist": "Willie Nelson",
+    "year": 1980,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0mG66FLhO0iZ6XCAGdjpax",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02ce1080453dcd330ce552acb4",
+    "title": "Elvira",
+    "artist": "The Oak Ridge Boys",
+    "year": 1981,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6dnco8haegnJYtylV26cBq",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02f4b9ecd2ef53484ca3206f82",
+    "title": "Islands in the Stream",
+    "artist": "Kenny Rogers",
+    "year": 1983,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2vnVgXT1kgA5l64IS9GjVj",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e8df299e0bca8f2fab751c11",
+    "title": "The Dance",
+    "artist": "Garth Brooks",
+    "year": 1990,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:73CLLmbqByFeUxURAJP9Ks",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e8df299e0bca8f2fab751c11",
+    "title": "Friends in Low Places",
+    "artist": "Garth Brooks",
+    "year": 1990,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2EoIt9vdgFRNW03u5IvFsQ",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02bf80fa37dadf36f79441104f",
+    "title": "Achy Breaky Heart",
+    "artist": "Billy Ray Cyrus",
+    "year": 1992,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:59kHPbwyyCApYA8RQQEuXm",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02933cf67cacfab71afa20c6c4",
+    "title": "Chattahoochee",
+    "artist": "Alan Jackson",
+    "year": 1993,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0ELkSGnucpTvTMKvzlUml8",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0266ccae1cfb88eb08fda4638e",
+    "title": "Any Man of Mine",
+    "artist": "Shania Twain",
+    "year": 1995,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5Pgwi0iizu96RHxJ4xL3SH",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e028805523bca720bfd0dfd3e77",
+    "title": "Strawberry Wine",
+    "artist": "Deana Carter",
+    "year": 1996,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2mqaYmF0XmV8egZB6jQOtN",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02f4fc5ce3068e340f35037770",
+    "title": "Man! I Feel Like a Woman!",
+    "artist": "Shania Twain",
+    "year": 1997,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1wb4P4F0sxAQ2KXrRvsx6n",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02aaf012d56b8c72658da6c45f",
+    "title": "You're Still the One",
+    "artist": "Shania Twain",
+    "year": 1998,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6qc34bnVOyqGDPni8H5W0U",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0241d35bfbac1ba0af6180206f",
+    "title": "Amazed",
+    "artist": "Lonestar",
+    "year": 1999,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2TYlCPSARkvifu7jvsG1B1",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e023ee43d5dbf7da3e65be844b3",
+    "title": "Breathe",
+    "artist": "Faith Hill",
+    "year": 1999,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:65B1tEOv5W294uCKbmEcFV",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0263b3168c1970294e9ce5c415",
+    "title": "I Hope You Dance",
+    "artist": "Lee Ann Womack",
+    "year": 2000,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2WQAknZHrJAEQOFXe0F44P",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e021716c34342160479d07aef9c",
+    "title": "Austin",
+    "artist": "Blake Shelton",
+    "year": 2001,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1sR3kJi14jA8Gau3a0yXAo",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02483951fcc83ba8ac166858f8",
+    "title": "The Good Stuff",
+    "artist": "Kenny Chesney",
+    "year": 2002,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0b9djfiuDIMw1zKH6gV74g",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e026b884d4969e2438f5a83ed5b",
+    "title": "Somebody Like You",
+    "artist": "Keith Urban",
+    "year": 2002,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5oHHMDcVOmPSFrCgdbHPdb",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e029921515d1f6a08b5d4907014",
+    "title": "It's Five O'Clock Somewhere",
+    "artist": "Alan Jackson",
+    "year": 2003,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7B1QliUMZv7gSTUGAfMRRD",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e6b859b16a880b851822871d",
+    "title": "Live Like You Were Dying",
+    "artist": "Tim McGraw",
+    "year": 2004,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:26bL4gSULWDgdIMX0pRFrG",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02ddf15202c076358827b81302",
+    "title": "Redneck Woman",
+    "artist": "Gretchen Wilson",
+    "year": 2004,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3lec3CzDPAxsZokPph5w87",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02c20ffeb64e39773de0f6c232",
+    "title": "Jesus, Take the Wheel",
+    "artist": "Carrie Underwood",
+    "year": 2005,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0ZUo4YjG4saFnEJhdWp9Bt",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02c20ffeb64e39773de0f6c232",
+    "title": "Before He Cheats",
+    "artist": "Carrie Underwood",
+    "year": 2006,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:15DeqWWQB4dcEWzJg15VrN",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e022f8c0fd72a80a93f8c53b96c",
+    "title": "Our Song",
+    "artist": "Taylor Swift",
+    "year": 2006,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0jn2XqaHliEpWd04ZykIHy",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02cd03165d04c97210108ac833",
+    "title": "Stay",
+    "artist": "Sugarland",
+    "year": 2007,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1vrd6UOGamcKNGnSHJQlSt",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027b25c072237f29ee50025fdc",
+    "title": "Love Story",
+    "artist": "Taylor Swift",
+    "year": 2008,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0LQtEJt7x0s6knb6RKdRYc",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02157d6d0762e17e7dc1ad5203",
+    "title": "Chicken Fried",
+    "artist": "Zac Brown Band",
+    "year": 2008,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3GCL1PydwsLodcpv0Ll1ch",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027b25c072237f29ee50025fdc",
+    "title": "You Belong With Me",
+    "artist": "Taylor Swift",
+    "year": 2008,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:11EX5yhxr9Ihl3IN1asrfK",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e023a2cc6c5cdd9f07a95efa51b",
+    "title": "Need You Now",
+    "artist": "Lady A",
+    "year": 2009,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:02eD9ymfJOJOhM97HYp5R9",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0255c84bae13e584c729d373f4",
+    "title": "The House That Built Me",
+    "artist": "Miranda Lambert",
+    "year": 2009,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3U8dHeggJ8IBe0UCb1gbyB",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02300dd939c3081ff12fa69284",
+    "title": "Colder Weather",
+    "artist": "Zac Brown Band",
+    "year": 2010,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5Uj0tM4pVR2fGfb4v7gGda",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02852b036b24050ad27b4afa33",
+    "title": "Springsteen",
+    "artist": "Eric Church",
+    "year": 2011,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3xdjjKMcMOFgo1eQrfbogM",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e023c814f8afa852904e9db8a9f",
+    "title": "Wagon Wheel",
+    "artist": "Darius Rucker",
+    "year": 2013,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0i5el041vd6nxrGEU8QRxy",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02f5601676db551cb2a09e70a0",
+    "title": "Cruise",
+    "artist": "Florida Georgia Line",
+    "year": 2012,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1soxUgYIZb1qx1c7o1Lc7z",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e022fbffba1f6cce197ece58ea6",
+    "title": "Drunk on a Plane",
+    "artist": "Dierks Bentley",
+    "year": 2014,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6DEaND0SHv3sC11xobZLiy",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e029e6b694939f7495f67a0de33",
+    "title": "Take Your Time",
+    "artist": "Sam Hunt",
+    "year": 2014,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:11qh54D0PKkBwelpDxxiEU",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02b241290f873c27bd45d09dd2",
+    "title": "Girl Crush",
+    "artist": "Little Big Town",
+    "year": 2014,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:68lSGZIJy3QYHnJfcssrPE",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02d33acf6faeda8ab64fff100d",
+    "title": "Die a Happy Man",
+    "artist": "Thomas Rhett",
+    "year": 2015,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3fqwjXwUGN6vbzIwvyFMhx",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02540fc1d083eac5bcff8dad21",
+    "title": "Tennessee Whiskey",
+    "artist": "Chris Stapleton",
+    "year": 2015,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0BCy325UZyR9z0t0uxwn2N",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0205f4943d0f3a292234e74ab8",
+    "title": "H.O.L.Y.",
+    "artist": "Florida Georgia Line",
+    "year": 2016,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6wycnu8FWXsj68ig7BEot9",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0254cf35cdbebd3ff59e9328b4",
+    "title": "Blue Ain't Your Color",
+    "artist": "Keith Urban",
+    "year": 2016,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7mldq42yDuxiUNn08nvzHO",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0256277bb70d3a48ed654a0a57",
+    "title": "Body Like a Back Road",
+    "artist": "Sam Hunt",
+    "year": 2017,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7iDa6hUg2VgEL1o1HjmfBn",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e021ba5682505dd6e2592b16e41",
+    "title": "Meant to Be",
+    "artist": "Bebe Rexha",
+    "year": 2017,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:42fw0rxRO2xbesF6mJfd4Y",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0205e4408393e1c81a8ab1bf26",
+    "title": "Tequila",
+    "artist": "Dan + Shay",
+    "year": 2018,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7q7jyVU0f0hnod8tsaUmxg",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0235af7e5302d1c849b4e70e73",
+    "title": "Speechless",
+    "artist": "Dan + Shay",
+    "year": 2018,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4j5ffIFh7bFT7GZciP1TCy",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02b4ec09db2bbc7a3439966ce4",
+    "title": "10,000 Hours",
+    "artist": "Dan + Shay",
+    "year": 2019,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7yFhA2fUsL2oIMWlw5DaHQ",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0294ddce95f0424bbf2c4aae11",
+    "title": "The Bones",
+    "artist": "Maren Morris",
+    "year": 2019,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3hLuHKzG1cmlRpq53ZVWd8",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02816075488bdd893d09ef85eb",
+    "title": "The Good Ones",
+    "artist": "Gabby Barrett",
+    "year": 2020,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6IBcOGPsniK3Pso1wHIhew",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02c1910b19976893265d83d36a",
+    "title": "Forever After All",
+    "artist": "Luke Combs",
+    "year": 2020,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2rxQMGVafnNaRaXlRMWPde",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02493d0a872c97a661b9606e62",
+    "title": "Beautiful Crazy",
+    "artist": "Luke Combs",
+    "year": 2018,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:58UKC45GPNTflCN6nwCUeF",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e024c3aa675b8a058a6a956d3c3",
+    "title": "Fancy Like",
+    "artist": "Walker Hayes",
+    "year": 2021,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:583dMdiUquLMenarTp7PQm",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02c37a94d92b0a874ba2419ed7",
+    "title": "Last Night",
+    "artist": "Morgan Wallen",
+    "year": 2023,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5DIBVDJOHh7djepAjKHWCO",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02fab89700cf3b4ca3d6a3d93b",
+    "title": "Heart Like a Truck",
+    "artist": "Lainey Wilson",
+    "year": 2022,
+    "genre": "country",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4rS63BySQrdWuTswkkZ5iS",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e021c3465800b6c039e4b18adad",
+    "title": "I Feel Love",
+    "artist": "Donna Summer",
+    "year": 1977,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3UjH6apk0ogZeIqhHbjrRU",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027cf7be893131178035b2a3cb",
+    "title": "Trans-Europe Express",
+    "artist": "Kraftwerk",
+    "year": 1977,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7G3zERqh2d2tij0pVQfohU",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0272bd5d848dbf5bfd1bd5c752",
+    "title": "The Model",
+    "artist": "Kraftwerk",
+    "year": 1978,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4QQEzkxcONBthDLfzqIh9S",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e020b3bc5a3aa41c71b256e0e22",
+    "title": "Cars",
+    "artist": "Gary Numan",
+    "year": 1979,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6hHc7Pks7wtBIW8Z6A0iFq",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02408739ba1ad5bccbfeda5ae1",
+    "title": "Blue Monday",
+    "artist": "New Order",
+    "year": 1983,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1TfqLAPs4K3s2rJMoCokcS",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02b3994c94dfb241923664bb4d",
+    "title": "Sweet Dreams (Are Made of This)",
+    "artist": "Eurythmics",
+    "year": 1983,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0cGG2EouYCEEC3xfa0tDFV",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0249c982dae436bac27c336f45",
+    "title": "Tainted Love",
+    "artist": "Soft Cell",
+    "year": 1981,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7zhtLp2V3lNXdllknAqbKk",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02018394d83431a1db58f2c8fd",
+    "title": "Don't You Want Me",
+    "artist": "The Human League",
+    "year": 1981,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6WK9dVrRABMkUXFLNlgWFh",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e020a7d45a345534966a4ad2c39",
+    "title": "Enjoy the Silence",
+    "artist": "Depeche Mode",
+    "year": 1990,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2wUlYDGGXlSvm2NkGj0Qio",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02234bbbad4dce31cd2950af3e",
+    "title": "Personal Jesus",
+    "artist": "Depeche Mode",
+    "year": 1989,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4WxOFybmhNxHGnkPGBJzIE",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0253cda58a885837dc5b9e8733",
+    "title": "Go",
+    "artist": "Moby",
+    "year": 1991,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7H8OEVxkCgIvAvWp1MZBxw",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02900eadaf9ce2d7a4b0b78d5a",
+    "title": "Little Fluffy Clouds",
+    "artist": "The Orb",
+    "year": 1990,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3XTefle3zvDkjgS1Fiq14A",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02ae4ee821be74164699522b8b",
+    "title": "Insomnia",
+    "artist": "Faithless",
+    "year": 1995,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7xQYVjs4wZNdCwO0EeAWMC",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e021e34bdf6792b78c2da36a767",
+    "title": "Born Slippy",
+    "artist": "Underworld",
+    "year": 1996,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1auX4gkGe7hbrOH0BXdpV4",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027bb4dd1d02346ec2321a41d6",
+    "title": "Firestarter",
+    "artist": "The Prodigy",
+    "year": 1996,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4ZtqsOdBbS6GoedzzRGSo9",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027bb4dd1d02346ec2321a41d6",
+    "title": "Breathe",
+    "artist": "The Prodigy",
+    "year": 1996,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5JBGbFdBtLcCCygw8rtjli",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02df9f87a1ff07a1bb500ad75f",
+    "title": "Setting Sun",
+    "artist": "The Chemical Brothers",
+    "year": 1996,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1FNvrp5K02oThumS6gllzp",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02df9f87a1ff07a1bb500ad75f",
+    "title": "Block Rockin' Beats",
+    "artist": "The Chemical Brothers",
+    "year": 1997,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1pKYYY0dkg23sQQXi0Q5zN",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e028ac778cc7d88779f74d33311",
+    "title": "Around the World",
+    "artist": "Daft Punk",
+    "year": 1997,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0MyY4WcN7DIfbSmp5yej5z",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e028ac778cc7d88779f74d33311",
+    "title": "Da Funk",
+    "artist": "Daft Punk",
+    "year": 1995,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3yGy1JYz3zQKlxSgjgpQqX",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02b8d6b39d1a3697df5558db0e",
+    "title": "Praise You",
+    "artist": "Fatboy Slim",
+    "year": 1998,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7mCQK9YB25WZw1saUjfL4e",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0232922d86fcf090a1a6d4deb0",
+    "title": "The Rockafeller Skank",
+    "artist": "Fatboy Slim",
+    "year": 1998,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3Pb9QabepyR9e9D8NqorPH",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0232922d86fcf090a1a6d4deb0",
+    "title": "Right Here, Right Now",
+    "artist": "Fatboy Slim",
+    "year": 1999,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6Sy9BUbgFse0n0LPA5lwy5",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02f9ef39657ba18c612641ee6d",
+    "title": "Sandstorm",
+    "artist": "Darude",
+    "year": 1999,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:303ccTay2FiDTZ9fZ2AdBt",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02b98afa12c212cbbda4f1799b",
+    "title": "Music Sounds Better with You",
+    "artist": "Stardust",
+    "year": 1998,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0DiWol3AO6WpXZgp0goxAV",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e021e81bff9807a9e629fce5ade",
+    "title": "One More Time",
+    "artist": "Daft Punk",
+    "year": 2000,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2VEZx7NWsZ1D0eJ4uv5Fym",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e021e81bff9807a9e629fce5ade",
+    "title": "Digital Love",
+    "artist": "Daft Punk",
+    "year": 2001,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5W3cjX2J3tjhG8zb6u0qHn",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e021e81bff9807a9e629fce5ade",
+    "title": "Harder, Better, Faster, Stronger",
+    "artist": "Daft Punk",
+    "year": 2001,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7yMiX7n9SBvadzox8T5jzT",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02c73a7bb15f43bae86215934b",
+    "title": "Clint Eastwood",
+    "artist": "Gorillaz",
+    "year": 2001,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5JZnjM9ijpit0d5zjT8MM7",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02209d819070f60c3daa45cd6b",
+    "title": "Satisfaction",
+    "artist": "Benny Benassi",
+    "year": 2002,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4bz7uB4edifWKJXSDxwHcs",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e028e8f975a2b364769040c8169",
+    "title": "Galvanize",
+    "artist": "The Chemical Brothers",
+    "year": 2004,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:33yAEqzKXexYM3WlOYtTfQ",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e021c0bcf8b536295438d26c70d",
+    "title": "D.A.N.C.E.",
+    "artist": "Justice",
+    "year": 2007,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1PH5Es89c1cENU8WVuWwbp",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e028ac778cc7d88779f74d33311",
+    "title": "Alive",
+    "artist": "Daft Punk",
+    "year": 2007,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5GjUhwxykUVYCYkiNo4BEM",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0288187e12b8a3a1063eb0dd80",
+    "title": "Strobe",
+    "artist": "deadmau5",
+    "year": 2009,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5m4taQjTIjgEBU6mWpv5OC",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0288187e12b8a3a1063eb0dd80",
+    "title": "Ghosts 'n' Stuff",
+    "artist": "deadmau5",
+    "year": 2008,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5EJcVJZBl6HTfSf6z4dC78",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02781f6dd5abe91929df0314e3",
+    "title": "One (Your Name)",
+    "artist": "Swedish House Mafia",
+    "year": 2010,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4rwpZEcnalkuhPyGkEdhu0",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0281cfaf3b1359f7b579ea05e5",
+    "title": "Scary Monsters and Nice Sprites",
+    "artist": "Skrillex",
+    "year": 2010,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6VRhkROS2SZHGlp0pxndbJ",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e026081278cb62df2757d55633b",
+    "title": "Bangarang",
+    "artist": "Skrillex",
+    "year": 2011,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5UqCQaDshqbIk3pkhy4Pjg",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02ffb343926530168be4724dd4",
+    "title": "Levels",
+    "artist": "Avicii",
+    "year": 2011,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0lHAMNU8RGiIObScrsRgmP",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0287e2f8346625bb6fd20d52be",
+    "title": "Titanium",
+    "artist": "David Guetta",
+    "year": 2011,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1eyzqe2QqGZUmfcPZtrIyt",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0290e9adff5f77dd1ff6d24e47",
+    "title": "Midnight City",
+    "artist": "M83",
+    "year": 2011,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3NRDLYyqIXja0UElvdzjkB",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e026046328819f2994a34214b7f",
+    "title": "Language",
+    "artist": "Porter Robinson",
+    "year": 2012,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:60wwxj6Dd9NJlirf84wr2c",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02941dd3b3343d9cb9329d37bf",
+    "title": "Clarity",
+    "artist": "Zedd",
+    "year": 2012,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:2V65y3PX4DkRhy1djlxd9p",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e029cfe80c0c05ce104f7bab18e",
+    "title": "Don't You Worry Child",
+    "artist": "Swedish House Mafia",
+    "year": 2012,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0A9mHc7oYUoCECqByV8cQR",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e026abad6915a2216dc18e7e3a7",
+    "title": "Animals",
+    "artist": "Martin Garrix",
+    "year": 2013,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:0nrRP2bk19rLc0orkWPQk2",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02e14f11f796cef9f9a82691a7",
+    "title": "Wake Me Up",
+    "artist": "Avicii",
+    "year": 2013,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3RreQwfX4DKTrvKi1F2UIf",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02c3760c26cc5374ddbd9fd530",
+    "title": "Hey Brother",
+    "artist": "Avicii",
+    "year": 2013,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3s4U7OHV7gnj42VV72eSZ6",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027e519297d9876b6afff2ab7b",
+    "title": "Rather Be",
+    "artist": "Clean Bandit",
+    "year": 2014,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1DunhgeZSEgWiIYbHqXl0c",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e027d9cf15a27f29ffc8ef01e8d",
+    "title": "Latch",
+    "artist": "Disclosure",
+    "year": 2012,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:01aTsQoKoeXofSTvKuunzv",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02d6d24aee7b49a2db98a76856",
+    "title": "Lean On",
+    "artist": "Major Lazer",
+    "year": 2015,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:66hayvUbTotekKU3H4ta1f",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0257fc4730e06c9ab20c1e073b",
+    "title": "Where Are U Now",
+    "artist": "Jack U",
+    "year": 2015,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7gHs73wELdeycvS48JfIos",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02c4d00cac55ae1b4598c9bc90",
+    "title": "Faded",
+    "artist": "Alan Walker",
+    "year": 2015,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3vv9phIu6Y1vX3jcqaGz5Z",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e028d2cfad007b9431f48aef135",
+    "title": "Roses",
+    "artist": "The Chainsmokers",
+    "year": 2015,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7BKLCZ1jbUBVqRi2FVlTVw",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02495ce6da9aeb159e94eaa453",
+    "title": "Closer",
+    "artist": "The Chainsmokers",
+    "year": 2016,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1dNIEtp7AY3oDAKCGg2XkH",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02f79b7f08426e2899a832d3e6",
+    "title": "Something Just Like This",
+    "artist": "The Chainsmokers",
+    "year": 2017,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7vGuf3Y35N4wmASOKLUVVU",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02f33ba583059dc2f7d08bf2b8",
+    "title": "Silence",
+    "artist": "Marshmello",
+    "year": 2017,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7BqHUALzNBTanL6OvsqmC1",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02dd0a40eecd4b13e4c59988da",
+    "title": "Happier",
+    "artist": "Marshmello",
+    "year": 2018,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:3MEYFivt6bilQ9q9mFWZ4g",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02956043cfb058f0be93022267",
+    "title": "Alone",
+    "artist": "Marshmello",
+    "year": 2016,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6cx06DFPPHchuUAcTxznu9",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02a86959a1ed0e3fc06a8dd69d",
+    "title": "Head & Heart",
+    "artist": "Joel Corry",
+    "year": 2020,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:5jkFvD4UJrmdoezzT1FRoP",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e029e77d65619f80436b5cc9d12",
+    "title": "Rasputin",
+    "artist": "Boney M.",
+    "year": 1978,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7oOOI85fVQvVnK5ynNMdW7",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e022b74bf21c7e4f56758610949",
+    "title": "Rock with You",
+    "artist": "Michael Jackson",
+    "year": 1979,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:56m4u3xP7HwUXhittwshoV",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02178e9088419cf052a8ebce29",
+    "title": "Never Too Much",
+    "artist": "Luther Vandross",
+    "year": 1981,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:6m59VvDUi0UQsB2eZ9wVbH",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e020ce91190aaea70dd4fe020c4",
+    "title": "Poison",
+    "artist": "Bell Biv DeVoe",
+    "year": 1990,
+    "genre": "rnb",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:67awxiNHNyjMXhVgsHuIrs",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02d905e78cad304de028db39b7",
+    "title": "Turn Down for What",
+    "artist": "DJ Snake",
+    "year": 2013,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:69kOkLUCkxIZYexIgSG8rq",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e029b9b36b0e22870b9f542d937",
+    "title": "Get Lucky",
+    "artist": "Daft Punk",
+    "year": 2013,
+    "genre": "electronic",
+    "classic": true
+  },
+  {
+    "id": "spotify:track:3hlksXnvbKogFdPbpO9vel",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02aa7d2641af0fa4c1f76fafbf",
+    "title": "Super Bass",
+    "artist": "Nicki Minaj",
+    "year": 2011,
+    "genre": "hiphop",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1EFjbeFr7WhVhN7eoTOgR2",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e023b2b1123c8fac57ec8cbcce9",
+    "title": "Groove Is in the Heart",
+    "artist": "Deee-Lite",
+    "year": 1990,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:7lMIJ4EFWRVoAIPDpeGyM3",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02121c39c86d8b05c14022edfe",
+    "title": "Blue (Da Ba Dee)",
+    "artist": "Eiffel 65",
+    "year": 1999,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:4u4JMXuhg94qU88lzeiiuq",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e02937cbb86a96ec9232d73e3a6",
+    "title": "Better Off Alone",
+    "artist": "Alice Deejay",
+    "year": 1999,
+    "genre": "electronic",
+    "classic": false
+  },
+  {
+    "id": "spotify:track:1auxYwYrFRqZP7t3s7w4um",
+    "albumArt": "https://i.scdn.co/image/ab67616d00001e0252e61456aa4995ba48d94e30",
+    "title": "Ni**as In Paris",
+    "artist": "JAY-Z",
+    "year": 2011,
+    "genre": "hiphop",
+    "classic": false
+  }
+]

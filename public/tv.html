@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hitster — TV</title>
+  <link rel="stylesheet" href="/theme.css" />
+  <link rel="stylesheet" href="/tv.css" />
+</head>
+<body class="tv">
+
+  <!-- Spotify connection gate ------------------------------------------- -->
+  <section id="auth" class="gate" hidden>
+    <div class="gate__inner">
+      <div class="record record--idle" aria-hidden="true"><span class="record__label"></span></div>
+      <p class="eyebrow">Step one</p>
+      <h1 class="display gate__title">Connect Spotify</h1>
+      <p class="gate__body">
+        This screen plays the music, so it needs a Spotify Premium account.
+        Phones join without signing in to anything.
+      </p>
+      <button id="auth-btn" class="btn">Connect Spotify</button>
+      <p id="auth-error" class="gate__error" role="alert"></p>
+    </div>
+  </section>
+
+  <!-- Audio gate ---------------------------------------------------------- -->
+  <!-- Browsers refuse to let a page start audio until someone has interacted
+       with it. Since the game is started from a phone, this screen would
+       otherwise never get that interaction and would sit in silence. -->
+  <section id="audio" class="gate" hidden>
+    <div class="gate__inner">
+      <div class="record record--idle" aria-hidden="true"><span class="record__label"></span></div>
+      <p class="eyebrow">Last step</p>
+      <h1 class="display gate__title">Turn the sound on</h1>
+      <p class="gate__body">
+        Your browser needs one tap on this screen before it will play anything.
+        Do it now and the music starts on its own for the rest of the night.
+      </p>
+      <button id="audio-btn" class="btn">Turn the sound on</button>
+      <p id="audio-error" class="gate__error" role="alert"></p>
+    </div>
+  </section>
+
+  <!-- Lobby --------------------------------------------------------------- -->
+  <section id="lobby" class="gate" hidden>
+    <div class="lobby">
+      <div class="lobby__left">
+        <p class="eyebrow">Room code</p>
+        <p id="lobby-code" class="lobby__code">····</p>
+        <p class="eyebrow">Join from your phone</p>
+        <div class="qr"><img id="lobby-qr" alt="" /></div>
+        <p id="lobby-url" class="lobby__url readout"></p>
+      </div>
+      <div class="lobby__right">
+        <h1 class="display lobby__wordmark">Hitster</h1>
+        <p class="lobby__tag">Name the year. Build the timeline. First to <span id="lobby-target">10</span> wins.</p>
+        <p class="eyebrow lobby__players-label">In the room</p>
+        <ul id="lobby-players" class="lobby__players"></ul>
+        <p id="lobby-hint" class="lobby__hint"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Game ---------------------------------------------------------------- -->
+  <main id="game" class="stage" hidden>
+
+    <header class="topbar">
+      <span class="display topbar__mark">Hitster</span>
+      <span class="topbar__meta readout">
+        <span id="round-label">Round 1</span>
+        <span class="topbar__dot">·</span>
+        <span id="turn-label" class="topbar__turn">—</span>
+      </span>
+      <div class="volume">
+        <span class="eyebrow">Vol</span>
+        <input id="volume" type="range" min="0" max="100" value="60" aria-label="Playback volume" />
+      </div>
+    </header>
+
+    <section class="nowplaying">
+      <div id="disc" class="record" aria-hidden="true">
+        <img id="disc-art" class="record__art" alt="" hidden />
+        <span class="record__label"></span>
+      </div>
+      <div class="nowplaying__text">
+        <p class="eyebrow" id="np-eyebrow">Now playing</p>
+        <p class="display nowplaying__title" id="np-title">??? — ?????</p>
+        <p class="nowplaying__sub" id="np-sub">Nobody knows the year yet.</p>
+        <div class="nowplaying__wave" aria-hidden="true">
+          <div class="wave is-idle" id="wave"></div>
+        </div>
+        <div class="progress" aria-hidden="true">
+          <div class="progress__fill" id="progress-fill"></div>
+        </div>
+        <p class="readout nowplaying__time"><span id="np-elapsed">0:00</span></p>
+      </div>
+    </section>
+
+    <!-- Signature element: the groove -->
+    <section class="groove-wrap" aria-label="Timeline">
+      <p class="eyebrow groove-owner"><span id="groove-owner-name">—</span>'s timeline</p>
+      <div class="groove-scroll" id="groove-scroll">
+        <div class="groove" id="groove">
+          <div class="groove__surface" aria-hidden="true"></div>
+          <div class="groove__cards" id="groove-cards"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="playerbar" id="playerbar"></footer>
+  </main>
+
+  <!-- Reveal / steal / winner overlays -------------------------------------- -->
+  <div id="overlay" class="overlay" hidden>
+    <div class="overlay__inner" id="overlay-inner"></div>
+  </div>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+
+  <script src="https://sdk.scdn.co/spotify-player.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/spotify-auth.js"></script>
+  <script src="/tv.js"></script>
+</body>
+</html>

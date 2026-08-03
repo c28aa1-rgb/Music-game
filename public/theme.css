@@ -1,0 +1,299 @@
+/* ==========================================================================
+   ARCTIC FROST — shared design tokens
+
+   Adapted from the theme-factory preset of the same name. The preset defines
+   four colours and no state colours, so a warm amber (steals) and a brick red
+   (wrong answers) are added here; everything else is the preset's palette.
+   Its DejaVu Sans pairing is a PDF-safe stack rather than a web font, so it is
+   substituted with Space Grotesk / Outfit / DM Mono.
+
+   Tokens are semantic, so retheming means editing only this :root block.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Outfit:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  /* Surfaces --------------------------------------------------------------- */
+  --bg: #f4f8fd;
+  --surface: #ffffff;
+  --surface-hi: #e2ecf9;
+  --line: rgba(27, 42, 63, 0.14);
+  --line-strong: rgba(27, 42, 63, 0.28);
+
+  /* Ink -------------------------------------------------------------------- */
+  --text: #1b2a3f;
+  --muted: #64789a;
+
+  /* Accents ---------------------------------------------------------------- */
+  --accent: #4a6fa5;
+  --accent-dim: #35527c;
+  --accent-glow: rgba(74, 111, 165, 0.28);
+
+  --accent-2: #e08a3c;
+  --accent-2-glow: rgba(224, 138, 60, 0.32);
+
+  --danger: #c4453d;
+  --danger-glow: rgba(196, 69, 61, 0.28);
+
+  /* Text that sits on top of a filled accent. */
+  --on-accent: #ffffff;
+  --on-accent-2: #2e1a06;
+  --on-danger: #ffffff;
+
+  /* The disc, and the scrim behind full-screen overlays. */
+  --disc-1: #ffffff;
+  --disc-2: #d4e4f7;
+  --disc-3: #a9bdd6;
+  --scrim: rgba(244, 248, 253, 0.93);
+
+  /* Type ------------------------------------------------------------------- */
+  --font-display: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* Motion ----------------------------------------------------------------- */
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* Rhythm ----------------------------------------------------------------- */
+  --radius: 12px;
+  --radius-lg: 20px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/*
+ * The browser's own [hidden] rule lives in the UA stylesheet, which loses to
+ * ANY author rule that sets display — including .btn and .dock below. Without
+ * this, el.hidden = true silently does nothing to a flex element.
+ */
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* A cool wash top and bottom, so a large flat screen isn't a slab of white. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(110% 60% at 50% -10%, rgba(74, 111, 165, 0.13), transparent 64%),
+    radial-gradient(100% 55% at 50% 112%, rgba(224, 138, 60, 0.10), transparent 68%);
+}
+
+/* --------------------------------------------------------------------------
+   Type roles
+   -------------------------------------------------------------------------- */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 0.98;
+}
+
+.readout {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 56px;
+  padding: 0 1.5rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: transform 140ms var(--spring), box-shadow 180ms var(--ease), background 180ms var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:hover:not(:disabled) {
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.btn:disabled {
+  background: var(--surface-hi);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+.btn--ghost {
+  background: var(--surface);
+  border-color: var(--line-strong);
+  color: var(--text);
+}
+
+.btn--ghost:hover:not(:disabled) {
+  border-color: var(--accent);
+  box-shadow: none;
+  color: var(--accent);
+}
+
+.btn--danger {
+  background: var(--danger);
+  color: var(--on-danger);
+}
+
+.btn--danger:hover:not(:disabled) {
+  box-shadow: 0 0 0 4px var(--danger-glow);
+}
+
+.btn--block {
+  width: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   Card face
+   -------------------------------------------------------------------------- */
+
+.card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.6rem 0.7rem 0.7rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(27, 42, 63, 0.07);
+}
+
+.card__year {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 0.98;
+}
+
+.card__title {
+  font-weight: 600;
+  line-height: 1.25;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.card__artist {
+  color: var(--muted);
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Waveform — decorative.
+
+   Spotify's playback stream is DRM-protected, so the Web Audio API cannot tap
+   it for real amplitude data. These bars run on randomised cycles while audio
+   plays and freeze when it pauses; they are not synced to the actual waveform.
+   -------------------------------------------------------------------------- */
+
+.wave {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 100%;
+}
+
+.wave i {
+  display: block;
+  flex: 0 0 auto;
+  width: 3px;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(to top, var(--accent-2), var(--accent));
+  transform-origin: center;
+  transform: scaleY(0.16);
+  animation: wave-bar 900ms ease-in-out infinite alternate;
+}
+
+.wave.is-idle i {
+  animation-play-state: paused;
+  opacity: 0.3;
+  transform: scaleY(0.1);
+}
+
+@keyframes wave-bar {
+  from { transform: scaleY(0.14); }
+  to { transform: scaleY(1); }
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility floor
+   -------------------------------------------------------------------------- */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .wave i { transform: scaleY(0.5); }
+}

@@ -1,0 +1,901 @@
+/* ==========================================================================
+   TV view — the shared screen.
+   Sized for a living-room display at 2-4 metres.
+   ========================================================================== */
+
+.tv {
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.tv > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   The disc — auth ornament and now-playing spinner.
+   Blank while a song is hidden; the reveal drops album art onto it.
+   -------------------------------------------------------------------------- */
+
+.record {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(circle at 50% 50%, rgba(27, 42, 63, 0.06) 0 1px, transparent 1px 5px),
+    radial-gradient(circle at 34% 30%, var(--disc-1) 0%, var(--disc-2) 52%, var(--disc-3) 100%);
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 18px 40px rgba(27, 42, 63, 0.18);
+  animation: spin 3.4s linear infinite;
+}
+
+.record::after {
+  content: '';
+  position: absolute;
+  inset: -18%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-glow), transparent 62%);
+  opacity: 0;
+  transition: opacity 400ms var(--ease);
+  pointer-events: none;
+}
+
+.record.is-playing::after {
+  opacity: 1;
+  animation: halo 2.6s ease-in-out infinite;
+}
+
+.record--idle {
+  animation-duration: 14s;
+  width: 132px;
+  height: 132px;
+}
+
+.record--paused {
+  animation-play-state: paused;
+}
+
+.record__label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32%;
+  height: 32%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: linear-gradient(140deg, var(--accent), var(--accent-2));
+  box-shadow: inset 0 0 0 6px var(--bg), 0 0 26px var(--accent-glow);
+}
+
+.record__art {
+  position: absolute;
+  inset: 12%;
+  width: 76%;
+  height: 76%;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: inset 0 0 0 2px rgba(27, 42, 63, 0.25);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes halo {
+  0%, 100% { opacity: 0.45; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+
+/* --------------------------------------------------------------------------
+   Full-screen gates: auth and lobby
+   -------------------------------------------------------------------------- */
+
+.gate {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 4vmin;
+  background: var(--bg);
+}
+
+/* Declared before the lobby in the markup, but it has to cover it. */
+#audio.gate {
+  z-index: 25;
+}
+
+.gate__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+  max-width: 30rem;
+  text-align: center;
+}
+
+.gate__title {
+  margin: 0;
+  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+  color: var(--text);
+}
+
+.gate__body {
+  margin: 0;
+  max-width: 26rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.gate__error {
+  min-height: 1.2rem;
+  margin: 0;
+  color: var(--danger);
+  font-size: 0.9rem;
+}
+
+/* --------------------------------------------------------------------------
+   Lobby
+   -------------------------------------------------------------------------- */
+
+.lobby {
+  display: grid;
+  grid-template-columns: minmax(280px, 26rem) 1fr;
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: center;
+  width: min(1200px, 92vw);
+}
+
+.lobby__code {
+  margin: 0.2rem 0 1.6rem;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: clamp(2.8rem, 6.5vw, 4.6rem);
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-shadow: 0 0 44px var(--accent-glow);
+}
+
+.qr {
+  display: inline-block;
+  padding: 12px;
+  background: var(--text);
+  border-radius: var(--radius);
+  line-height: 0;
+}
+
+.qr img {
+  display: block;
+  width: clamp(150px, 15vw, 210px);
+  height: auto;
+}
+
+.lobby__url {
+  margin: 0.9rem 0 0;
+  word-break: break-all;
+  font-size: 0.7rem;
+}
+
+.lobby__wordmark {
+  margin: 0;
+  font-size: clamp(3.2rem, 8.5vw, 7rem);
+  color: var(--text);
+}
+
+.lobby__wordmark::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 3px;
+  margin-top: 0.5rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2), transparent);
+}
+
+.lobby__tag {
+  margin: 1rem 0 2.4rem;
+  max-width: 34rem;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.lobby__players-label { display: block; margin-bottom: 0.8rem; }
+
+.lobby__players {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  min-height: 3rem;
+}
+
+.lobby__player {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  font-weight: 600;
+  animation: pop 420ms var(--spring) both;
+}
+
+.lobby__player--host { border-color: var(--accent); }
+
+.lobby__player--host::after {
+  content: 'host';
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.lobby__hint {
+  margin: 2rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: translateY(10px) scale(0.94); }
+  to { opacity: 1; transform: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Game stage
+   -------------------------------------------------------------------------- */
+
+.stage {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: clamp(0.8rem, 2vh, 2rem);
+  height: 100vh;
+  padding: clamp(1rem, 2.4vh, 2rem) clamp(1.5rem, 3vw, 3.5rem);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.topbar__mark {
+  font-size: clamp(1.3rem, 2vw, 1.9rem);
+  color: var(--accent);
+}
+
+.topbar__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.8rem;
+}
+
+.topbar__dot { color: var(--line-strong); }
+
+.topbar__turn {
+  color: var(--text);
+  letter-spacing: 0.14em;
+}
+
+.volume {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-left: auto;
+  opacity: 0.55;
+  transition: opacity 200ms var(--ease);
+}
+
+.volume:hover, .volume:focus-within { opacity: 1; }
+
+.volume input[type='range'] {
+  width: 120px;
+  height: 3px;
+  appearance: none;
+  background: var(--line-strong);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.volume input[type='range']::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: none;
+}
+
+.volume input[type='range']::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: none;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   Now playing
+   -------------------------------------------------------------------------- */
+
+.nowplaying {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+.nowplaying .record {
+  width: clamp(110px, 12vh, 170px);
+  height: clamp(110px, 12vh, 170px);
+}
+
+.nowplaying__text {
+  min-width: 0;
+  flex: 1;
+}
+
+.nowplaying__title {
+  margin: 0.3rem 0 0.35rem;
+  font-size: clamp(1.6rem, 3.4vw, 3.1rem);
+  color: var(--text);
+}
+
+.nowplaying__title.is-hidden-track {
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+
+.nowplaying__sub {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+}
+
+/* Waveform sits where a spectrum analyser would on a hi-fi. */
+.nowplaying__wave {
+  width: min(560px, 100%);
+  height: clamp(38px, 6vh, 64px);
+  margin-bottom: 0.7rem;
+}
+
+.progress {
+  width: min(560px, 100%);
+  height: 4px;
+  background: var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress__fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-2), var(--accent));
+  border-radius: 999px;
+  transition: width 300ms linear;
+}
+
+.nowplaying__time { margin: 0.5rem 0 0; }
+
+/* --------------------------------------------------------------------------
+   THE RAIL — signature element.
+   A lit track running edge to edge with cards hanging beneath it on
+   drop-lines and years set above.
+   -------------------------------------------------------------------------- */
+
+.groove-wrap {
+  --year-h: 62px;
+  --band-h: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+}
+
+.groove-owner {
+  margin: 0 0 0.6rem;
+  color: var(--accent);
+}
+
+.groove-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+  padding-bottom: 0.5rem;
+}
+
+.groove-scroll::-webkit-scrollbar { height: 6px; }
+.groove-scroll::-webkit-scrollbar-track { background: transparent; }
+.groove-scroll::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 999px;
+}
+
+.groove {
+  position: relative;
+  min-width: 100%;
+  width: max-content;
+  padding: 0 1.5rem;
+}
+
+.groove__surface {
+  position: absolute;
+  top: var(--year-h);
+  left: 0;
+  right: 0;
+  height: var(--band-h);
+  background: linear-gradient(to bottom, var(--surface-hi), var(--surface));
+  border-top: 2px solid var(--accent);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 4px 18px var(--accent-glow);
+  overflow: hidden;
+}
+
+/* A light sweeping the rail. */
+.groove__surface::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 30%;
+  background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+  animation: sheen 6s linear infinite;
+}
+
+@keyframes sheen {
+  from { left: -40%; }
+  to { left: 110%; }
+}
+
+.groove__cards {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(0.7rem, 1.4vw, 1.4rem);
+}
+
+.tcard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: clamp(112px, 11vw, 168px);
+  flex: 0 0 auto;
+  scroll-snap-align: center;
+  animation: card-land 520ms var(--spring) both;
+}
+
+.tcard__year {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: var(--year-h);
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2vw, 2rem);
+  color: var(--accent);
+  line-height: 1;
+  padding-bottom: 0.3rem;
+}
+
+.tcard__node {
+  position: relative;
+  height: var(--band-h);
+  width: 100%;
+}
+
+.tcard__node::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.tcard__drop {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(to bottom, var(--accent), var(--line));
+}
+
+.tcard__body {
+  width: 100%;
+  min-height: 76px;
+  transition: transform 260ms var(--spring), border-color 260ms var(--ease);
+  transform-origin: top center;
+}
+
+.tcard__body:hover {
+  transform: perspective(700px) rotateX(7deg) translateY(-3px);
+  border-color: var(--line-strong);
+}
+
+.tcard .card__title { font-size: clamp(0.75rem, 0.85vw, 0.92rem); }
+.tcard .card__artist { font-size: clamp(0.68rem, 0.75vw, 0.8rem); margin-top: 0.2rem; }
+.tcard .card__title, .tcard .card__artist { margin-block: 0; }
+
+/* The card that just landed: drops in from the rail and glows. */
+.tcard--new {
+  animation: card-slam 700ms var(--spring) both;
+}
+
+.tcard--new .tcard__body {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 0 34px var(--accent-glow);
+}
+
+@keyframes card-land {
+  from { opacity: 0; transform: translateY(-18px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes card-slam {
+  0% { opacity: 0; transform: translateY(-140px) scale(1.12) rotate(-5deg); }
+  60% { opacity: 1; }
+  100% { opacity: 1; transform: none; }
+}
+
+.groove__empty {
+  padding: calc(var(--year-h) + var(--band-h) + 2rem) 0 2rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+/* --------------------------------------------------------------------------
+   Player bar
+   -------------------------------------------------------------------------- */
+
+.playerbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(0.5rem, 1.4vw, 1.2rem);
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--line);
+}
+
+.pplayer {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  transition: border-color 300ms var(--ease), background 300ms var(--ease);
+}
+
+.pplayer__name {
+  font-weight: 600;
+  font-size: clamp(0.85rem, 1vw, 1.05rem);
+}
+
+.pplayer__count {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.3vw, 1.35rem);
+  color: var(--accent);
+  line-height: 1;
+}
+
+.pplayer--active {
+  border-color: var(--accent);
+  background: var(--surface-hi);
+  animation: breathe 2.6s ease-in-out infinite;
+}
+
+.pplayer--active .pplayer__name { color: var(--accent); }
+
+.pplayer--offline { opacity: 0.38; }
+
+.pplayer--blocked .pplayer__name { text-decoration: line-through; }
+
+@keyframes breathe {
+  0%, 100% { box-shadow: 0 0 0 0 transparent; }
+  50% { box-shadow: 0 0 24px 2px var(--accent-glow); }
+}
+
+/* --------------------------------------------------------------------------
+   Overlays
+   -------------------------------------------------------------------------- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: 4vmin;
+  background: var(--scrim);
+  backdrop-filter: blur(14px);
+  animation: fade 240ms var(--ease) both;
+}
+
+.overlay__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+  text-align: center;
+  max-width: 46rem;
+}
+
+.overlay__headline {
+  margin: 0;
+  font-size: clamp(2rem, 5.5vw, 4.6rem);
+  color: var(--text);
+}
+
+.overlay__headline--good { color: var(--accent); }
+.overlay__headline--bad { color: var(--danger); }
+
+.overlay__sub {
+  margin: 0;
+  font-size: clamp(1rem, 1.6vw, 1.3rem);
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Reveal card: face-down, then flips to the year. */
+.flip {
+  width: clamp(200px, 22vw, 280px);
+  height: clamp(270px, 30vw, 380px);
+  perspective: 1400px;
+}
+
+.flip__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 900ms var(--spring);
+}
+
+.flip.is-flipped .flip__inner { transform: rotateY(180deg); }
+
+/* Once the year is read, the whole card flies off toward the rail. */
+.flip.is-departing {
+  animation: card-depart 620ms var(--ease) both;
+}
+
+@keyframes card-depart {
+  to { opacity: 0; transform: translateY(46vh) scale(0.42); }
+}
+
+.flip__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  padding: 1.4rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line-strong);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flip__face {
+  box-shadow: 0 14px 40px rgba(27, 42, 63, 0.16);
+}
+
+.flip__face--front {
+  background:
+    repeating-linear-gradient(135deg, rgba(74, 111, 165, 0.09) 0 3px, transparent 3px 10px),
+    linear-gradient(160deg, var(--surface), var(--surface-hi));
+}
+
+.flip__face--front span {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 5vw, 4.2rem);
+  color: var(--accent);
+  opacity: 0.4;
+}
+
+.flip__face--back {
+  transform: rotateY(180deg);
+  background: var(--surface);
+}
+
+.flip__art {
+  width: 42%;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.flip__year {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 5.5vw, 4.4rem);
+  line-height: 0.95;
+  color: var(--accent);
+}
+
+.flip__title {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.flip__artist {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.flip--good .flip__face--back {
+  border-color: var(--accent);
+  box-shadow: 0 0 50px var(--accent-glow);
+}
+
+.flip--bad .flip__face--back {
+  border-color: var(--danger);
+  box-shadow: 0 0 50px var(--danger-glow);
+}
+
+.flip--bad { animation: shake 480ms var(--ease) 900ms both; }
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-4px); }
+  20%, 80% { transform: translateX(7px); }
+  30%, 50%, 70% { transform: translateX(-11px); }
+  40%, 60% { transform: translateX(11px); }
+  100% { transform: none; }
+}
+
+/* Steal overlay */
+
+.steal-mark {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 9vw, 7.5rem);
+  line-height: 0.95;
+  color: var(--accent-2);
+  text-shadow: 0 0 50px var(--accent-2-glow);
+  animation: slam 420ms var(--spring) both;
+}
+
+@keyframes slam {
+  from { opacity: 0; transform: scale(1.6); }
+  to { opacity: 1; transform: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Steal verdict — the loudest moment in the game, so it gets the screen.
+   -------------------------------------------------------------------------- */
+
+.verdict {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.verdict__word {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 14vw, 12rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+
+.verdict--good .verdict__word {
+  color: var(--accent);
+  text-shadow: 0 0 70px var(--accent-glow);
+  animation: verdict-in 560ms var(--spring) both;
+}
+
+.verdict--bad .verdict__word {
+  color: var(--danger);
+  text-shadow: 0 0 70px var(--danger-glow);
+  animation: verdict-in 380ms var(--spring) both, verdict-shake 460ms var(--ease) 380ms both;
+}
+
+.verdict__who {
+  font-size: clamp(1.1rem, 2.4vw, 2rem);
+  font-weight: 600;
+  animation: verdict-rise 460ms var(--ease) 220ms both;
+}
+
+.verdict__note {
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(0.9rem, 1.4vw, 1.15rem);
+  animation: verdict-rise 460ms var(--ease) 340ms both;
+}
+
+@keyframes verdict-in {
+  0% { opacity: 0; transform: scale(2.2) rotate(-6deg); }
+  70% { opacity: 1; }
+  100% { opacity: 1; transform: none; }
+}
+
+@keyframes verdict-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes verdict-shake {
+  10%, 90% { transform: translateX(-8px); }
+  20%, 80% { transform: translateX(12px); }
+  30%, 50%, 70% { transform: translateX(-18px); }
+  40%, 60% { transform: translateX(18px); }
+  100% { transform: none; }
+}
+
+/* Rays that punch outward on a successful steal. */
+.verdict__burst {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    var(--accent-glow) 0deg 6deg,
+    transparent 6deg 18deg
+  );
+  opacity: 0;
+  animation: burst 900ms var(--ease) both;
+}
+
+@keyframes burst {
+  0% { opacity: 0.85; transform: scale(0.3) rotate(0deg); }
+  100% { opacity: 0; transform: scale(2.2) rotate(38deg); }
+}
+
+/* Winner */
+
+.winner-name {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 10vw, 8rem);
+  line-height: 0.95;
+  color: var(--accent);
+  text-shadow: 0 0 60px var(--accent-glow);
+}
+
+/* Toast */
+
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  padding: 0.8rem 1.4rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 0.9rem;
+  animation: pop 300ms var(--spring) both;
+}
+
+/* --------------------------------------------------------------------------
+   Narrow screens
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .lobby { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+  .lobby__wordmark::after { display: none; }
+  .lobby__players { justify-content: center; }
+  .nowplaying { flex-direction: column; text-align: center; }
+  .progress, .nowplaying__wave { margin-left: auto; margin-right: auto; }
+}

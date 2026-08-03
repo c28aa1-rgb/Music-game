@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hitster — Song sets</title>
+  <link rel="stylesheet" href="/theme.css" />
+  <style>
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; position: relative; z-index: 1; }
+    h1 { margin: 0.3rem 0 0.6rem; font-size: clamp(2.2rem, 5vw, 3.2rem); }
+    h2 { margin: 0 0 0.2rem; font-size: 1.15rem; }
+    .lede { margin: 0 0 2.2rem; max-width: 48rem; color: var(--muted); line-height: 1.65; }
+
+    section { margin-bottom: 2.4rem; }
+    .panel { border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); padding: 1.4rem; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }
+    .chip {
+      display: inline-flex; align-items: baseline; gap: 0.5rem;
+      padding: 0.65rem 1.05rem; border-radius: 999px; cursor: pointer;
+      border: 1px solid var(--line-strong); background: var(--surface);
+      color: var(--muted); font-family: var(--font-body); font-size: 0.95rem; font-weight: 600;
+      transition: border-color 160ms var(--ease), background 160ms var(--ease), color 160ms var(--ease);
+    }
+    .chip:hover { border-color: var(--accent); }
+    .chip[aria-pressed="true"] { border-color: var(--accent); background: var(--surface-hi); color: var(--text); }
+    .chip[aria-pressed="true"] .chip__n { color: var(--accent); }
+    .chip__n { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); }
+    .chip:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .tally { margin-top: 1.2rem; font-family: var(--font-mono); font-size: 0.78rem;
+             letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+    .tally b { color: var(--accent); font-size: 1rem; }
+    .tally--thin { color: var(--danger); }
+    .tally--thin b { color: var(--danger); }
+
+    .bar { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin: 1rem 0 1.4rem; }
+    .bar .btn { min-height: 48px; }
+    .stat { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.14em;
+            text-transform: uppercase; color: var(--muted); }
+    .stat b { color: var(--accent); }
+
+    label.inline { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.9rem; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th { text-align: left; padding: 0.6rem 0.7rem; border-bottom: 1px solid var(--line-strong);
+         font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.16em;
+         text-transform: uppercase; color: var(--muted); font-weight: 400; }
+    td { padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--line); vertical-align: middle; }
+    tr.is-matched td:first-child { border-left: 2px solid var(--accent); }
+    tr.is-failed td:first-child { border-left: 2px solid var(--danger); }
+    tr.is-suspect td:first-child { border-left: 2px solid var(--accent-2); }
+    .yr { font-family: var(--font-display); font-size: 1.1rem; color: var(--accent); }
+    .art { width: 32px; height: 32px; border-radius: 4px; object-fit: cover; display: block; }
+    .muted { color: var(--muted); }
+    .tag { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em;
+           text-transform: uppercase; color: var(--muted); }
+    .status { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; }
+    .status--ok { color: var(--accent); }
+    .status--bad { color: var(--danger); }
+    .status--warn { color: var(--accent-2); }
+    .useyear {
+      margin-left: 0.4rem; padding: 0.15rem 0.45rem; border-radius: 999px;
+      border: 1px solid var(--line-strong); background: var(--surface);
+      color: var(--muted); font-family: var(--font-mono); font-size: 0.6rem;
+      letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+    }
+    .useyear:hover { border-color: var(--accent); color: var(--accent); }
+    .progress { height: 3px; background: var(--line); border-radius: 999px; overflow: hidden; margin-bottom: 1.4rem; }
+    .progress i { display: block; height: 100%; width: 0; background: var(--accent); transition: width 200ms linear; }
+    .note { color: var(--muted); font-size: 0.85rem; margin: 0.4rem 0 0; }
+    a { color: var(--accent); }
+    .scroller { overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="eyebrow">Setup</p>
+    <h1 class="display">Song sets</h1>
+    <p class="lede">
+      Pick which music is in play, then match it to Spotify. Sets stack rather than narrow —
+      switching on Pop <strong>and</strong> 2000s gives you all the pop <strong>plus</strong>
+      all the 2000s, not just where they overlap.
+    </p>
+
+    <section>
+      <div class="panel">
+        <h2>The whole catalogue</h2>
+        <p class="note">Counts show how many songs in each set are matched to Spotify and ready to deal.</p>
+        <div class="chips" id="special-chips"></div>
+
+        <h2 style="margin-top:1.8rem">Genres</h2>
+        <div class="chips" id="genre-chips"></div>
+
+        <h2 style="margin-top:1.8rem">Eras</h2>
+        <div class="chips" id="era-chips"></div>
+
+        <p class="tally" id="tally">—</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Match to Spotify</h2>
+      <p class="note">
+        <code>song-catalog.json</code> ships with titles, artists and years but no track ids — inventing
+        those would produce a pool that silently fails to play. This searches Spotify using the session
+        signed in on this device and fills in the real ids and album art.
+      </p>
+
+      <div class="bar">
+        <button id="run" class="btn">Match songs</button>
+        <button id="save" class="btn btn--ghost" disabled>Save to server</button>
+        <button id="download" class="btn btn--ghost" disabled>Download songs.json</button>
+        <label class="inline"><input type="checkbox" id="only-new" checked /> Only match songs I haven't matched yet</label>
+      </div>
+
+      <div class="bar">
+        <span class="stat">Matched <b id="count-ok">0</b> · Check <b id="count-warn">0</b> · Failed <b id="count-bad">0</b></span>
+        <span class="stat">Year differs <b id="count-year">0</b></span>
+      </div>
+      <p class="note">
+        The catalogue year is the original release and stays unless you change it. Spotify's date
+        is shown next to it for comparison, but it describes the version Spotify is serving — for
+        older songs that is usually a remaster or a greatest-hits reissue, so a later date there
+        normally means Spotify handed back a reissue rather than that the catalogue is wrong.
+        Where Spotify is genuinely right, take its year with the button on that row.
+      </p>
+
+      <div class="progress"><i id="bar"></i></div>
+      <p id="message" class="note"></p>
+
+      <div class="scroller">
+        <table>
+          <thead>
+            <tr><th>Year</th><th>Spotify</th><th></th><th>Wanted</th><th>Sets</th><th>Matched on Spotify</th><th>Status</th></tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script src="/spotify-auth.js"></script>
+  <script src="/resolve.js"></script>
+</body>
+</html>

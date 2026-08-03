@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0A0E1A" />
+  <title>Hitster</title>
+  <link rel="stylesheet" href="/theme.css" />
+  <link rel="stylesheet" href="/controller.css" />
+</head>
+<body class="phone">
+  <div class="shell">
+
+    <!-- 1 · Join ---------------------------------------------------------- -->
+    <section class="screen" id="screen-join">
+      <div class="join">
+        <h1 class="display join__mark">Hitster</h1>
+        <p class="join__tag">Name the year. Build the timeline.</p>
+
+        <label class="field">
+          <span class="eyebrow">Your name</span>
+          <input id="name-input" type="text" maxlength="16" autocomplete="off"
+                 autocapitalize="words" placeholder="Alex" />
+        </label>
+
+        <label class="field" id="code-field">
+          <span class="eyebrow">Room code</span>
+          <input id="code-input" type="text" maxlength="4" autocomplete="off"
+                 autocapitalize="characters" spellcheck="false" placeholder="FUNK" />
+        </label>
+
+        <button id="join-btn" class="btn btn--block">Join game</button>
+        <p id="join-error" class="error" role="alert"></p>
+      </div>
+    </section>
+
+    <!-- 2 · Lobby --------------------------------------------------------- -->
+    <section class="screen" id="screen-lobby" hidden>
+      <p class="eyebrow">Room <span id="lobby-code-label"></span></p>
+      <h2 class="display screen__title">In the room</h2>
+      <ul id="lobby-list" class="roster"></ul>
+      <div class="dock">
+        <button id="start-btn" class="btn btn--block" hidden>Start game</button>
+        <p id="lobby-note" class="note"></p>
+      </div>
+    </section>
+
+    <!-- 3 · Waiting on someone else --------------------------------------- -->
+    <section class="screen" id="screen-waiting" hidden>
+      <p class="eyebrow" id="waiting-eyebrow">Listening</p>
+      <h2 class="display screen__title" id="waiting-title">—</h2>
+      <p class="note" id="waiting-note"></p>
+
+      <div class="waiting__wave" aria-hidden="true">
+        <div class="wave is-idle" id="waiting-wave"></div>
+      </div>
+
+      <p class="eyebrow section-label">Your timeline</p>
+      <ol class="mytimeline" id="waiting-timeline"></ol>
+
+      <div class="dock">
+        <button id="steal-btn" class="btn btn--block btn--steal" disabled>Steal</button>
+        <p id="steal-note" class="note">Know it? Hit steal and pick the title and artist from a list.</p>
+        <button id="skip-btn" class="btn btn--ghost btn--block" hidden>This song won&rsquo;t play — skip it</button>
+      </div>
+    </section>
+
+    <!-- 4 · Your turn ------------------------------------------------------ -->
+    <section class="screen screen--place" id="screen-place" hidden>
+      <header class="place__head">
+        <p class="eyebrow" id="place-eyebrow">Your turn</p>
+        <h2 class="display place__title">Where does it go?</h2>
+      </header>
+
+      <!-- Oldest on the left, newest on the right. The mystery card rides
+           above the row and slides to whichever gap the slider selects. -->
+      <div class="reel" id="reel">
+        <div class="reel__track" id="reel-track"></div>
+        <div class="reel__card" id="reel-card">
+          <span class="reel__mark">?</span>
+        </div>
+      </div>
+
+      <div class="scrub">
+        <!-- Fine step so the thumb tracks the finger continuously; the card
+             itself snaps to whole slots, and the thumb snaps on release. -->
+        <input id="gap-slider" class="scrub__input" type="range" min="0" max="0" step="0.001" value="0"
+               aria-label="Slide to choose where this song goes" />
+        <p class="scrub__label readout" id="gap-label">—</p>
+      </div>
+
+      <div class="dock">
+        <button id="place-btn" class="btn btn--block">Place it here</button>
+        <button id="skip-btn-2" class="btn btn--ghost btn--block" hidden>This song won&rsquo;t play — skip it</button>
+      </div>
+    </section>
+
+    <!-- 5 · Naming the steal ------------------------------------------------ -->
+    <section class="screen" id="screen-steal-choice" hidden>
+      <p class="eyebrow">Steal attempt</p>
+      <h2 class="display screen__title">Name it</h2>
+      <p class="note">Pick the title, then the artist. Both have to be right.</p>
+
+      <p class="eyebrow section-label">Title</p>
+      <div class="choices" id="steal-title-choices"></div>
+
+      <p class="eyebrow section-label">Artist</p>
+      <div class="choices" id="steal-artist-choices"></div>
+
+      <div class="dock">
+        <button id="steal-submit-btn" class="btn btn--block" disabled>Submit</button>
+      </div>
+    </section>
+
+    <!-- 6 · Reveal --------------------------------------------------------- -->
+    <section class="screen" id="screen-reveal" hidden>
+      <div class="reveal" id="reveal-body"></div>
+      <div class="dock">
+        <button id="next-btn" class="btn btn--block" hidden>Next turn</button>
+        <p id="reveal-note" class="note"></p>
+      </div>
+    </section>
+
+    <!-- 7 · Game over ------------------------------------------------------ -->
+    <section class="screen" id="screen-over" hidden>
+      <p class="eyebrow">Game over</p>
+      <h2 class="display screen__title" id="over-title">—</h2>
+      <p class="note" id="over-note"></p>
+      <ul id="over-list" class="roster"></ul>
+      <div class="dock">
+        <button id="restart-btn" class="btn btn--block" hidden>New game</button>
+      </div>
+    </section>
+
+  </div>
+
+  <div id="confetti" class="confetti" aria-hidden="true"></div>
+  <div id="phone-toast" class="phone-toast" role="status" hidden></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/controller.js"></script>
+</body>
+</html>
