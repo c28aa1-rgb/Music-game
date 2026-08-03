@@ -24,9 +24,6 @@ let shownPhase = null;
 let stealOpensAt = 0;
 let answerDeadline = 0;
 let clockTimer = null;
-/** Guards the one-shot sounds so a re-render can't retrigger them. */
-let stealSoundedFor = null;
-let announcedStealOpen = false;
 
 // ---------------------------------------------------------------------------
 // Boot
@@ -356,12 +353,6 @@ function updateStealClock() {
   clock.classList.add('stealclock--open');
   el('steal-clock-label').textContent = 'Steals are';
   el('steal-clock-value').textContent = 'OPEN';
-
-  // One blip at the moment the window opens, not on every tick after it.
-  if (!announcedStealOpen) {
-    announcedStealOpen = true;
-    SFX.stealOpen();
-  }
 }
 
 function updateAnswerClock() {
@@ -419,9 +410,11 @@ socket.on('steal_attempt', ({ playerName, answerMs }) => {
   showStealOverlay(playerName);
 });
 
-socket.on('steal_result', ({ success, playerName }) => {
+// The overlay itself comes from the steal_verdict phase; this is just the
+// sound, which has to fire once rather than on every re-render.
+socket.on('steal_result', ({ success }) => {
   answerDeadline = 0;
-  showStealVerdict(success, playerName);
+  if (success) SFX.correct(); else SFX.wrong();
 });
 
 socket.on('playback_failed', () => {
@@ -440,7 +433,6 @@ socket.on('game_state', (next) => {
   // Countdowns arrive relative to the broadcast, so anchor them locally.
   stealOpensAt = next.stealOpensInMs > 0 ? Date.now() + next.stealOpensInMs : 0;
   if (next.phase !== 'steal_choosing') answerDeadline = 0;
-  if (next.phase !== 'playing') announcedStealOpen = false;
 
   render();
 });
@@ -521,6 +513,10 @@ function renderNowPlaying() {
     el('np-sub').textContent = 'Next song coming up.';
   } else if (state.phase === 'steal_choosing') {
     el('np-sub').textContent = `${state.stealClaim?.playerName} is naming it. Music paused.`;
+  } else if (state.phase === 'steal_verdict') {
+    el('np-sub').textContent = state.stealOutcome?.success
+      ? `${state.stealOutcome.playerName} stole it.`
+      : `${state.stealOutcome?.playerName} missed.`;
   } else {
     el('np-sub').textContent = 'Nobody knows the year yet.';
   }
@@ -597,13 +593,10 @@ function renderPlayerBar() {
 // ---------------------------------------------------------------------------
 
 function renderOverlay() {
-  // A verdict has to stay on screen long enough to land. The state change that
-  // follows the judgement arrives immediately, so hold the screen against it.
-  if (Date.now() < overlayHoldUntil) return;
-
   if (state.phase === 'game_over') return showWinnerOverlay();
   if (state.phase === 'turn_intro') return showTurnIntro();
   if (state.phase === 'steal_choosing') return showStealOverlay(state.stealClaim?.playerName);
+  if (state.phase === 'steal_verdict') return showStealVerdict(state.stealOutcome);
 
   if (state.phase === 'revealing' && state.lastReveal) {
     const key = `${state.round}:${state.lastReveal.placerId}:${state.lastReveal.card.title}`;
@@ -622,34 +615,34 @@ function hideOverlay() {
   el('overlay-inner').innerHTML = '';
 }
 
-/** How long the steal verdict owns the screen. */
-const VERDICT_MS = 2800;
-let overlayHoldUntil = 0;
+/**
+ * Rendered from the steal_verdict phase, which the server holds for a couple of
+ * seconds. Nobody can act during it, so the result is never talked over by the
+ * next thing happening — and the music comes back on the server's cue, not a
+ * timer here that could drift out of step with it.
+ */
+let shownVerdictFor = null;
 
-function showStealVerdict(success, playerName) {
+function showStealVerdict(outcome) {
+  if (!outcome) return;
   const overlay = el('overlay');
   overlay.hidden = false;
-  overlayHoldUntil = Date.now() + VERDICT_MS;
-  if (success) SFX.correct(); else SFX.wrong();
 
-  const tone = success ? 'good' : 'bad';
+  // Re-renders during the hold must not restart the animations.
+  const key = `${state.round}:${state.cardsLeft}:${outcome.playerName}:${outcome.success}`;
+  if (key === shownVerdictFor) return;
+  shownVerdictFor = key;
+
+  const tone = outcome.success ? 'good' : 'bad';
   el('overlay-inner').innerHTML = `
     <div class="verdict verdict--${tone}">
-      ${success ? '<div class="verdict__burst"></div>' : ''}
-      <span class="verdict__word">${success ? 'Stolen' : 'Denied'}</span>
-      <span class="verdict__who">${escapeHtml(playerName)}</span>
-      <p class="verdict__note">${success
+      ${outcome.success ? '<div class="verdict__burst"></div>' : ''}
+      <span class="verdict__word">${outcome.success ? 'Stolen' : 'Denied'}</span>
+      <span class="verdict__who">${escapeHtml(outcome.playerName)}</span>
+      <p class="verdict__note">${outcome.success
         ? 'The card is theirs to place.'
         : 'No steal, and they are out for this song.'}</p>
     </div>`;
-
-  // The verdict gets the room's attention on its own, then the song comes
-  // back and plays under whoever is placing the card.
-  setTimeout(() => {
-    overlayHoldUntil = 0;
-    player?.resume();
-    render();
-  }, VERDICT_MS);
 }
 
 /**

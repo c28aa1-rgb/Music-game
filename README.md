@@ -140,13 +140,31 @@ ticks on the TV so the room can watch it run out.
 - **Either wrong, or the clock runs out** → you're locked out of stealing for
   the rest of that song. One shot each per turn.
 
-Either way the verdict lands on the TV first, and only then does the song come
-back — so the result isn't stepped on by the music returning.
+Either way the verdict holds the whole room for a couple of seconds before play
+resumes. That pause is a real phase on the server, not a TV animation: nobody
+can place a card while it is up. Handing the turn straight back instead let the
+placer commit during the verdict, which started the reveal countdown before the
+TV had finished showing the steal — so the reveal was cut short and the turn
+appeared to end seconds after it resumed.
+
+**A wrong placement doesn't remove the song from the game.** It goes onto a
+discard pile, which gets reshuffled back into the deck once the deck itself
+runs dry — so the game keeps going on whatever cards it has rather than ending
+early because a run of guesses happened to be wrong. Only if every song is
+either correctly placed on someone's timeline or discarded-and-reused with
+nothing left anywhere does the game fall back to declaring whoever has the
+most cards the winner.
 
 First to **10 cards** wins. Change it with `TARGET_CARDS` in `.env`.
+`MIN_DECK_BUFFER` (default 8 — extra songs required beyond the player count
+before a game may start) is about giving a game variety now that recycling
+exists, not "won't the game just end abruptly" — safe to lower for a small
+custom set.
 
 The host — whoever joined first — can start a new game once someone wins, and if
-they drop out the role passes to the next player.
+they drop out the role passes to the next connected player. The host can also
+hand the role to someone else on purpose, from the lobby roster, without
+needing to disconnect.
 
 There is deliberately **no skip button** in normal play, because Hitster has no
 such move. It appears for the host only when the TV reports that a track actually
@@ -203,6 +221,7 @@ public/
 | `rejoin` `{ playerId, code }` | Silent reconnect after a dropped connection |
 | `start_game` | Host only |
 | `new_room` | Host or TV. Abandons this game and opens a fresh code |
+| `transfer_host` `{ playerId }` | Host only. Hands the role to a connected player |
 | `place_card` `{ gapIndex }` | Commit a placement |
 | `attempt_steal` | Claim the steal. First press wins |
 | `submit_steal_answer` `{ titleIndex, artistIndex }` | The stealer's multiple-choice pick |
@@ -255,17 +274,24 @@ drop-lines. A kept card flies down off the reveal and slams into place.
 
 ## Notes
 
-- **Placing is a picker wheel, held in portrait.** Your years run top to bottom,
-  oldest first, with a slot between each pair. Scroll until the slot you want
-  sits under the beam; rows shrink and fade with distance so the centre one is
-  unmistakable. Scroll-snap does the settling. The list can run off both edges,
-  which is what lets it hold twenty cards as comfortably as two — the earlier
-  horizontal layout broke the page at around eight.
+- **Placing is a picker wheel, held in portrait.** The card being placed is
+  fixed dead centre and the years scroll past it, parting around it as they
+  cross — years above slide up, years below slide down, so the gap is always in
+  the middle. There is only ever one gap: a year is never itself a target, so
+  nothing needs selecting but the space between two of them. Rows shrink and
+  fade with distance. Scroll-snap settles on zero-height markers sitting on each
+  boundary, including before the first year and after the last.
+  Rendering a slot row between every year instead would half-fill the list with
+  empty space — for ten cards that was 1826px of rail versus 1206px now.
 - **The wheel's scroller is positioned, not `height: 100%`.** As a percentage it
   resolved against an indefinite flex height and grew with its own content,
   which broke the padding maths that lets the first and last slots reach the
   centre. It is pinned with `inset: 0` instead, and re-measured on the frame
   after the screen appears, since the layout is still settling before that.
+- **`Number(x) || fallback` silently eats an explicit `0`.** `0` is falsy, so
+  `STEAL_LOCK_MS=0` in `.env` would quietly become `15000` instead of "no
+  lockout." Every timing constant now goes through a small `envInt()` helper
+  that only falls back when the variable is genuinely unset.
 - **Sound effects are synthesised, not sampled.** `sfx.js` builds every cue from
   oscillators and gain envelopes at play time: the steal stinger, the per-second
   tick, the correct and wrong chimes, the card landing, the win fanfare. Nothing
