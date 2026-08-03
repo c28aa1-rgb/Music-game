@@ -324,6 +324,30 @@
   background: var(--accent);
 }
 
+.tv-reset {
+  min-height: 34px;
+  padding: 0 0.9rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.04);
+  color: var(--muted);
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 160ms var(--ease), color 160ms var(--ease), background 160ms var(--ease);
+}
+
+.tv-reset:hover,
+.tv-reset:focus-visible {
+  border-color: var(--danger);
+  background: rgb(200 53 43 / 0.16);
+  color: var(--text);
+  outline: none;
+}
+
 /* --------------------------------------------------------------------------
    Now playing
    -------------------------------------------------------------------------- */

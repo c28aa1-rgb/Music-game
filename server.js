@@ -441,6 +441,23 @@ function reassignHost(room) {
   room.hostId = next ? next.id : null;
 }
 
+function resetToLobby(room) {
+  room.phase = PHASES.LOBBY;
+  room.winner = null;
+  room.lastReveal = null;
+  room.currentCard = null;
+  room.stealClaim = null;
+  room.stealBlocked = new Set();
+  room.round = 0;
+  room.currentPlayerIndex = 0;
+  room.placerId = null;
+  room.playbackFailed = false;
+  if (room.revealTimer) clearTimeout(room.revealTimer);
+  room.revealTimer = null;
+  for (const player of room.players) player.timeline = [];
+  broadcast(room);
+}
+
 // ---------------------------------------------------------------------------
 // HTTP routes
 // ---------------------------------------------------------------------------
@@ -634,6 +651,14 @@ io.on('connection', (socket) => {
     io.to(`room:${target.code}`).emit('playback_failed', {});
   });
 
+  socket.on('reset_room', (payload, ack) => {
+    const target = room();
+    if (!target || !target.tvSockets.has(socket.id)) return ack?.({ error: 'Only the TV can reset this room.' });
+    resetToLobby(target);
+    toTv(target, 'stop_music', {});
+    ack?.({ ok: true });
+  });
+
   // --- Joining ------------------------------------------------------------
 
   socket.on('join_game', (payload = {}, ack) => {
@@ -737,14 +762,8 @@ io.on('connection', (socket) => {
     const player = findPlayerBySocket(target, socket.id);
     if (!player || player.id !== target.hostId) return ack?.({ error: 'Only the host can start a new game.' });
 
-    target.phase = PHASES.LOBBY;
-    target.winner = null;
-    target.lastReveal = null;
-    target.currentCard = null;
-    target.round = 0;
-    target.currentPlayerIndex = 0;
-    for (const p of target.players) p.timeline = [];
-    broadcast(target);
+    resetToLobby(target);
+    toTv(target, 'stop_music', {});
     ack?.({ ok: true });
   });
 

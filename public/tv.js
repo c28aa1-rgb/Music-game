@@ -124,6 +124,7 @@ function initPlayer() {
 
   player.connect();
   wireVolume();
+  wireReset();
   startProgressLoop();
 }
 
@@ -207,6 +208,33 @@ function wireVolume() {
   slider.addEventListener('input', () => {
     localStorage.setItem('hitster.volume', slider.value);
     player?.setVolume(Number(slider.value) / 100);
+  });
+}
+
+let resetConfirmTimer = null;
+
+function wireReset() {
+  const button = el('reset-room-btn');
+  button.addEventListener('click', () => {
+    if (button.dataset.confirming !== 'true') {
+      button.dataset.confirming = 'true';
+      button.textContent = 'Confirm';
+      toast('Press Reset again to return everyone to the lobby.');
+      clearTimeout(resetConfirmTimer);
+      resetConfirmTimer = setTimeout(() => {
+        button.dataset.confirming = 'false';
+        button.textContent = 'Reset';
+      }, 4200);
+      return;
+    }
+
+    clearTimeout(resetConfirmTimer);
+    button.dataset.confirming = 'false';
+    button.textContent = 'Reset';
+    socket.emit('reset_room', {}, (res) => {
+      if (res?.error) return toast(res.error);
+      toast('Game reset. Everyone is back in the lobby.');
+    });
   });
 }
 
