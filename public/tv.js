@@ -45,19 +45,132 @@ let sdkLoaded = false;
 let audioReady = false;
 
 window.onSpotifyWebPlaybackSDKReady = () => {
+  // Retries can leave more than one copy of the SDK in flight, and a second
+  // initPlayer() would register a second device and fight the first for
+  // playback. First one home wins.
+  if (sdkLoaded) return;
   sdkLoaded = true;
+  clearTimeout(sdkRetryTimer);
+  bootStatus('Connecting to Spotify…');
   if (accessToken) initPlayer();
 };
+
+/**
+ * Keep trying to load the Web Playback SDK.
+ *
+ * The <script> tag in the page is a single shot: if it fails — and
+ * sdk.scdn.co does go missing for minutes at a time — nothing ever retries it,
+ * the ready callback never fires, and the screen is dead for the rest of the
+ * night with no way back except a manual reload. Since the failure is
+ * transient, simply asking again fixes it.
+ */
+let sdkRetryTimer = null;
+let sdkAttempts = 0;
+
+function ensureSdkLoaded() {
+  if (sdkLoaded) return;
+  // Grows, then settles: quick retries cover a blip, and the slower ones keep
+  // going through the ~5 minutes a negative DNS answer stays cached.
+  const backoff = [4000, 5000, 8000, 12000, 20000];
+  const wait = backoff[Math.min(sdkAttempts, backoff.length - 1)];
+
+  sdkRetryTimer = setTimeout(() => {
+    if (sdkLoaded) return;
+    sdkAttempts += 1;
+    bootStatus(`Spotify’s player is slow to answer — trying again (attempt ${sdkAttempts + 1}).`);
+
+    const script = document.createElement('script');
+    // A fresh URL each time, so a cached failure is not what gets reused.
+    script.src = `https://sdk.scdn.co/spotify-player.js?retry=${Date.now()}`;
+    script.onerror = () => script.remove();
+    document.head.appendChild(script);
+
+    ensureSdkLoaded();
+  }, wait);
+}
 
 (async function boot() {
   accessToken = await SpotifyAuth.getToken();
   if (!accessToken) return showAuthGate();
   el('auth').hidden = true;
+  // Something has to be on screen from here until the first game state, which
+  // is several round trips away: the SDK has to load, the player has to reach
+  // ready, and only then does this screen have a room to draw.
+  showBooting();
   if (sdkLoaded) initPlayer();
-  // else initPlayer() runs once onSpotifyWebPlaybackSDKReady fires above.
+  // else initPlayer() runs once onSpotifyWebPlaybackSDKReady fires above —
+  // and this keeps asking for the SDK until that happens.
+  else ensureSdkLoaded();
 })();
 
+/**
+ * The connecting screen. Reports which step it is on, because the three ways
+ * this stalls — a blocked SDK script, a token Spotify no longer accepts, an
+ * account without Premium — are otherwise indistinguishable from each other
+ * and from a page that simply failed to render.
+ */
+let bootWatchdog = null;
+
+function showBooting() {
+  el('booting').hidden = false;
+  el('booting-reload').addEventListener('click', () => location.reload(), { once: true });
+  el('booting-signout').addEventListener('click', () => {
+    SpotifyAuth.logout();
+    location.reload();
+  }, { once: true });
+  // Long enough not to fire on a slow-but-fine start, short enough that nobody
+  // stands there wondering whether the screen is broken.
+  bootWatchdog = setTimeout(async () => {
+    el('booting-status').textContent = sdkLoaded
+      ? 'Spotify is taking longer than it should. It usually means this account is not Premium, or the sign-in has expired.'
+      : await diagnoseMissingSdk();
+    el('booting-actions').hidden = false;
+  }, 10000);
+}
+
+/**
+ * "The script didn't load" has three very different causes, and telling someone
+ * to check their wifi when Spotify's own CDN is down wastes their evening. So
+ * ask the network: if this screen can reach the game server and the wider
+ * internet but not the SDK host, the problem is at Spotify's end.
+ */
+async function diagnoseMissingSdk() {
+  const reachable = async (url) => {
+    try {
+      await fetch(url, { mode: 'no-cors', cache: 'no-store' });
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const [sdkUp, spotifyUp] = await Promise.all([
+    reachable('https://sdk.scdn.co/spotify-player.js'),
+    reachable('https://open.spotify.com/'),
+  ]);
+
+  if (sdkUp) return 'The Spotify player script is reachable but has not started. Still trying — reloading may be quicker.';
+  if (spotifyUp) {
+    return 'Spotify’s player CDN (sdk.scdn.co) is not answering, though the rest of Spotify is. '
+      + 'That is an outage at their end, and it usually passes within a few minutes. '
+      + 'This screen keeps retrying on its own.';
+  }
+  return 'This screen cannot reach Spotify at all. Check its internet connection, '
+    + 'or whether the network blocks sdk.scdn.co. It keeps retrying either way.';
+}
+
+function bootStatus(message) {
+  if (el('booting').hidden) return;
+  el('booting-status').textContent = message;
+}
+
+function hideBooting() {
+  clearTimeout(bootWatchdog);
+  el('booting').hidden = true;
+}
+
 function showAuthGate() {
+  hideBooting();
   el('auth').hidden = false;
   el('auth-btn').addEventListener('click', async () => {
     try {
@@ -69,27 +182,71 @@ function showAuthGate() {
 }
 
 /**
- * activateElement() has to run inside a real user gesture — it is the SDK's
- * hook for unblocking the underlying audio element. Once it resolves, any
- * track that arrived while we were still muted gets played.
+ * Unblock audio on this tab.
+ *
+ * activateElement() is the SDK's hook for unmuting the underlying audio
+ * element, and browsers only honour it once the page has been interacted with.
+ * Rather than making that interaction a screen everyone has to clear, this is
+ * attempted quietly: on player ready, and off the back of any stray click or
+ * key press anywhere on the page. Most of the time one of those lands and the
+ * gate is never seen at all.
+ *
+ * Returns whether audio is now live.
+ */
+async function tryUnlockAudio() {
+  if (audioReady) return true;
+  if (!player) return false;
+  try {
+    await player.activateElement();
+  } catch {
+    return false;
+  }
+  // The same gesture unlocks the effects; an AudioContext stays suspended
+  // until one has happened.
+  SFX.unlock();
+  audioReady = true;
+  el('audio').hidden = true;
+  if (pendingUri) {
+    playTrack(pendingUri);
+    pendingUri = null;
+  }
+  return true;
+}
+
+/**
+ * Any interaction with the page is a good enough gesture, so every one of them
+ * is treated as consent to make sound. Stays attached until it works — a click
+ * that lands before the player exists must not use up the only chance.
+ */
+function watchForGesture() {
+  const onGesture = async () => {
+    if (await tryUnlockAudio()) {
+      for (const type of ['pointerdown', 'keydown', 'touchend']) {
+        document.removeEventListener(type, onGesture, true);
+      }
+    }
+  };
+  for (const type of ['pointerdown', 'keydown', 'touchend']) {
+    document.addEventListener(type, onGesture, true);
+  }
+}
+
+/**
+ * The fallback, shown only when a track is genuinely waiting and the browser
+ * has still refused every quiet attempt. It is not part of the normal path —
+ * if it is on screen, the alternative is silence with no explanation.
  */
 function showAudioGate() {
+  if (audioReady) return;
   el('audio').hidden = false;
+}
+
+function wireAudioGate() {
   el('audio-btn').addEventListener('click', async () => {
-    try {
-      await player.activateElement();
-      // Same gesture unlocks the effects; an AudioContext is blocked until one.
-      SFX.unlock();
-      audioReady = true;
-      el('audio').hidden = true;
-      if (pendingUri) {
-        playTrack(pendingUri);
-        pendingUri = null;
-      }
-    } catch (err) {
-      el('audio-error').textContent = `${err.message} — try tapping again.`;
+    if (!(await tryUnlockAudio())) {
+      el('audio-error').textContent = 'The browser still will not allow sound — try tapping again.';
     }
-  }, { once: false });
+  });
 }
 
 function initPlayer() {
@@ -104,13 +261,17 @@ function initPlayer() {
 
   player.addListener('ready', async ({ device_id }) => {
     deviceId = device_id;
+    bootStatus('Opening the room…');
     await transferPlaybackHere();
     // joinRoom() sends register_tv, which is what attaches this socket to a
     // room server-side. spotify_ready must go out after that, or the server
     // finds no room for this socket yet and silently drops it.
     joinRoom();
     socket.emit('spotify_ready');
-    if (!audioReady) showAudioGate();
+    // Worth a try without any gesture: a browser that has heard music from
+    // this origin before will often just allow it, and then there is nothing
+    // for anyone to dismiss.
+    await tryUnlockAudio();
     if (pendingUri && audioReady) {
       playTrack(pendingUri);
       pendingUri = null;
@@ -129,13 +290,17 @@ function initPlayer() {
   });
 
   player.connect();
+  watchForGesture();
+  wireAudioGate();
   wireVolume();
   wireNewRoom();
+  wireSetsPanel();
   startProgressLoop();
   startClockLoop();
 }
 
 function fatal(message) {
+  hideBooting();
   el('auth').hidden = false;
   el('auth-error').textContent = message;
 }
@@ -185,7 +350,11 @@ async function claimDevice() {
  */
 async function playTrack(uri) {
   // Hold the track until the device exists and the tab is allowed to make
-  // sound; the audio gate replays whatever is waiting here.
+  // sound. One more quiet attempt first — by now the page has usually been
+  // clicked at least once, which is all the browser was waiting for. Only if
+  // that fails does anyone get asked, and then whatever is held here is
+  // replayed the moment they tap.
+  if (!audioReady) await tryUnlockAudio();
   if (!deviceId || !audioReady) {
     pendingUri = uri;
     if (deviceId && !audioReady) showAudioGate();
@@ -216,6 +385,116 @@ function wireVolume() {
     localStorage.setItem('hitster.volume', slider.value);
     player?.setVolume(Number(slider.value) / 100);
   });
+}
+
+// ---------------------------------------------------------------------------
+// Song sets panel — the part of /resolve that belongs on the TV
+// ---------------------------------------------------------------------------
+
+/** Catalogue of every set with its per-set count. Fetched when first opened. */
+let setCatalogue = null;
+/** Guards against a second click while a toggle is still in flight. */
+let setsBusy = false;
+
+function wireSetsPanel() {
+  el('sets-btn').addEventListener('click', openSetsPanel);
+  el('topbar-sets').addEventListener('click', openSetsPanel);
+  el('sets-close').addEventListener('click', closeSetsPanel);
+  // Clicking the backdrop closes; clicking the panel itself must not.
+  el('sets-panel').addEventListener('click', (event) => {
+    if (event.target === el('sets-panel')) closeSetsPanel();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !el('sets-panel').hidden) closeSetsPanel();
+  });
+}
+
+async function openSetsPanel() {
+  el('sets-panel').hidden = false;
+  renderSheetNote();
+  try {
+    setCatalogue = await (await fetch('/api/sets')).json();
+    drawSheetChips();
+  } catch {
+    el('sheet-tally').textContent = 'Could not reach the server.';
+  }
+}
+
+function closeSetsPanel() {
+  el('sets-panel').hidden = true;
+}
+
+function drawSheetChips() {
+  if (!setCatalogue) return;
+  const { sets, counts, active } = setCatalogue;
+
+  const group = (kind, target) => {
+    el(target).innerHTML = sets
+      .filter((set) => set.kind === kind)
+      .map((set) => `
+        <button class="chip" type="button" data-id="${set.id}"
+          aria-pressed="${active.includes(set.id)}"
+          ${set.blurb ? `title="${escapeHtml(set.blurb)}"` : ''}
+          ${counts[set.id] === 0 ? 'disabled' : ''}>
+          ${escapeHtml(set.label)} <span class="chip__n">${counts[set.id]}</span>
+        </button>`)
+      .join('');
+  };
+  group('special', 'sheet-special');
+  group('genre', 'sheet-genre');
+  group('era', 'sheet-era');
+
+  for (const node of el('sets-panel').querySelectorAll('.chip')) {
+    node.addEventListener('click', () => toggleSet(node.dataset.id));
+  }
+
+  const total = setCatalogue.activeTotal;
+  const thin = total < 12;
+  el('sheet-tally').className = `sheet__tally${thin ? ' sheet__tally--thin' : ''}`;
+  el('sheet-tally').innerHTML = thin
+    ? `<b>${total}</b> songs in play — not enough to start. Switch on more sets.`
+    : `<b>${total}</b> songs in play`;
+}
+
+/** Changing sets mid-game is allowed, but it cannot touch the dealt deck. */
+function renderSheetNote() {
+  const midGame = state && state.phase !== 'lobby' && state.phase !== 'game_over';
+  el('sheet-note').textContent = midGame
+    ? 'This game keeps the deck it was dealt — changes apply to the next one.'
+    : 'A set that is greyed out has no songs matched to Spotify yet.';
+}
+
+async function toggleSet(id) {
+  if (setsBusy || !setCatalogue) return;
+  const next = setCatalogue.active.includes(id)
+    ? setCatalogue.active.filter((s) => s !== id)
+    : [...setCatalogue.active, id];
+
+  // The server refuses an empty selection; don't make it say so.
+  if (!next.length) {
+    toast('Leave at least one set switched on.');
+    return;
+  }
+
+  setsBusy = true;
+  try {
+    const res = await fetch('/api/sets', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sets: next }),
+    });
+    const data = await res.json();
+    if (!res.ok) return toast(data.error || 'That did not stick.');
+    // The rest of the page updates off the broadcast this triggers.
+    setCatalogue.active = data.active;
+    setCatalogue.activeTotal = data.activeTotal;
+    setCatalogue.counts = data.counts || setCatalogue.counts;
+    drawSheetChips();
+  } catch {
+    toast('Could not reach the server.');
+  } finally {
+    setsBusy = false;
+  }
 }
 
 let resetConfirmTimer = null;
@@ -456,9 +735,16 @@ async function loadJoinInfo(code) {
 function render() {
   if (!state) return;
 
+  // There is a room to draw now, so whatever was covering the wait can go.
+  hideBooting();
+
   const inLobby = state.phase === 'lobby';
   el('lobby').hidden = !inLobby;
   el('game').hidden = inLobby;
+
+  renderSets();
+  // The panel stays usable mid-game, but says so about what it can change.
+  if (!el('sets-panel').hidden) renderSheetNote();
 
   if (inLobby) return renderLobby();
 
@@ -469,6 +755,27 @@ function render() {
   renderOverlay();
 
   shownPhase = state.phase;
+}
+
+/**
+ * The active sets, named, wherever they are shown. Comes straight off the game
+ * state, so it is right on every screen the moment anyone changes it — the
+ * panel doesn't have to tell the rest of the page anything.
+ */
+function renderSets() {
+  const { active = [], total = 0 } = state.sets || {};
+  const labels = active.map((s) => s.label);
+
+  el('lobby-sets').innerHTML = labels.length
+    ? labels.map((label) => `<span class="setsline__chip">${escapeHtml(label)}</span>`).join('')
+    : '<span class="setsline__chip setsline__chip--none">None</span>';
+  el('lobby-sets-count').textContent = `${total} song${total === 1 ? '' : 's'} ready to deal`;
+
+  // The topbar has one line to work with, so a long list collapses to a count.
+  el('topbar-sets-label').textContent = labels.length > 2
+    ? `${labels.length} sets`
+    : (labels.join(' + ') || 'No sets');
+  el('topbar-sets-count').textContent = total;
 }
 
 function renderLobby() {
@@ -516,13 +823,17 @@ function renderNowPlaying() {
   } else if (state.phase === 'steal_verdict') {
     el('np-sub').textContent = state.stealOutcome?.success
       ? `${state.stealOutcome.playerName} stole it.`
-      : `${state.stealOutcome?.playerName} missed.`;
+      : `${state.stealOutcome?.playerName} missed${state.stealOutcome?.lostCard ? ' and lost a card' : ''}.`;
   } else {
     el('np-sub').textContent = 'Nobody knows the year yet.';
   }
 
   const art = el('disc-art');
   if (revealed && reveal.card.albumArt) {
+    // Art is decoration, and it comes from a host this app does not control —
+    // a dead image must leave the spinning disc looking deliberate rather than
+    // stamping a broken-image icon in the middle of the reveal.
+    art.onerror = () => { art.hidden = true; };
     art.src = reveal.card.albumArt;
     art.hidden = false;
   } else {
@@ -594,6 +905,9 @@ function renderPlayerBar() {
 
 function renderOverlay() {
   if (state.phase === 'game_over') return showWinnerOverlay();
+  // Left the game-over screen — arm the celebration for the next win, since the
+  // same TV plays game after game without ever reloading.
+  fanfarePlayed = false;
   if (state.phase === 'turn_intro') return showTurnIntro();
   if (state.phase === 'steal_choosing') return showStealOverlay(state.stealClaim?.playerName);
   if (state.phase === 'steal_verdict') return showStealVerdict(state.stealOutcome);
@@ -612,7 +926,9 @@ function renderOverlay() {
 
 function hideOverlay() {
   el('overlay').hidden = true;
+  el('overlay').classList.remove('overlay--win');
   el('overlay-inner').innerHTML = '';
+  Confetti.stop();
 }
 
 /**
@@ -634,14 +950,25 @@ function showStealVerdict(outcome) {
   shownVerdictFor = key;
 
   const tone = outcome.success ? 'good' : 'bad';
+  const lost = outcome.lostCard;
+  const note = outcome.success
+    ? 'The card is theirs to place.'
+    : lost
+      ? 'No steal, out for this song — and it costs them a card.'
+      : 'No steal, and they are out for this song.';
+
   el('overlay-inner').innerHTML = `
     <div class="verdict verdict--${tone}">
       ${outcome.success ? '<div class="verdict__burst"></div>' : ''}
       <span class="verdict__word">${outcome.success ? 'Stolen' : 'Denied'}</span>
       <span class="verdict__who">${escapeHtml(outcome.playerName)}</span>
-      <p class="verdict__note">${outcome.success
-        ? 'The card is theirs to place.'
-        : 'No steal, and they are out for this song.'}</p>
+      <p class="verdict__note">${note}</p>
+      ${lost ? `
+      <div class="verdict__forfeit">
+        <span class="verdict__forfeit-tag">Forfeited</span>
+        <span class="verdict__forfeit-year">${lost.year}</span>
+        <span class="verdict__forfeit-song">${escapeHtml(lost.title)} — ${escapeHtml(lost.artist)}</span>
+      </div>` : ''}
     </div>`;
 }
 
@@ -710,7 +1037,7 @@ function showRevealOverlay(reveal) {
       <div class="flip__inner">
         <div class="flip__face flip__face--front"><span>?</span></div>
         <div class="flip__face flip__face--back">
-          ${reveal.card.albumArt ? `<img class="flip__art" src="${reveal.card.albumArt}" alt="" />` : ''}
+          ${reveal.card.albumArt ? `<img class="flip__art" src="${reveal.card.albumArt}" alt="" onerror="this.remove()" />` : ''}
           <span class="flip__year">${reveal.card.year}</span>
           <p class="flip__title">${escapeHtml(reveal.card.title)}</p>
           <p class="flip__artist">${escapeHtml(reveal.card.artist)}</p>
@@ -742,16 +1069,29 @@ let fanfarePlayed = false;
 function showWinnerOverlay() {
   const overlay = el('overlay');
   overlay.hidden = false;
-  if (!fanfarePlayed) {
+
+  // Everything below re-runs on every state broadcast; the celebration must
+  // only fire on the first one, or a late reconnect restarts the confetti.
+  const first = !fanfarePlayed;
+  if (first) {
     fanfarePlayed = true;
-    SFX.fanfare();
+    SFX.victory();
+    // Long enough to still be falling while the room works out what happened.
+    Confetti.celebrate(7000);
+    // A second wave, so it doesn't just peter out.
+    setTimeout(() => Confetti.celebrate(4000), 4200);
   }
+
   const winner = state.winner;
+  el('overlay').classList.add('overlay--win');
   el('overlay-inner').innerHTML = `
-    <p class="eyebrow">Game over</p>
-    <p class="winner-name">${escapeHtml(winner ? winner.name : 'Nobody')}</p>
-    <h2 class="overlay__headline">${winner ? `${winner.score} cards` : 'Out of songs'}</h2>
-    <p class="overlay__sub">The host can start another game from their phone.</p>`;
+    <div class="win${first ? ' win--enter' : ''}">
+      <p class="eyebrow">Game over</p>
+      <p class="win__trophy" aria-hidden="true">🏆</p>
+      <p class="winner-name">${escapeHtml(winner ? winner.name : 'Nobody')}</p>
+      <h2 class="overlay__headline win__score">${winner ? `${winner.score} cards` : 'Out of songs'}</h2>
+      <p class="overlay__sub">The host can start another game from their phone.</p>
+    </div>`;
 }
 
 // ---------------------------------------------------------------------------

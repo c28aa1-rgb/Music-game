@@ -25,20 +25,41 @@
     </div>
   </section>
 
-  <!-- Audio gate ---------------------------------------------------------- -->
-  <!-- Browsers refuse to let a page start audio until someone has interacted
-       with it. Since the game is started from a phone, this screen would
-       otherwise never get that interaction and would sit in silence. -->
+  <!-- Connecting ----------------------------------------------------------- -->
+  <!-- A signed-in TV has nothing else to show between page load and the first
+       game state: the Spotify gate is already dismissed and the room does not
+       exist yet. Without this the screen is simply blank for that stretch —
+       and stays blank if the SDK never loads at all, which looks identical to
+       a broken page. -->
+  <section id="booting" class="gate" hidden>
+    <div class="gate__inner">
+      <div class="record record--idle" aria-hidden="true"><span class="record__label"></span></div>
+      <p class="eyebrow">Starting up</p>
+      <h1 class="display gate__title">Warming up the record player</h1>
+      <p class="gate__body" id="booting-status">Loading the Spotify player…</p>
+      <div class="booting__actions" id="booting-actions" hidden>
+        <button id="booting-reload" class="btn" type="button">Reload the screen</button>
+        <button id="booting-signout" class="btn btn--ghost" type="button">Sign in to Spotify again</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Audio fallback ------------------------------------------------------- -->
+  <!-- Browsers refuse to let a page start audio until it has been interacted
+       with. That is normally taken care of quietly — any click or key press on
+       this page counts, and one is tried the moment the player is ready — so
+       this screen is a last resort, shown only when a song is actually waiting
+       and the browser has refused every attempt. -->
   <section id="audio" class="gate" hidden>
     <div class="gate__inner">
       <div class="record record--idle" aria-hidden="true"><span class="record__label"></span></div>
-      <p class="eyebrow">Last step</p>
-      <h1 class="display gate__title">Turn the sound on</h1>
+      <p class="eyebrow">Nearly there</p>
+      <h1 class="display gate__title">Tap to allow sound</h1>
       <p class="gate__body">
-        Your browser needs one tap on this screen before it will play anything.
-        Do it now and the music starts on its own for the rest of the night.
+        This browser is holding the music back until someone touches the page.
+        One tap and it starts, and it stays unlocked for the rest of the night.
       </p>
-      <button id="audio-btn" class="btn">Turn the sound on</button>
+      <button id="audio-btn" class="btn">Play the music</button>
       <p id="audio-error" class="gate__error" role="alert"></p>
     </div>
   </section>
@@ -59,6 +80,17 @@
         <p class="eyebrow lobby__players-label">In the room</p>
         <ul id="lobby-players" class="lobby__players"></ul>
         <p id="lobby-hint" class="lobby__hint"></p>
+
+        <!-- What music is actually going to be dealt. Asked before every game,
+             so it says so plainly rather than living only in /resolve. -->
+        <div class="setsline">
+          <p class="eyebrow">Music in play</p>
+          <div class="setsline__row">
+            <div id="lobby-sets" class="setsline__chips"></div>
+            <button id="sets-btn" class="setsline__edit" type="button">Change</button>
+          </div>
+          <p id="lobby-sets-count" class="setsline__count"></p>
+        </div>
       </div>
     </div>
   </section>
@@ -73,6 +105,12 @@
         <span class="topbar__dot">·</span>
         <span id="turn-label" class="topbar__turn">—</span>
       </span>
+      <!-- Also the way into the sets panel mid-game: what's playing is the
+           question people ask while a song is on, not before it. -->
+      <button id="topbar-sets" class="setstag" type="button" title="Which song sets are switched on">
+        <span class="setstag__label" id="topbar-sets-label">—</span>
+        <span class="setstag__n" id="topbar-sets-count"></span>
+      </button>
       <div class="volume">
         <span class="eyebrow">Vol</span>
         <input id="volume" type="range" min="0" max="100" value="60" aria-label="Playback volume" />
@@ -102,7 +140,7 @@
            Kept on the right, away from the now-playing column. -->
       <div class="stealclock" id="steal-clock" hidden>
         <span class="stealclock__label" id="steal-clock-label">Steals open in</span>
-        <span class="stealclock__value" id="steal-clock-value">15</span>
+        <span class="stealclock__value" id="steal-clock-value">10</span>
       </div>
     </section>
 
@@ -125,12 +163,49 @@
     <div class="overlay__inner" id="overlay-inner"></div>
   </div>
 
+  <!-- Song sets panel ------------------------------------------------------ -->
+  <!-- The half of /resolve worth having on the TV: which music is switched on.
+       Matching songs to Spotify stays on the full page — it is a long table and
+       a job for a laptop, not something to do with a room waiting. -->
+  <div id="sets-panel" class="sheet" hidden>
+    <div class="sheet__inner" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+      <header class="sheet__head">
+        <div>
+          <p class="eyebrow">Setup</p>
+          <h2 class="display sheet__title" id="sheet-title">Song sets</h2>
+        </div>
+        <button id="sets-close" class="sheet__close" type="button" aria-label="Close">Done</button>
+      </header>
+
+      <p class="sheet__lede">
+        Sets stack rather than narrow — Pop <strong>and</strong> 2000s gives you all the
+        pop <strong>plus</strong> all the 2000s, not just where they overlap.
+      </p>
+
+      <div class="sheet__body">
+        <p class="eyebrow sheet__group">The whole catalogue</p>
+        <div class="chips" id="sheet-special"></div>
+        <p class="eyebrow sheet__group">Genres</p>
+        <div class="chips" id="sheet-genre"></div>
+        <p class="eyebrow sheet__group">Eras</p>
+        <div class="chips" id="sheet-era"></div>
+      </div>
+
+      <footer class="sheet__foot">
+        <p class="sheet__tally" id="sheet-tally">—</p>
+        <p class="sheet__note" id="sheet-note"></p>
+        <a class="sheet__link" href="/resolve" target="_blank" rel="noopener">Match more songs to Spotify →</a>
+      </footer>
+    </div>
+  </div>
+
   <div id="toast" class="toast" role="status" hidden></div>
 
   <script src="https://sdk.scdn.co/spotify-player.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/spotify-auth.js"></script>
   <script src="/sfx.js"></script>
+  <script src="/confetti.js"></script>
   <script src="/tv.js"></script>
 </body>
 </html>

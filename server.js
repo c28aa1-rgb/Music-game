@@ -37,7 +37,7 @@ const REVEAL_MS = envInt('REVEAL_MS', 5000);
 /** "Alex is up" breathing room between the reveal and the next song. */
 const INTRO_MS = envInt('INTRO_MS', 3000);
 /** Dead time at the start of a song where nobody may steal. */
-const STEAL_LOCK_MS = envInt('STEAL_LOCK_MS', 15000);
+const STEAL_LOCK_MS = envInt('STEAL_LOCK_MS', 10000);
 /** How long a stealer gets to pick both answers once they've claimed. */
 const STEAL_ANSWER_MS = envInt('STEAL_ANSWER_MS', 6000);
 /**
@@ -180,6 +180,18 @@ function loadSets() {
 /** Resolved songs belonging to at least one switched-on set. */
 function activeSongs() {
   return playableSongs().filter((song) => activeSets.some((id) => inSet(song, id)));
+}
+
+/**
+ * The switched-on sets, named. Small enough to ride along with every state
+ * broadcast, which is what keeps the TV's label honest the moment someone
+ * changes the selection from anywhere.
+ */
+function activeSetSummary() {
+  return {
+    active: SETS.filter((set) => activeSets.includes(set.id)).map(({ id, label }) => ({ id, label })),
+    total: activeSongs().length,
+  };
 }
 
 /** What each set is worth on its own, so the toggles can show real numbers. */
@@ -329,6 +341,10 @@ function publicState(room) {
       ? { playerId: room.stealClaim.playerId, playerName: room.stealClaim.playerName }
       : null,
     stealBlocked: Array.from(room.stealBlocked),
+    // Which music is switched on. Global rather than per-room, but it rides
+    // along with the state so every screen can name the set without polling —
+    // "which songs am I actually going to hear" is the first thing anyone asks.
+    sets: activeSetSummary(),
     playbackFailed: room.playbackFailed,
     winner: room.winner,
     // Includes the discard pile, since those cards are still coming back.
@@ -474,6 +490,23 @@ function beginPlayback(room) {
 }
 
 /**
+ * Penalty for a failed steal: one card off the player's timeline, chosen at
+ * random, back into circulation via the discard pile.
+ *
+ * Returns the card that was taken, or null if they had nothing to lose — a
+ * player on zero cards is not put into debt, they simply get away with it.
+ */
+function takeRandomCard(room, playerId) {
+  const player = room.players.find((p) => p.id === playerId);
+  if (!player || player.timeline.length === 0) return null;
+
+  const index = Math.floor(Math.random() * player.timeline.length);
+  const [card] = player.timeline.splice(index, 1);
+  room.discardPile.push(card);
+  return { title: card.title, artist: card.artist, year: card.year };
+}
+
+/**
  * Settle a steal, whether the answer came in or the clock ran out.
  *
  * The result gets its own phase for a couple of seconds. Handing the turn
@@ -490,10 +523,15 @@ function resolveSteal(room, correct) {
   room.stealTimer = null;
   room.stealDeadline = 0;
 
-  room.stealOutcome = { success: correct, playerName: claim.playerName };
+  // A missed steal costs a card. Taken here rather than in finishSteal() so the
+  // timeline visibly loses it while the verdict is still on screen, instead of
+  // a card quietly vanishing once play has already resumed.
+  const lostCard = correct ? null : takeRandomCard(room, claim.playerId);
+
+  room.stealOutcome = { success: correct, playerName: claim.playerName, lostCard };
   room.phase = PHASES.STEAL_VERDICT;
 
-  toTv(room, 'steal_result', { success: correct, playerName: claim.playerName });
+  toTv(room, 'steal_result', { success: correct, playerName: claim.playerName, lostCard });
   broadcast(room);
 
   clearTimeout(room.verdictTimer);
@@ -644,7 +682,18 @@ app.post('/api/sets', (req, res) => {
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
-  res.json({ ok: true, active: activeSets, activeTotal: activeSongs().length });
+
+  // Every screen showing the set label needs to change with it, wherever the
+  // toggle was pressed. A running game keeps the deck it was dealt — this only
+  // decides what the next one is built from.
+  for (const room of rooms.values()) broadcast(room);
+
+  res.json({
+    ok: true,
+    active: activeSets,
+    activeTotal: activeSongs().length,
+    counts: setCounts(),
+  });
 });
 
 app.get('/api/songs', (req, res) => res.json(songPool));

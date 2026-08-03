@@ -85,6 +85,13 @@ pop plus all the 2000s. Each toggle shows how many of its songs are matched and
 ready, the running total sits underneath, and a selection too small to play is
 called out before you try to start. The choice is saved to `sets.json`.
 
+The TV carries the same toggles, minus the matching table: the lobby names the
+sets in play under the player list, the topbar keeps a compact tag while a game
+runs, and either one opens a **Song sets** panel with the full grid of counts.
+Changing sets there takes effect immediately for the next game — a game already
+running keeps the deck it was dealt, and the panel says so. Matching songs to
+Spotify stays on `/resolve`, since that is a long table and a job for a laptop.
+
 Every genre holds at least 64 songs and every era at least 73, so any single set
 is enough for a full game on its own once matched.
 
@@ -126,7 +133,7 @@ every card. Tap the gap, confirm, and the card flips on the TV. Right, and it
 lands on their timeline. Wrong, and it's gone.
 
 **Everyone else** gets a **Steal** button, pinned to the top of the screen. It
-stays locked for the first 15 seconds of the song and counts itself down, so a
+stays locked for the first 10 seconds of the song and counts itself down, so a
 song has to actually be heard before anyone can pounce. When it opens, the TV
 says so and a blip sounds.
 
@@ -138,7 +145,8 @@ ticks on the TV so the room can watch it run out.
 - **Both right** → the turn is yours, and you place the card on your own
   timeline. You can still blow the placement.
 - **Either wrong, or the clock runs out** → you're locked out of stealing for
-  the rest of that song. One shot each per turn.
+  the rest of that song, *and* a random card comes off your timeline and goes
+  back in the crate. One shot each per turn, and it isn't free.
 
 Either way the verdict holds the whole room for a couple of seconds before play
 resumes. That pause is a real phase on the server, not a TV animation: nobody
@@ -289,7 +297,7 @@ drop-lines. A kept card flies down off the reveal and slams into place.
   centre. It is pinned with `inset: 0` instead, and re-measured on the frame
   after the screen appears, since the layout is still settling before that.
 - **`Number(x) || fallback` silently eats an explicit `0`.** `0` is falsy, so
-  `STEAL_LOCK_MS=0` in `.env` would quietly become `15000` instead of "no
+  `STEAL_LOCK_MS=0` in `.env` would quietly become `10000` instead of "no
   lockout." Every timing constant now goes through a small `envInt()` helper
   that only falls back when the variable is genuinely unset.
 - **Sound effects are synthesised, not sampled.** `sfx.js` builds every cue from
@@ -314,12 +322,22 @@ drop-lines. A kept card flies down off the reveal and slams into place.
 - **The reveal advances itself** after `REVEAL_MS` (5s by default, set it in
   `.env`). The button is only there to cut the wait short; whichever fires first
   wins and the other is cancelled.
-- **The TV needs one tap before it can play anything.** Browsers block a page
-  from starting audio until someone has interacted with it, and this game is
-  started from a phone — so the TV would otherwise sit in silence with no error.
-  After Spotify connects, the TV shows a "Turn the sound on" screen; one tap
-  calls the SDK's `activateElement()` and the rest of the night is hands-free.
-  A track that arrives before that tap is held and played the moment it lands.
+- **The TV always has something on screen.** A signed-in screen dismisses the
+  Spotify gate immediately, but the room is still several round trips away —
+  the SDK has to load, the player has to reach ready, and only then is there a
+  state to draw. That stretch used to be blank, and stayed blank if the SDK
+  never loaded at all, which looks exactly like a broken page. A connecting
+  screen now covers it, naming the step it is on, and after ten seconds it says
+  what is probably wrong (blocked `sdk.scdn.co`, expired sign-in, or an account
+  without Premium) and offers a reload and a re-sign-in.
+- **Unblocking audio happens quietly, not as a screen to clear.** Browsers block
+  a page from starting audio until it has been interacted with, and this game is
+  started from a phone — so the TV could otherwise sit in silence with no error.
+  `activateElement()` is attempted the moment the player is ready, and again off
+  any click or key press anywhere on the page, so in practice it is unlocked
+  before anyone notices. A full-screen prompt appears only when a song is
+  genuinely waiting and every quiet attempt has been refused; the held track
+  plays the instant it is dismissed.
 - **A TV that reloads mid-turn gets the current track re-sent.** `song_started`
   is a one-shot fired when the turn begins, so a screen that joins after that
   point would stay silent until the next turn. Registering mid-turn now replays

@@ -127,6 +127,41 @@
         tone({ freq, type: 'triangle', start: i * 0.11, duration: i === 3 ? 0.6 : 0.16, peak: 0.6 });
       });
     },
+
+    /**
+     * The end of the whole game, not just a good guess — so it runs long and
+     * layers up: a rising run into a held major chord, three confetti pops
+     * timed to the bursts on screen, and a bass note under all of it.
+     */
+    victory() {
+      // Run up to the top.
+      [392, 523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+        tone({ freq, type: 'triangle', start: i * 0.09, duration: 0.14, peak: 0.55 });
+      });
+
+      // Held C major on top of it, brass-ish.
+      const chordAt = 0.45;
+      [523.25, 659.25, 783.99, 1046.5].forEach((freq) => {
+        tone({ freq, type: 'sawtooth', start: chordAt, duration: 1.5, peak: 0.3 });
+        // A hair sharp, so the chord shimmers instead of sitting dead still.
+        tone({ freq: freq * 1.003, type: 'sawtooth', start: chordAt, duration: 1.5, peak: 0.22 });
+      });
+      tone({ freq: 130.81, type: 'sine', start: chordAt, duration: 1.8, peak: 0.5 });
+
+      // Poppers, lined up with the confetti bursts.
+      [0.42, 0.78, 1.2].forEach((start) => {
+        noise({ start, duration: 0.16, peak: 0.5, frequency: 3200, q: 0.5 });
+        tone({ freq: 900, endFreq: 2400, type: 'square', start, duration: 0.09, peak: 0.25 });
+      });
+
+      // Cymbal-ish wash to close it out.
+      noise({ start: chordAt, duration: 1.1, peak: 0.3, frequency: 7000, q: 0.4 });
+
+      // The final tag, an octave up.
+      [1046.5, 1318.5, 1568].forEach((freq, i) => {
+        tone({ freq, type: 'triangle', start: 1.7 + i * 0.1, duration: i === 2 ? 0.9 : 0.16, peak: 0.5 });
+      });
+    },
   };
 
   window.SFX = SFX;

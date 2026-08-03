@@ -261,7 +261,9 @@ function renderWaiting() {
       : (mine ? 'Not this time' : `${verdict.playerName} missed`);
     el('waiting-note').textContent = verdict.success
       ? 'The card goes to them to place.'
-      : 'The song picks up where it left off.';
+      : verdict.lostCard
+        ? `A wrong steal costs a card: ${verdict.lostCard.year} — ${verdict.lostCard.title} goes back in the crate.`
+        : 'The song picks up where it left off.';
   } else {
     el('waiting-eyebrow').textContent = intro ? 'Next up' : playing ? 'Listening' : 'Hold on';
     el('waiting-title').textContent = playing || intro
@@ -578,7 +580,7 @@ function renderReveal() {
   el('reveal-body').innerHTML = `
     <div class="reveal__emoji">${reveal.correct ? '🎉' : '😬'}</div>
     <p class="reveal__headline reveal__headline--${tone}">${escapeHtml(headline)}</p>
-    ${reveal.card.albumArt ? `<img class="reveal__art" src="${reveal.card.albumArt}" alt="" />` : ''}
+    ${reveal.card.albumArt ? `<img class="reveal__art" src="${reveal.card.albumArt}" alt="" onerror="this.remove()" />` : ''}
     <span class="reveal__year">${reveal.card.year}</span>
     <p class="reveal__track">${escapeHtml(reveal.card.title)}</p>
     <p class="reveal__artist">${escapeHtml(reveal.card.artist)}</p>
