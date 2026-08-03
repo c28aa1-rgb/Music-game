@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0A0E1A" />
+  <meta name="theme-color" content="#F4F8FD" />
   <title>Hitster</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="/theme.css" />
   <link rel="stylesheet" href="/controller.css" />
 </head>
@@ -46,7 +47,14 @@
     </section>
 
     <!-- 3 · Waiting on someone else --------------------------------------- -->
+    <!-- Steal lives at the top: it's time-critical, and reaching past a
+         scrolling timeline to find it costs seconds you don't have. -->
     <section class="screen" id="screen-waiting" hidden>
+      <div class="stealbar">
+        <button id="steal-btn" class="btn btn--block btn--steal" disabled>Steal</button>
+        <p id="steal-note" class="note">Know it? Hit steal and pick the title and artist.</p>
+      </div>
+
       <p class="eyebrow" id="waiting-eyebrow">Listening</p>
       <h2 class="display screen__title" id="waiting-title">—</h2>
       <p class="note" id="waiting-note"></p>
@@ -59,8 +67,6 @@
       <ol class="mytimeline" id="waiting-timeline"></ol>
 
       <div class="dock">
-        <button id="steal-btn" class="btn btn--block btn--steal" disabled>Steal</button>
-        <p id="steal-note" class="note">Know it? Hit steal and pick the title and artist from a list.</p>
         <button id="skip-btn" class="btn btn--ghost btn--block" hidden>This song won&rsquo;t play — skip it</button>
       </div>
     </section>
@@ -72,44 +78,36 @@
         <h2 class="display place__title">Where does it go?</h2>
       </header>
 
-      <!-- Oldest on the left, newest on the right. The mystery card rides
-           above the row and slides to whichever gap the slider selects. -->
-      <div class="reel" id="reel">
-        <div class="reel__track" id="reel-track"></div>
-        <div class="reel__card" id="reel-card">
-          <span class="reel__mark">?</span>
+      <!-- A picker wheel: your years run top to bottom, oldest first. Scroll
+           until the slot you want is centred. Rows shrink and fade with
+           distance so the choice in the middle is unmistakable. -->
+      <div class="wheel" id="wheel">
+        <div class="wheel__beam" aria-hidden="true"></div>
+        <div class="wheel__scroll" id="wheel-scroll" tabindex="0"
+             role="listbox" aria-label="Choose where this song goes">
+          <div class="wheel__rail" id="wheel-rail"></div>
         </div>
       </div>
 
-      <div class="scrub">
-        <!-- Fine step so the thumb tracks the finger continuously; the card
-             itself snaps to whole slots, and the thumb snaps on release. -->
-        <input id="gap-slider" class="scrub__input" type="range" min="0" max="0" step="0.001" value="0"
-               aria-label="Slide to choose where this song goes" />
-        <p class="scrub__label readout" id="gap-label">—</p>
-      </div>
-
       <div class="dock">
+        <p class="wheel__readout readout" id="gap-label">—</p>
         <button id="place-btn" class="btn btn--block">Place it here</button>
         <button id="skip-btn-2" class="btn btn--ghost btn--block" hidden>This song won&rsquo;t play — skip it</button>
       </div>
     </section>
 
     <!-- 5 · Naming the steal ------------------------------------------------ -->
+    <!-- One question per screen, no confirm: tapping is the answer. Six
+         seconds is not enough time to review a form. -->
     <section class="screen" id="screen-steal-choice" hidden>
-      <p class="eyebrow">Steal attempt</p>
-      <h2 class="display screen__title">Name it</h2>
-      <p class="note">Pick the title, then the artist. Both have to be right.</p>
-
-      <p class="eyebrow section-label">Title</p>
-      <div class="choices" id="steal-title-choices"></div>
-
-      <p class="eyebrow section-label">Artist</p>
-      <div class="choices" id="steal-artist-choices"></div>
-
-      <div class="dock">
-        <button id="steal-submit-btn" class="btn btn--block" disabled>Submit</button>
+      <div class="quiz__head">
+        <p class="eyebrow" id="quiz-step">Question 1 of 2</p>
+        <span class="quiz__clock" id="quiz-clock">6</span>
       </div>
+      <h2 class="display screen__title" id="quiz-title">Which song is this?</h2>
+      <div class="quiz__bar" aria-hidden="true"><i id="quiz-bar-fill"></i></div>
+
+      <div class="choices" id="quiz-choices"></div>
     </section>
 
     <!-- 6 · Reveal --------------------------------------------------------- -->
@@ -128,7 +126,8 @@
       <p class="note" id="over-note"></p>
       <ul id="over-list" class="roster"></ul>
       <div class="dock">
-        <button id="restart-btn" class="btn btn--block" hidden>New game</button>
+        <button id="new-room-btn" class="btn btn--block" hidden>New room</button>
+        <p id="over-hint" class="note"></p>
       </div>
     </section>
 

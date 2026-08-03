@@ -13,17 +13,20 @@ const STORE = 'hitster.player';
 
 let state = null;
 let me = null;
-/** Which gap the slider is currently sitting on. */
+/** Which slot in the wheel is currently centred. */
 let selectedGap = 0;
-/** Cheap signature of the rendered reel, so we only rebuild when it changes. */
+/** Cheap signature of the rendered wheel, so we only rebuild when it changes. */
 let reelSignature = null;
 let lastRevealKey = null;
 /**
- * Options for the steal question in progress, plus which one is currently
- * picked. The server never tells anyone which index is correct — that's
+ * Options for the steal question in progress, which step we're on, and the
+ * title already picked. The server never says which index is correct — that's
  * checked server-side when the answer is submitted.
  */
 let stealChoices = null;
+/** Local mirror of the server's answer deadline, for the on-screen clock. */
+let quizDeadline = 0;
+let quizTimer = null;
 
 // ---------------------------------------------------------------------------
 // Identity and joining
@@ -101,7 +104,7 @@ function send(event, payload) {
 }
 
 el('start-btn').addEventListener('click', () => send('start_game'));
-el('restart-btn').addEventListener('click', () => send('restart_game'));
+el('new-room-btn').addEventListener('click', () => send('new_room'));
 el('next-btn').addEventListener('click', () => send('ready_next_turn'));
 el('steal-btn').addEventListener('click', () => {
   el('steal-btn').disabled = true;
@@ -115,20 +118,18 @@ el('place-btn').addEventListener('click', () => {
   send('place_card', { gapIndex: selectedGap });
 });
 
-/*
- * The thumb moves continuously with the finger, but the card only changes slot
- * once the thumb is past the halfway point between two of them — so dragging
- * feels smooth while the card still reads as landing in a definite place.
- * Releasing snaps the thumb onto the slot the card actually chose.
- */
-el('gap-slider').addEventListener('input', (e) => {
-  setGap(Math.round(Number(e.target.value)));
-});
+// Scrolling the wheel is the whole interaction; scroll-snap does the settling
+// and this just reports which slot ended up under the beam.
+el('wheel-scroll').addEventListener('scroll', () => {
+  requestAnimationFrame(updateWheel);
+}, { passive: true });
 
-el('gap-slider').addEventListener('change', (e) => {
-  const gap = Math.round(Number(e.target.value));
-  e.target.value = String(gap);
-  setGap(gap);
+// Arrow keys for anyone not using a touchscreen.
+el('wheel-scroll').addEventListener('keydown', (e) => {
+  const step = e.key === 'ArrowDown' ? 1 : e.key === 'ArrowUp' ? -1 : 0;
+  if (!step) return;
+  e.preventDefault();
+  scrollToGap(Math.min(Math.max(selectedGap + step, 0), me.timeline.length));
 });
 
 // ---------------------------------------------------------------------------
@@ -142,14 +143,31 @@ socket.on('game_state', (next) => {
   // Clear stale choices once this steal is no longer live, so the next one
   // never flashes an old question before its own steal_choices arrives.
   const stillMyChoice = state.phase === 'steal_choosing' && state.stealClaim?.playerId === me?.id;
-  if (!stillMyChoice) stealChoices = null;
+  if (!stillMyChoice) {
+    stealChoices = null;
+    quizDeadline = 0;
+    clearInterval(quizTimer);
+  } else if (state.stealDeadlineInMs > 0) {
+    // Re-anchor from the server in case this phone reconnected mid-question.
+    quizDeadline = Date.now() + state.stealDeadlineInMs;
+  }
+
+  stealOpensAt = state.stealOpensInMs > 0 ? Date.now() + state.stealOpensInMs : 0;
 
   render();
 });
 
 socket.on('steal_choices', ({ titleOptions, artistOptions }) => {
   stealChoices = { titleOptions, artistOptions, titleIndex: null, artistIndex: null };
+  quizDeadline = Date.now() + (state?.stealAnswerMs || 6000);
+  startQuizClock();
   render();
+});
+
+/** This room was abandoned; start fresh on the join screen with the new code. */
+socket.on('room_closed', ({ code }) => {
+  localStorage.removeItem(STORE);
+  location.href = `/?room=${code}`;
 });
 
 const SCREENS = ['screen-join', 'screen-lobby', 'screen-waiting', 'screen-place', 'screen-steal-choice', 'screen-reveal', 'screen-over'];
@@ -165,6 +183,8 @@ function render() {
     case 'lobby': return renderLobby();
     case 'game_over': return renderOver();
     case 'revealing': return renderReveal();
+    // The intro belongs to the TV; phones just wait through it.
+    case 'turn_intro': return renderWaiting();
     case 'steal_choosing':
       return state.stealClaim?.playerId === me.id ? renderStealChoice() : renderWaiting();
     default:
@@ -209,38 +229,77 @@ function renderWaiting() {
 
   const placer = state.players.find((p) => p.id === state.placerId);
   const playing = state.phase === 'playing';
+  const intro = state.phase === 'turn_intro';
   const stealerName = state.stealClaim?.playerName;
 
-  el('waiting-eyebrow').textContent = playing ? 'Listening' : 'Hold on';
-  el('waiting-title').textContent = playing
+  el('waiting-eyebrow').textContent = intro ? 'Next up' : playing ? 'Listening' : 'Hold on';
+  el('waiting-title').textContent = playing || intro
     ? (placer ? `${placer.name} is up` : 'Waiting')
     : (stealerName ? `${stealerName} is naming it` : 'Waiting');
-  el('waiting-note').textContent = playing
-    ? 'A song is playing on the TV. No year, no title, no clues.'
-    : (stealerName ? `${stealerName} is picking their answer. Music is paused.` : 'The table is sorting something out.');
+  el('waiting-note').textContent = intro
+    ? 'The next song is about to start.'
+    : playing
+      ? 'A song is playing on the TV. No year, no title, no clues.'
+      : (stealerName ? `${stealerName} is picking their answer. Music is paused.` : 'The table is sorting something out.');
 
   const wave = el('waiting-wave');
   if (!wave.childElementCount) buildWave(wave, 28);
   wave.classList.toggle('is-idle', !playing);
 
   renderVerticalTimeline(el('waiting-timeline'));
-
-  const blocked = state.stealBlocked.includes(me.id);
-  const canSteal = playing && !blocked && !state.stealClaim;
-  el('steal-btn').disabled = !canSteal;
-  el('steal-note').textContent = blocked
-    ? 'You already used your steal on this song.'
-    : canSteal
-      ? 'Know it? Hit steal and pick the title and artist from a list.'
-      : 'The steal window is closed.';
+  renderStealButton(playing);
 
   // Not a Hitster rule — only offered when a track has actually failed to play.
   el('skip-btn').hidden = !me.isHost || !playing || !state.playbackFailed;
 }
 
+/**
+ * The steal button spends most of a song locked. It counts itself down rather
+ * than just sitting greyed out, so the wait reads as part of the game.
+ */
+let stealOpensAt = 0;
+let stealCountdown = null;
+
+function renderStealButton(playing) {
+  const button = el('steal-btn');
+  const note = el('steal-note');
+  const blocked = state.stealBlocked.includes(me.id);
+
+  clearInterval(stealCountdown);
+
+  if (!playing || blocked || state.stealClaim) {
+    button.disabled = true;
+    button.textContent = 'Steal';
+    note.textContent = blocked
+      ? 'You already used your steal on this song.'
+      : 'The steal window is closed.';
+    return;
+  }
+
+  const tick = () => {
+    const remaining = stealOpensAt - Date.now();
+    if (remaining > 0) {
+      button.disabled = true;
+      button.textContent = `Steal in ${Math.ceil(remaining / 1000)}`;
+      note.textContent = 'Listen first — stealing opens partway through the song.';
+      return;
+    }
+    clearInterval(stealCountdown);
+    button.disabled = false;
+    button.textContent = 'Steal';
+    note.textContent = 'Six seconds to name the song and the artist.';
+  };
+
+  tick();
+  stealCountdown = setInterval(tick, 200);
+}
+
 // ---------------------------------------------------------------------------
-// Placement reel
+// Placement wheel
 // ---------------------------------------------------------------------------
+
+/** Row height in px. Must match .wrow / .wslot in the stylesheet. */
+const ROW_H = 62;
 
 function renderPlace() {
   show('screen-place');
@@ -250,62 +309,144 @@ function renderPlace() {
 
   const timeline = me.timeline;
   // cardsLeft ticks down once per turn, so a wrong guess — which leaves the
-  // timeline untouched — still counts as a new turn and recentres the slider.
+  // timeline untouched — still counts as a new turn and recentres the wheel.
   const signature = `${timeline.map((c) => c.year).join(',')}|${state.cardsLeft}`;
 
-  if (signature !== reelSignature) {
+  const fresh = signature !== reelSignature;
+  if (fresh) {
     reelSignature = signature;
-    // Open in the middle so the first drag is short in either direction.
-    selectedGap = Math.floor(timeline.length / 2);
-    buildReel(timeline);
+    buildWheel(timeline);
+    // Open in the middle so the first scroll is short in either direction.
+    scrollToGap(Math.floor(timeline.length / 2), false);
   }
+  updateWheel();
 
-  const slider = el('gap-slider');
-  slider.max = String(timeline.length);
-  slider.value = String(selectedGap);
-  setGap(selectedGap, true);
+  // The screen was hidden a moment ago, so the scroller only reaches its real
+  // height after this frame. Re-measure once it has, or the end slots can't
+  // reach the beam.
+  requestAnimationFrame(() => {
+    if (el('screen-place').hidden) return;
+    if (sizeWheelPadding() || fresh) scrollToGap(selectedGap, false);
+  });
 }
 
-function buildReel(timeline) {
-  const track = el('reel-track');
-  track.innerHTML = '';
+function buildWheel(timeline) {
+  const rail = el('wheel-rail');
+  rail.innerHTML = '';
+
+  // Half a viewport of padding top and bottom, so the first and last slots
+  // can still reach the centre beam.
+  const pad = document.createElement('div');
+  pad.className = 'wheel__pad';
+  rail.appendChild(pad);
 
   for (let i = 0; i <= timeline.length; i++) {
     const slot = document.createElement('div');
-    slot.className = 'rgap';
+    slot.className = 'wslot';
     slot.dataset.gap = String(i);
-    track.appendChild(slot);
+    slot.setAttribute('role', 'option');
+    slot.innerHTML = '<span class="wslot__mark">?</span>';
+    rail.appendChild(slot);
 
     const card = timeline[i];
     if (!card) continue;
-    const node = document.createElement('article');
-    node.className = 'rcard';
-    node.innerHTML = `
-      <span class="rcard__year">${card.year}</span>
-      <p class="rcard__title">${escapeHtml(card.title)}</p>
-      <p class="rcard__artist">${escapeHtml(card.artist)}</p>`;
-    track.appendChild(node);
+    const row = document.createElement('div');
+    row.className = 'wrow';
+    row.textContent = card.year;
+    rail.appendChild(row);
   }
+
+  const padEnd = document.createElement('div');
+  padEnd.className = 'wheel__pad';
+  rail.appendChild(padEnd);
+
+  sizeWheelPadding();
 }
 
-function setGap(index, force = false) {
-  // input fires on every pixel of the drag; most of those land on the slot we
-  // are already showing, and re-running the scroll would fight the finger.
-  if (!force && index === selectedGap) return;
+/**
+ * Half a viewport of padding at each end, so the first and last slots can
+ * still reach the centre beam.
+ */
+function sizeWheelPadding() {
+  const scroller = el('wheel-scroll');
+  const pads = el('wheel-rail').querySelectorAll('.wheel__pad');
+  const height = Math.max(0, (scroller.clientHeight - ROW_H) / 2);
+  let changed = false;
+  pads.forEach((pad) => {
+    const next = `${height}px`;
+    if (pad.style.height !== next) { pad.style.height = next; changed = true; }
+  });
+  return changed;
+}
+
+/*
+ * The scroller only reaches its real height once the flex layout settles, and
+ * the first sizing pass runs before that — leaving the padding too short and
+ * the end slots unreachable. Watching the element catches that settle, plus
+ * every later resize, without guessing at timings.
+ */
+if (window.ResizeObserver) {
+  new ResizeObserver(() => {
+    if (el('screen-place').hidden) return;
+    if (sizeWheelPadding()) scrollToGap(selectedGap, false);
+  }).observe(el('wheel-scroll'));
+}
+
+function scrollToGap(index, smooth = true) {
+  const scroller = el('wheel-scroll');
+  const slot = el('wheel-rail').querySelector(`.wslot[data-gap="${index}"]`);
+  if (!slot) return;
+  const target = slot.offsetTop - (scroller.clientHeight - slot.offsetHeight) / 2;
+  scroller.scrollTo({ top: target, behavior: smooth ? 'smooth' : 'auto' });
+  // Snap picks this up on settle, but update immediately so the label is right.
   selectedGap = index;
-
-  const slots = el('reel-track').querySelectorAll('.rgap');
-  slots.forEach((slot) => slot.classList.toggle('rgap--open', Number(slot.dataset.gap) === index));
-
-  el('gap-label').textContent = gapLabel(me.timeline, index);
-
-  // Slot widths are fixed, so this offset is stable and the card can simply
-  // glide to it rather than chasing a reflowing row.
-  const target = slots[index];
-  if (!target) return;
-  el('reel-card').style.transform = `translateX(${target.offsetLeft}px)`;
-  target.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  updateWheel();
 }
+
+/**
+ * Scales and fades every row by its distance from the centre beam, and works
+ * out which slot is currently selected. Called on every scroll frame, so it
+ * only touches inline styles — no layout reads beyond the offsets it needs.
+ */
+function updateWheel() {
+  const scroller = el('wheel-scroll');
+  const rail = el('wheel-rail');
+  if (!rail.childElementCount) return;
+
+  const centre = scroller.scrollTop + scroller.clientHeight / 2;
+  let bestGap = selectedGap;
+  let bestDistance = Infinity;
+
+  for (const node of rail.children) {
+    if (node.classList.contains('wheel__pad')) continue;
+
+    const nodeCentre = node.offsetTop + node.offsetHeight / 2;
+    const distance = Math.abs(nodeCentre - centre);
+    // Fall off over roughly three rows, then hold — far rows stay legible
+    // rather than collapsing to nothing.
+    const falloff = Math.min(distance / (ROW_H * 3), 1);
+    node.style.setProperty('--s', String(1 - falloff * 0.32));
+    node.style.setProperty('--o', String(1 - falloff * 0.62));
+
+    if (node.classList.contains('wslot') && distance < bestDistance) {
+      bestDistance = distance;
+      bestGap = Number(node.dataset.gap);
+    }
+  }
+
+  for (const node of rail.querySelectorAll('.wslot')) {
+    node.classList.toggle('wslot--active', Number(node.dataset.gap) === bestGap);
+  }
+
+  selectedGap = bestGap;
+  el('gap-label').textContent = gapLabel(me.timeline, bestGap);
+}
+
+window.addEventListener('resize', () => {
+  if (el('screen-place').hidden) return;
+  sizeWheelPadding();
+  scrollToGap(selectedGap, false);
+});
 
 function gapLabel(timeline, index) {
   const before = timeline[index - 1];
@@ -313,9 +454,11 @@ function gapLabel(timeline, index) {
   if (!before && !after) return 'Anywhere';
   if (!before) return `Before ${after.year}`;
   if (!after) return `After ${before.year}`;
-  return `${before.year} – ${after.year}`;
+  return `Between ${before.year} and ${after.year}`;
 }
 
+// ---------------------------------------------------------------------------
+// Steal quiz — one question per screen, tap to answer, no confirm.
 // ---------------------------------------------------------------------------
 
 function renderStealChoice() {
@@ -323,41 +466,61 @@ function renderStealChoice() {
 
   if (!stealChoices) {
     // steal_choices lands a beat after game_state; nothing to show yet.
-    el('steal-title-choices').innerHTML = '';
-    el('steal-artist-choices').innerHTML = '';
-    el('steal-submit-btn').disabled = true;
+    el('quiz-choices').innerHTML = '';
     return;
   }
 
-  renderChoiceGroup(el('steal-title-choices'), stealChoices.titleOptions, stealChoices.titleIndex, (i) => {
-    stealChoices.titleIndex = i;
-    renderStealChoice();
-  });
-  renderChoiceGroup(el('steal-artist-choices'), stealChoices.artistOptions, stealChoices.artistIndex, (i) => {
-    stealChoices.artistIndex = i;
-    renderStealChoice();
-  });
+  const onTitle = stealChoices.titleIndex === null;
+  el('quiz-step').textContent = onTitle ? 'Question 1 of 2' : 'Question 2 of 2';
+  el('quiz-title').textContent = onTitle ? 'Which song is this?' : 'Who is it by?';
 
-  el('steal-submit-btn').disabled = stealChoices.titleIndex === null || stealChoices.artistIndex === null;
-}
-
-function renderChoiceGroup(container, options, selectedIndex, onPick) {
+  const options = onTitle ? stealChoices.titleOptions : stealChoices.artistOptions;
+  const container = el('quiz-choices');
   container.innerHTML = '';
+
   options.forEach((text, i) => {
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = `choice${i === selectedIndex ? ' choice--selected' : ''}`;
+    button.className = 'choice';
     button.textContent = text;
-    button.addEventListener('click', () => onPick(i));
+    button.addEventListener('click', () => pickAnswer(i), { once: true });
     container.appendChild(button);
   });
 }
 
-el('steal-submit-btn').addEventListener('click', () => {
-  if (!stealChoices || stealChoices.titleIndex === null || stealChoices.artistIndex === null) return;
-  el('steal-submit-btn').disabled = true;
-  send('submit_steal_answer', { titleIndex: stealChoices.titleIndex, artistIndex: stealChoices.artistIndex });
-});
+function pickAnswer(index) {
+  if (!stealChoices) return;
+
+  if (stealChoices.titleIndex === null) {
+    stealChoices.titleIndex = index;
+    renderStealChoice();
+    return;
+  }
+
+  // Second tap is the whole answer — nothing to confirm.
+  stealChoices.artistIndex = index;
+  el('quiz-choices').innerHTML = '';
+  send('submit_steal_answer', {
+    titleIndex: stealChoices.titleIndex,
+    artistIndex: stealChoices.artistIndex,
+  });
+}
+
+/** Mirrors the server's deadline so the stealer can see it running out. */
+function startQuizClock() {
+  clearInterval(quizTimer);
+  quizTimer = setInterval(() => {
+    if (!quizDeadline) return;
+    const total = state?.stealAnswerMs || 6000;
+    const remaining = Math.max(0, quizDeadline - Date.now());
+    const seconds = Math.ceil(remaining / 1000);
+
+    el('quiz-clock').textContent = String(seconds);
+    el('quiz-clock').classList.toggle('quiz__clock--urgent', remaining <= 3000);
+    el('quiz-bar-fill').style.transform = `scaleX(${remaining / total})`;
+    el('quiz-bar-fill').parentElement.classList.toggle('quiz__bar--urgent', remaining <= 3000);
+  }, 100);
+}
 
 function renderReveal() {
   show('screen-reveal');
@@ -412,7 +575,10 @@ function renderOver() {
     list.appendChild(item);
   }
 
-  el('restart-btn').hidden = !me.isHost;
+  el('new-room-btn').hidden = !me.isHost;
+  el('over-hint').textContent = me.isHost
+    ? 'Opens a fresh room. Everyone rejoins with the new code.'
+    : 'The host can open a new room from here.';
 }
 
 function renderVerticalTimeline(container) {

@@ -162,25 +162,78 @@
 }
 
 /* --------------------------------------------------------------------------
-   Steal — multiple choice
+   Steal — one question per screen, six seconds for both.
    -------------------------------------------------------------------------- */
 
+.stealbar {
+  flex: 0 0 auto;
+  margin-bottom: 1.2rem;
+}
+
+.stealbar .note { margin-top: 0.5rem; }
+
+.quiz__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.quiz__clock {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--accent-2);
+}
+
+.quiz__clock--urgent {
+  color: var(--danger);
+  animation: urgent-tick 500ms ease-in-out infinite;
+}
+
+@keyframes urgent-tick {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.quiz__bar {
+  height: 4px;
+  margin: 0.7rem 0 0.2rem;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.quiz__bar i {
+  display: block;
+  height: 100%;
+  width: 100%;
+  border-radius: 999px;
+  background: var(--accent-2);
+  transform-origin: left center;
+  transition: transform 100ms linear, background 200ms var(--ease);
+}
+
+.quiz__bar--urgent i { background: var(--danger); }
+
+/* Answers stack full width: one thumb, six seconds, no hunting. */
 .choices {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-direction: column;
   gap: 0.5rem;
-  margin: 0.6rem 0 1.2rem;
+  margin: 0.9rem 0 0;
+  overflow-y: auto;
 }
 
 .choice {
-  min-height: 52px;
-  padding: 0.55rem 0.8rem;
+  min-height: 56px;
+  padding: 0.6rem 1rem;
   border: 1px solid var(--line-strong);
   border-radius: var(--radius);
   background: var(--surface);
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 0.85rem;
+  font-size: 0.98rem;
   font-weight: 600;
   line-height: 1.25;
   text-align: left;
@@ -189,12 +242,10 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.choice:active { transform: scale(0.97); }
-
-.choice--selected {
+.choice:active {
+  transform: scale(0.97);
   border-color: var(--accent);
   background: var(--surface-hi);
-  color: var(--accent);
 }
 
 /* --------------------------------------------------------------------------
@@ -279,13 +330,17 @@
 }
 
 /* ==========================================================================
-   PLACEMENT — the reel
-   Oldest left, newest right. Gaps open up as the slider moves, and the
-   mystery card rides above the row, translating to the selected gap.
+   PLACEMENT — the wheel
+
+   Your years run top to bottom, oldest first, with a slot between each pair.
+   Scroll until the slot you want sits under the beam. Rows shrink and fade
+   with distance from centre, so the row you're choosing is unmistakable and
+   the list stays readable whether you hold two cards or twenty.
    ========================================================================== */
 
 .screen--place {
-  gap: 0.5rem;
+  gap: 0.4rem;
+  overflow: hidden;
 }
 
 .place__head { flex: 0 0 auto; }
@@ -296,166 +351,114 @@
   color: var(--text);
 }
 
-.reel {
+.wheel {
   position: relative;
   flex: 1 1 auto;
-  min-height: 168px;
-  display: flex;
-  align-items: center;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: none;
-  padding: 0 0.25rem;
+  min-height: 0;
+  /* Rows scroll under the beam and fade out top and bottom, so the list can
+     run off the edge without looking cut off. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent);
 }
 
-.reel::-webkit-scrollbar { display: none; }
-
-.reel__track {
-  display: flex;
-  align-items: stretch;
-  gap: 0.4rem;
-  margin: 0 auto;
-  padding: 2.4rem 0 0.5rem;
-}
-
-/* A placed card. */
-.rcard {
-  flex: 0 0 auto;
-  width: 104px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  padding: 0.55rem 0.6rem;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: linear-gradient(160deg, var(--surface-hi), var(--surface));
-}
-
-.rcard__year {
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  line-height: 1;
-  color: var(--accent);
-}
-
-.rcard__title {
-  margin: 0;
-  font-size: 0.74rem;
-  font-weight: 600;
-  line-height: 1.25;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.rcard__artist {
-  margin: 0;
-  font-size: 0.68rem;
-  color: var(--muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* The selection line. Fixed at the centre; the list moves, not the beam. */
+.wheel__beam {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 62px;
+  transform: translateY(-50%);
+  border-top: 1px solid var(--accent);
+  border-bottom: 1px solid var(--accent);
+  background: var(--accent-glow);
+  opacity: 0.28;
+  pointer-events: none;
+  z-index: 1;
 }
 
 /*
- * A slot between two cards. Every slot is the same width and always present,
- * so the row geometry never reflows — that keeps the sliding card's target
- * position stable and makes every possible answer visible at a glance.
+ * Pinned rather than height:100% — as a percentage it resolved against an
+ * indefinite flex height and the scroller grew with its own content, which
+ * broke the padding maths that centres the end slots.
  */
-.rgap {
-  flex: 0 0 auto;
-  width: 104px;
-  border-radius: var(--radius);
-  border: 1px dashed var(--line-strong);
-  transition: border-color 200ms var(--ease), background 200ms var(--ease);
-}
-
-.rgap--open {
-  border-color: var(--accent);
-  background: var(--surface-hi);
-}
-
-/* The card being placed. Floats above the row and translates between gaps. */
-.reel__card {
+.wheel__scroll {
   position: absolute;
-  top: 0.35rem;
-  left: 0;
-  width: 104px;
-  height: 92px;
+  inset: 0;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  outline: none;
+}
+
+.wheel__scroll::-webkit-scrollbar { display: none; }
+
+.wheel__rail {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* An existing card. Year only — titles are noise when you're placing by date. */
+.wrow {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius);
-  border: 1px solid var(--accent);
-  background:
-    repeating-linear-gradient(135deg, rgba(74, 111, 165, 0.09) 0 3px, transparent 3px 10px),
-    linear-gradient(160deg, var(--surface), var(--surface-hi));
-  box-shadow: 0 8px 22px rgba(27, 42, 63, 0.20), 0 0 0 4px var(--accent-glow);
-  /* Snappy enough to feel attached to the thumb, springy enough to read as a
-     physical snap into the slot. */
-  transition: transform 220ms var(--spring);
-  pointer-events: none;
-  z-index: 2;
-}
-
-.reel__mark {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  color: var(--accent);
-  opacity: 0.75;
-}
-
-/* Slider ------------------------------------------------------------------ */
-
-.scrub {
+  height: 62px;
   flex: 0 0 auto;
-  padding: 0.25rem 0.25rem 0;
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  color: var(--text);
+  /* Driven from JS as the list scrolls. */
+  transform: scale(var(--s, 1));
+  opacity: var(--o, 1);
+  transition: color 160ms var(--ease);
+  will-change: transform, opacity;
 }
 
-.scrub__input {
-  width: 100%;
-  height: 34px;
-  appearance: none;
-  background: transparent;
-  cursor: pointer;
+/* A slot the new card can go into. These are the snap targets. */
+.wslot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 62px;
+  flex: 0 0 auto;
+  scroll-snap-align: center;
+  transform: scale(var(--s, 1));
+  opacity: var(--o, 1);
+  will-change: transform, opacity;
 }
 
-.scrub__input::-webkit-slider-runnable-track {
-  height: 4px;
+.wslot__mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 40px;
+  border: 1px dashed var(--line-strong);
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--accent-2), var(--accent));
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--muted);
+  transition: all 200ms var(--spring);
 }
 
-.scrub__input::-moz-range-track {
-  height: 4px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--accent-2), var(--accent));
+.wslot--active .wslot__mark {
+  width: 74px;
+  height: 48px;
+  border-style: solid;
+  border-color: var(--accent);
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: 0 6px 18px rgba(27, 42, 63, 0.18);
 }
 
-/* Deliberately oversized: this is the control you use with a thumb. */
-.scrub__input::-webkit-slider-thumb {
-  appearance: none;
-  width: 30px;
-  height: 30px;
-  margin-top: -13px;
-  border-radius: 50%;
-  background: var(--accent);
-  border: 3px solid var(--bg);
-  box-shadow: 0 0 16px var(--accent-glow);
-}
+/* Spacers so the first and last slot can reach the centre of the viewport. */
+.wheel__pad { flex: 0 0 auto; }
 
-.scrub__input::-moz-range-thumb {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--accent);
-  border: 3px solid var(--bg);
-  box-shadow: 0 0 16px var(--accent-glow);
-}
-
-.scrub__label {
-  margin: 0.1rem 0 0;
+.wheel__readout {
+  margin: 0 0 0.2rem;
   text-align: center;
   color: var(--accent);
 }
@@ -578,54 +581,4 @@
   font-size: 0.88rem;
   text-align: center;
   animation: screen-in 220ms var(--ease) both;
-}
-
-/* --------------------------------------------------------------------------
-   Landscape — the placement screen is designed for this.
-   -------------------------------------------------------------------------- */
-
-@media (orientation: landscape) and (max-height: 560px) {
-  .shell {
-    max-width: 100%;
-    padding: 0.75rem 1.25rem calc(0.75rem + env(safe-area-inset-bottom));
-  }
-
-  .screen__title, .place__title { font-size: 1.35rem; margin-bottom: 0.2rem; }
-
-  .place__head {
-    display: flex;
-    align-items: baseline;
-    gap: 0.75rem;
-  }
-
-  .reel { min-height: 0; }
-  .reel__track { padding-top: 2.2rem; }
-
-  .dock {
-    padding-top: 0.5rem;
-    flex-direction: row;
-    gap: 0.6rem;
-  }
-
-  .dock .btn { min-height: 48px; }
-
-  /* Reveal goes side-by-side so nothing needs scrolling. */
-  .reveal {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: center;
-    gap: 0.4rem 1.2rem;
-    text-align: left;
-    justify-items: start;
-  }
-
-  .reveal__emoji { grid-row: span 2; font-size: 2.4rem; }
-  .reveal__art { display: none; }
-  .reveal__year { font-size: 2.6rem; }
-
-  .join { gap: 0.6rem; }
-  .join__mark { font-size: 2.2rem; }
-  .join__tag { margin-bottom: 0.6rem; }
-  .field input { min-height: 46px; }
-  .btn { min-height: 48px; }
 }

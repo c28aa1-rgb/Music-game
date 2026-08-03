@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Hitster">
+  <defs>
+    <!-- Light rakes across the disc from the upper left, as it does on the real thing. -->
+    <radialGradient id="disc" cx="38%" cy="34%" r="72%">
+      <stop offset="0%" stop-color="#3a3a3a"/>
+      <stop offset="55%" stop-color="#141414"/>
+      <stop offset="100%" stop-color="#050505"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f3cf6b"/>
+      <stop offset="55%" stop-color="#e2b23f"/>
+      <stop offset="100%" stop-color="#c8992c"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="64" height="64" fill="#0b1836"/>
+
+  <!-- Crown, tucked behind the disc so only the points show. -->
+  <g fill="url(#gold)">
+    <path d="M20 25 L20 16 L24.5 20.5 L29.5 13 L34.5 20.5 L39 16 L39 25 Z"/>
+    <rect x="19" y="24" width="21" height="4.5" rx="1.2"/>
+    <circle cx="20" cy="15.4" r="2"/>
+    <circle cx="29.5" cy="11.8" r="2.2"/>
+    <circle cx="39" cy="15.4" r="2"/>
+  </g>
+
+  <!-- The record. -->
+  <circle cx="32" cy="38" r="23" fill="url(#disc)"/>
+  <g fill="none" stroke="#000" stroke-opacity="0.55" stroke-width="0.7">
+    <circle cx="32" cy="38" r="20"/>
+    <circle cx="32" cy="38" r="17.5"/>
+    <circle cx="32" cy="38" r="15"/>
+    <circle cx="32" cy="38" r="12.5"/>
+  </g>
+  <circle cx="32" cy="38" r="8" fill="url(#gold)"/>
+  <circle cx="32" cy="38" r="1.3" fill="#0b1836"/>
+</svg>

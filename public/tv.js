@@ -20,6 +20,13 @@ let progressTimer = null;
 /** Identifies the reveal currently on screen, so it animates exactly once. */
 let shownRevealKey = null;
 let shownPhase = null;
+/** Local countdown state, refreshed from each broadcast's relative timings. */
+let stealOpensAt = 0;
+let answerDeadline = 0;
+let clockTimer = null;
+/** Guards the one-shot sounds so a re-render can't retrigger them. */
+let stealSoundedFor = null;
+let announcedStealOpen = false;
 
 // ---------------------------------------------------------------------------
 // Boot
@@ -74,6 +81,8 @@ function showAudioGate() {
   el('audio-btn').addEventListener('click', async () => {
     try {
       await player.activateElement();
+      // Same gesture unlocks the effects; an AudioContext is blocked until one.
+      SFX.unlock();
       audioReady = true;
       el('audio').hidden = true;
       if (pendingUri) {
@@ -124,8 +133,9 @@ function initPlayer() {
 
   player.connect();
   wireVolume();
-  wireReset();
+  wireNewRoom();
   startProgressLoop();
+  startClockLoop();
 }
 
 function fatal(message) {
@@ -213,27 +223,28 @@ function wireVolume() {
 
 let resetConfirmTimer = null;
 
-function wireReset() {
-  const button = el('reset-room-btn');
+/** Abandoning a game in progress deserves a second tap. */
+function wireNewRoom() {
+  const button = el('new-room-btn');
   button.addEventListener('click', () => {
     if (button.dataset.confirming !== 'true') {
       button.dataset.confirming = 'true';
       button.textContent = 'Confirm';
-      toast('Press Reset again to return everyone to the lobby.');
+      toast('Press again to end this game and open a fresh room.');
       clearTimeout(resetConfirmTimer);
       resetConfirmTimer = setTimeout(() => {
         button.dataset.confirming = 'false';
-        button.textContent = 'Reset';
+        button.textContent = 'New room';
       }, 4200);
       return;
     }
 
     clearTimeout(resetConfirmTimer);
     button.dataset.confirming = 'false';
-    button.textContent = 'Reset';
-    socket.emit('reset_room', {}, (res) => {
-      if (res?.error) return toast(res.error);
-      toast('Game reset. Everyone is back in the lobby.');
+    button.textContent = 'New room';
+    socket.emit('new_room', {}, (res) => {
+      if (res?.error) toast(res.error);
+      // On success the server sends room_closed, which navigates us.
     });
   });
 }
@@ -310,6 +321,75 @@ function formatTime(ms) {
   return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
 }
 
+/**
+ * Drives both countdowns. Runs at 100ms so the ring moves smoothly, but the
+ * tick sound is gated on the displayed second changing, so it fires once per
+ * second rather than ten times.
+ */
+let lastAnswerSecond = null;
+
+function startClockLoop() {
+  clearInterval(clockTimer);
+  clockTimer = setInterval(() => {
+    updateStealClock();
+    updateAnswerClock();
+  }, 100);
+}
+
+function updateStealClock() {
+  const clock = el('steal-clock');
+  if (!state || state.phase !== 'playing') {
+    clock.hidden = true;
+    return;
+  }
+
+  clock.hidden = false;
+  const remaining = stealOpensAt - Date.now();
+
+  if (remaining > 0) {
+    clock.classList.remove('stealclock--open');
+    el('steal-clock-label').textContent = 'Steals open in';
+    el('steal-clock-value').textContent = String(Math.ceil(remaining / 1000));
+    return;
+  }
+
+  clock.classList.add('stealclock--open');
+  el('steal-clock-label').textContent = 'Steals are';
+  el('steal-clock-value').textContent = 'OPEN';
+
+  // One blip at the moment the window opens, not on every tick after it.
+  if (!announcedStealOpen) {
+    announcedStealOpen = true;
+    SFX.stealOpen();
+  }
+}
+
+function updateAnswerClock() {
+  if (!answerDeadline) {
+    lastAnswerSecond = null;
+    return;
+  }
+
+  const ring = document.getElementById('answer-ring');
+  const value = document.getElementById('answer-value');
+  const wrap = document.getElementById('answer-clock');
+  if (!ring || !value || !wrap) return;
+
+  const total = state?.stealAnswerMs || 6000;
+  const remaining = Math.max(0, answerDeadline - Date.now());
+  const seconds = Math.ceil(remaining / 1000);
+
+  // r=54 → circumference 2πr ≈ 339.29, matching the dasharray in CSS.
+  ring.style.strokeDashoffset = String(339.29 * (1 - remaining / total));
+  value.textContent = String(seconds);
+  wrap.classList.toggle('answerclock--urgent', remaining <= 3000);
+
+  if (seconds !== lastAnswerSecond) {
+    lastAnswerSecond = seconds;
+    if (seconds > 0) (remaining <= 3000 ? SFX.tickUrgent() : SFX.tick());
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Socket
 // ---------------------------------------------------------------------------
@@ -333,15 +413,35 @@ socket.on('pause_music', () => player?.pause());
 socket.on('resume_music', () => player?.resume());
 socket.on('stop_music', () => player?.pause());
 
-socket.on('steal_attempt', ({ playerName }) => showStealOverlay(playerName));
-socket.on('steal_result', ({ success, playerName }) => showStealVerdict(success, playerName));
+socket.on('steal_attempt', ({ playerName, answerMs }) => {
+  SFX.stealClaimed();
+  answerDeadline = Date.now() + (answerMs || 6000);
+  showStealOverlay(playerName);
+});
+
+socket.on('steal_result', ({ success, playerName }) => {
+  answerDeadline = 0;
+  showStealVerdict(success, playerName);
+});
 
 socket.on('playback_failed', () => {
   toast('That track will not play. The host can skip it.');
 });
 
+/** The room was abandoned; follow it to the fresh one. */
+socket.on('room_closed', ({ code }) => {
+  localStorage.setItem(ROOM_KEY, code);
+  location.href = `/tv?room=${code}`;
+});
+
 socket.on('game_state', (next) => {
   state = next;
+
+  // Countdowns arrive relative to the broadcast, so anchor them locally.
+  stealOpensAt = next.stealOpensInMs > 0 ? Date.now() + next.stealOpensInMs : 0;
+  if (next.phase !== 'steal_choosing') answerDeadline = 0;
+  if (next.phase !== 'playing') announcedStealOpen = false;
+
   render();
 });
 
@@ -417,6 +517,8 @@ function renderNowPlaying() {
 
   if (revealed) {
     el('np-sub').textContent = `${reveal.card.artist} · ${reveal.card.year}`;
+  } else if (state.phase === 'turn_intro') {
+    el('np-sub').textContent = 'Next song coming up.';
   } else if (state.phase === 'steal_choosing') {
     el('np-sub').textContent = `${state.stealClaim?.playerName} is naming it. Music paused.`;
   } else {
@@ -500,6 +602,7 @@ function renderOverlay() {
   if (Date.now() < overlayHoldUntil) return;
 
   if (state.phase === 'game_over') return showWinnerOverlay();
+  if (state.phase === 'turn_intro') return showTurnIntro();
   if (state.phase === 'steal_choosing') return showStealOverlay(state.stealClaim?.playerName);
 
   if (state.phase === 'revealing' && state.lastReveal) {
@@ -527,6 +630,7 @@ function showStealVerdict(success, playerName) {
   const overlay = el('overlay');
   overlay.hidden = false;
   overlayHoldUntil = Date.now() + VERDICT_MS;
+  if (success) SFX.correct(); else SFX.wrong();
 
   const tone = success ? 'good' : 'bad';
   el('overlay-inner').innerHTML = `
@@ -539,8 +643,46 @@ function showStealVerdict(success, playerName) {
         : 'No steal, and they are out for this song.'}</p>
     </div>`;
 
-  // Re-sync with whatever the game moved on to while the verdict was up.
-  setTimeout(() => { overlayHoldUntil = 0; render(); }, VERDICT_MS);
+  // The verdict gets the room's attention on its own, then the song comes
+  // back and plays under whoever is placing the card.
+  setTimeout(() => {
+    overlayHoldUntil = 0;
+    player?.resume();
+    render();
+  }, VERDICT_MS);
+}
+
+/**
+ * "Alex is up", counting into the song. Rendered once per turn — the ticking
+ * numbers are driven locally so the overlay doesn't depend on further traffic.
+ */
+let introKey = null;
+
+function showTurnIntro() {
+  const overlay = el('overlay');
+  overlay.hidden = false;
+
+  const who = nameOf(state.placerId) || 'Someone';
+  const key = `${state.round}:${state.cardsLeft}:${state.placerId}`;
+  if (key === introKey) return;
+  introKey = key;
+
+  const seconds = Math.max(1, Math.round((state.introMs || 3000) / 1000));
+  el('overlay-inner').innerHTML = `
+    <div class="intro">
+      <span class="intro__who">${escapeHtml(who)}</span>
+      <p class="intro__sub">is up next</p>
+      <p class="intro__count" id="intro-count"><span>${seconds}</span></p>
+    </div>`;
+
+  let left = seconds;
+  const countdown = setInterval(() => {
+    left -= 1;
+    const node = document.getElementById('intro-count');
+    // The phase moved on, or the overlay was replaced — stop counting.
+    if (!node || left < 1) return clearInterval(countdown);
+    node.innerHTML = `<span>${left}</span>`;
+  }, 1000);
 }
 
 function showStealOverlay(playerName) {
@@ -550,6 +692,13 @@ function showStealOverlay(playerName) {
   el('overlay-inner').innerHTML = `
     <p class="steal-mark">Steal</p>
     <h2 class="overlay__headline">${escapeHtml(playerName)}</h2>
+    <div class="answerclock" id="answer-clock">
+      <svg viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="answerclock__track" cx="60" cy="60" r="54" fill="none" stroke-width="7" />
+        <circle class="answerclock__ring" id="answer-ring" cx="60" cy="60" r="54" fill="none" stroke-width="7" />
+      </svg>
+      <span class="answerclock__value" id="answer-value">—</span>
+    </div>
     <p class="overlay__sub">Picking the title and artist on their phone.</p>`;
 }
 
@@ -579,18 +728,31 @@ function showRevealOverlay(reveal) {
     <p class="overlay__sub">${sub}</p>`;
 
   requestAnimationFrame(() => {
-    setTimeout(() => el('flip')?.classList.add('is-flipped'), 320);
+    setTimeout(() => {
+      el('flip')?.classList.add('is-flipped');
+      if (reveal.correct) SFX.correct(); else SFX.wrong();
+    }, 320);
     // A kept card flies down toward the rail, so the landing on the timeline
     // reads as the same object arriving rather than a new one appearing.
     if (reveal.correct) {
-      setTimeout(() => el('flip')?.classList.add('is-departing'), 3000);
+      setTimeout(() => {
+        el('flip')?.classList.add('is-departing');
+        // Lands just as the card reaches the rail.
+        setTimeout(() => SFX.cardLand(), 420);
+      }, 3000);
     }
   });
 }
 
+let fanfarePlayed = false;
+
 function showWinnerOverlay() {
   const overlay = el('overlay');
   overlay.hidden = false;
+  if (!fanfarePlayed) {
+    fanfarePlayed = true;
+    SFX.fanfare();
+  }
   const winner = state.winner;
   el('overlay-inner').innerHTML = `
     <p class="eyebrow">Game over</p>

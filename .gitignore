@@ -5,3 +5,5 @@ node_modules/
 server.*.log
 songs.backup.json
 sets.json
+songs.test.json
+songs.test.backup.json

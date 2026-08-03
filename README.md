@@ -125,16 +125,23 @@ never sent them, so there is nothing to find in devtools.
 every card. Tap the gap, confirm, and the card flips on the TV. Right, and it
 lands on their timeline. Wrong, and it's gone.
 
-**Everyone else** gets a **Steal** button, live from the first note until the
-placement is locked in. Hit it and the music stops — then pick the title from
-six options, and the artist from six more. Both have to be right. There's no
-human judge and no honor system: the server already knows the answer and checks
-it the instant you submit, so there's nothing to argue about.
+**Everyone else** gets a **Steal** button, pinned to the top of the screen. It
+stays locked for the first 15 seconds of the song and counts itself down, so a
+song has to actually be heard before anyone can pounce. When it opens, the TV
+says so and a blip sounds.
+
+Hit it and the music stops. You get **six seconds** for both questions — the
+title on one screen, the artist on the next. Tapping *is* the answer; there's no
+confirm step, because six seconds is not long enough to review a form. A clock
+ticks on the TV so the room can watch it run out.
 
 - **Both right** → the turn is yours, and you place the card on your own
   timeline. You can still blow the placement.
-- **Either wrong** → the music resumes and you're locked out of stealing for the
-  rest of that song. One shot each per turn.
+- **Either wrong, or the clock runs out** → you're locked out of stealing for
+  the rest of that song. One shot each per turn.
+
+Either way the verdict lands on the TV first, and only then does the song come
+back — so the result isn't stepped on by the music returning.
 
 First to **10 cards** wins. Change it with `TARGET_CARDS` in `.env`.
 
@@ -194,7 +201,8 @@ public/
 |---|---|
 | `join_game` `{ name, code }` | Join, or reclaim a seat under the same name |
 | `rejoin` `{ playerId, code }` | Silent reconnect after a dropped connection |
-| `start_game` / `restart_game` | Host only |
+| `start_game` | Host only |
+| `new_room` | Host or TV. Abandons this game and opens a fresh code |
 | `place_card` `{ gapIndex }` | Commit a placement |
 | `attempt_steal` | Claim the steal. First press wins |
 | `submit_steal_answer` `{ titleIndex, artistIndex }` | The stealer's multiple-choice pick |
@@ -208,6 +216,7 @@ public/
 | `pause_music` / `resume_music` / `stop_music` | TV only |
 | `steal_attempt`, `steal_result` | TV only, for the overlay |
 | `steal_choices` `{ titleOptions, artistOptions }` | Sent only to the stealer's own socket, never broadcast |
+| `room_closed` `{ code }` | This room ended; here's the new one to join |
 
 `game_state` is the single source of truth; both clients render straight from
 it. The one-shot events exist only to drive audio and animation.
@@ -246,18 +255,33 @@ drop-lines. A kept card flies down off the reveal and slams into place.
 
 ## Notes
 
-- **Turn the phone sideways to place.** The placement screen lays the timeline
-  out left to right, oldest first, with a slot between every card. A slider under
-  the row drives a floating card between those slots; every slot is the same
-  fixed width so the row never reflows and the card has a stable target to
-  glide to. The slider's step is `0.001` so the thumb tracks your finger
-  continuously, while the card only changes slot once you pass the halfway point
-  between two of them. Letting go snaps the thumb onto the slot the card chose.
+- **Placing is a picker wheel, held in portrait.** Your years run top to bottom,
+  oldest first, with a slot between each pair. Scroll until the slot you want
+  sits under the beam; rows shrink and fade with distance so the centre one is
+  unmistakable. Scroll-snap does the settling. The list can run off both edges,
+  which is what lets it hold twenty cards as comfortably as two — the earlier
+  horizontal layout broke the page at around eight.
+- **The wheel's scroller is positioned, not `height: 100%`.** As a percentage it
+  resolved against an indefinite flex height and grew with its own content,
+  which broke the padding maths that lets the first and last slots reach the
+  centre. It is pinned with `inset: 0` instead, and re-measured on the frame
+  after the screen appears, since the layout is still settling before that.
+- **Sound effects are synthesised, not sampled.** `sfx.js` builds every cue from
+  oscillators and gain envelopes at play time: the steal stinger, the per-second
+  tick, the correct and wrong chimes, the card landing, the win fanfare. Nothing
+  to host, nothing to license, and the ticking lines up with the server's
+  deadline instead of drifting against a fixed-length sample. The same tap that
+  unblocks Spotify playback unblocks the AudioContext.
 - **`songs.json` is backed up before every save.** Resolving is slow to redo, so
   `POST /api/songs` copies the previous pool to `songs.backup.json` first, and
-  `POST /api/songs/restore` puts it back. On boot, a pool with track ids but no
-  album art is flagged — that combination means the file was written by something
-  other than `/resolve`, and those ids will not play.
+  `POST /api/songs/restore` puts it back. The backup is only taken when the
+  current pool carries Spotify album art — otherwise a throwaway pool could
+  overwrite the good backup and leave no copy anywhere. On boot, a pool with
+  track ids but no album art is flagged, since that means the file was written
+  by something other than `/resolve` and those ids will not play.
+- **Tests never touch the live pool.** `SONGS_FILE` points the server at a
+  different pool file; the suites run against `songs.test.json` on a second port
+  with compressed timings, so a killed test can't take the resolved pool with it.
 - **The placer never sees the title.** Recognising a song by name is far easier
   than by ear, and that recognition is the entire game, so the card being placed
   stays blank until the reveal.

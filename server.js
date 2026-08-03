@@ -22,8 +22,20 @@ const PORT = Number(process.env.PORT) || 3000;
 const TARGET_CARDS = Number(process.env.TARGET_CARDS) || 10;
 /** How long the reveal stays up before the game moves itself on. */
 const REVEAL_MS = Number(process.env.REVEAL_MS) || 5000;
-const SONGS_PATH = path.join(__dirname, 'songs.json');
-const BACKUP_PATH = path.join(__dirname, 'songs.backup.json');
+/** "Alex is up" breathing room between the reveal and the next song. */
+const INTRO_MS = Number(process.env.INTRO_MS) || 3000;
+/** Dead time at the start of a song where nobody may steal. */
+const STEAL_LOCK_MS = Number(process.env.STEAL_LOCK_MS) || 15000;
+/** How long a stealer gets to pick both answers once they've claimed. */
+const STEAL_ANSWER_MS = Number(process.env.STEAL_ANSWER_MS) || 6000;
+/**
+ * Overridable so a test run can point at a throwaway pool and never touch the
+ * resolved one. Resolving takes a while and losing it is genuinely costly.
+ */
+const SONGS_PATH = process.env.SONGS_FILE
+  ? path.resolve(__dirname, process.env.SONGS_FILE)
+  : path.join(__dirname, 'songs.json');
+const BACKUP_PATH = `${SONGS_PATH.replace(/\.json$/, '')}.backup.json`;
 const CATALOG_PATH = path.join(__dirname, 'song-catalog.json');
 const SETS_PATH = path.join(__dirname, 'sets.json');
 
@@ -166,6 +178,8 @@ const rooms = new Map();
 
 const PHASES = {
   LOBBY: 'lobby',
+  /** "Alex is up, starting in 3" — the card is drawn but nothing plays yet. */
+  TURN_INTRO: 'turn_intro',
   PLAYING: 'playing',
   STEAL_CHOOSING: 'steal_choosing',
   STEAL_PLACING: 'steal_placing',
@@ -214,6 +228,13 @@ function createRoom() {
     playbackFailed: false,
     /** Pending auto-advance out of the reveal. */
     revealTimer: null,
+    /** Pending start of playback after the "who's up" intro. */
+    introTimer: null,
+    /** Fires when a stealer runs out of time to answer. */
+    stealTimer: null,
+    /** When the steal window opens, and when the current answer is due. */
+    stealOpensAt: 0,
+    stealDeadline: 0,
     createdAt: Date.now(),
   };
   rooms.set(code, room);
@@ -252,6 +273,12 @@ function publicState(room) {
     round: room.round,
     targetCards: TARGET_CARDS,
     revealMs: REVEAL_MS,
+    introMs: INTRO_MS,
+    stealAnswerMs: STEAL_ANSWER_MS,
+    // Relative, not absolute: the phone's clock need not agree with the
+    // server's, and each client just counts down locally from receipt.
+    stealOpensInMs: Math.max(0, room.stealOpensAt - Date.now()),
+    stealDeadlineInMs: Math.max(0, room.stealDeadline - Date.now()),
     spotifyReady: room.spotifyReady,
     hostId: room.hostId,
     currentPlayerId: currentPlayer(room)?.id || null,
@@ -340,7 +367,19 @@ function startGame(room) {
   return { ok: true };
 }
 
+/** Every pending timer for a room, cleared together so none fires late. */
+function clearTimers(room) {
+  clearTimeout(room.revealTimer);
+  clearTimeout(room.introTimer);
+  clearTimeout(room.stealTimer);
+  room.revealTimer = null;
+  room.introTimer = null;
+  room.stealTimer = null;
+}
+
 function startTurn(room) {
+  clearTimers(room);
+
   if (room.deckIndex >= room.deck.length) {
     // Ran out of songs — whoever is furthest along takes it.
     const best = room.players.slice().sort((a, b) => b.timeline.length - a.timeline.length)[0];
@@ -357,10 +396,54 @@ function startTurn(room) {
   room.stealBlocked = new Set();
   room.lastReveal = null;
   room.playbackFailed = false;
+  room.stealOpensAt = 0;
+  room.stealDeadline = 0;
+
+  // Announce who's up before any audio, so the room can look up and register
+  // whose turn it is instead of the next song just appearing.
+  room.phase = PHASES.TURN_INTRO;
+  broadcast(room);
+
+  clearTimeout(room.introTimer);
+  room.introTimer = setTimeout(() => beginPlayback(room), INTRO_MS);
+}
+
+function beginPlayback(room) {
+  if (room.phase !== PHASES.TURN_INTRO || !room.currentCard) return;
+
   room.phase = PHASES.PLAYING;
+  // The steal window opens partway in, so nobody can win on the first note.
+  room.stealOpensAt = Date.now() + STEAL_LOCK_MS;
 
   broadcast(room);
   toTv(room, 'song_started', { spotifyUri: room.currentCard.id });
+}
+
+/**
+ * Settle a steal, whether the answer came in or the clock ran out. The TV
+ * plays the verdict and only then resumes the music, so the result isn't
+ * stepped on by the song coming back.
+ */
+function resolveSteal(room, correct) {
+  const claim = room.stealClaim;
+  if (!claim) return;
+
+  clearTimeout(room.stealTimer);
+  room.stealTimer = null;
+  room.stealDeadline = 0;
+
+  if (correct) {
+    // The stealer takes over the turn and now has to place the card themselves.
+    room.placerId = claim.playerId;
+    room.phase = PHASES.STEAL_PLACING;
+  } else {
+    room.stealBlocked.add(claim.playerId);
+    room.stealClaim = null;
+    room.phase = PHASES.PLAYING;
+  }
+
+  toTv(room, 'steal_result', { success: correct, playerName: claim.playerName });
+  broadcast(room);
 }
 
 function isCorrectPlacement(timeline, year, gapIndex) {
@@ -409,8 +492,7 @@ function resolvePlacement(room, player, gapIndex) {
 }
 
 function nextTurn(room) {
-  clearTimeout(room.revealTimer);
-  room.revealTimer = null;
+  clearTimers(room);
 
   if (room.winner) {
     room.phase = PHASES.GAME_OVER;
@@ -439,23 +521,6 @@ function reassignHost(room) {
   if (host && host.connected) return;
   const next = connectedPlayers(room)[0];
   room.hostId = next ? next.id : null;
-}
-
-function resetToLobby(room) {
-  room.phase = PHASES.LOBBY;
-  room.winner = null;
-  room.lastReveal = null;
-  room.currentCard = null;
-  room.stealClaim = null;
-  room.stealBlocked = new Set();
-  room.round = 0;
-  room.currentPlayerIndex = 0;
-  room.placerId = null;
-  room.playbackFailed = false;
-  if (room.revealTimer) clearTimeout(room.revealTimer);
-  room.revealTimer = null;
-  for (const player of room.players) player.timeline = [];
-  broadcast(room);
 }
 
 // ---------------------------------------------------------------------------
@@ -511,7 +576,15 @@ app.post('/api/songs', (req, res) => {
     return res.status(400).json({ error: 'Expected a non-empty array of songs.' });
   }
   try {
-    if (playableSongs().length) fs.copyFileSync(SONGS_PATH, BACKUP_PATH);
+    /*
+     * Only ever back up a pool that came from a real resolve. Album art is the
+     * tell: /resolve always returns it alongside the id, so a pool with ids but
+     * no art was written by something else. Without this guard a throwaway pool
+     * could overwrite the backup and leave no good copy anywhere.
+     */
+    const current = playableSongs();
+    const worthKeeping = current.length && current.some((song) => /i\.scdn\.co/.test(song.albumArt || ''));
+    if (worthKeeping) fs.copyFileSync(SONGS_PATH, BACKUP_PATH);
     fs.writeFileSync(SONGS_PATH, `${JSON.stringify(req.body, null, 2)}\n`);
 
     // The catalogue is the source of truth for year, so a year corrected in the
@@ -651,14 +724,6 @@ io.on('connection', (socket) => {
     io.to(`room:${target.code}`).emit('playback_failed', {});
   });
 
-  socket.on('reset_room', (payload, ack) => {
-    const target = room();
-    if (!target || !target.tvSockets.has(socket.id)) return ack?.({ error: 'Only the TV can reset this room.' });
-    resetToLobby(target);
-    toTv(target, 'stop_music', {});
-    ack?.({ ok: true });
-  });
-
   // --- Joining ------------------------------------------------------------
 
   socket.on('join_game', (payload = {}, ack) => {
@@ -756,15 +821,28 @@ io.on('connection', (socket) => {
     ack?.({ ok: true });
   });
 
-  socket.on('restart_game', (payload, ack) => {
+  /**
+   * Abandon this room and open a fresh one. Available to the host and to the
+   * TV, so a wedged game can be cleared from whichever surface is to hand.
+   * Everyone lands back on the join screen with the new code.
+   */
+  socket.on('new_room', (payload, ack) => {
     const target = room();
     if (!target) return ack?.({ error: 'That game has ended.' });
-    const player = findPlayerBySocket(target, socket.id);
-    if (!player || player.id !== target.hostId) return ack?.({ error: 'Only the host can start a new game.' });
 
-    resetToLobby(target);
+    const isTv = target.tvSockets.has(socket.id);
+    const player = findPlayerBySocket(target, socket.id);
+    if (!isTv && (!player || player.id !== target.hostId)) {
+      return ack?.({ error: 'Only the host or the TV can open a new room.' });
+    }
+
+    const fresh = createRoom();
+    clearTimers(target);
     toTv(target, 'stop_music', {});
-    ack?.({ ok: true });
+    io.to(`room:${target.code}`).emit('room_closed', { code: fresh.code });
+    rooms.delete(target.code);
+
+    ack?.({ ok: true, code: fresh.code });
   });
 
   // --- Turn actions -------------------------------------------------------
@@ -799,6 +877,11 @@ io.on('connection', (socket) => {
     if (target.stealBlocked.has(player.id)) return ack?.({ error: 'You already used your steal this turn.' });
     if (target.stealClaim) return ack?.({ error: 'Someone beat you to it.' });
 
+    const waitMs = target.stealOpensAt - Date.now();
+    if (waitMs > 0) {
+      return ack?.({ error: `Hold on — ${Math.ceil(waitMs / 1000)}s until stealing opens.` });
+    }
+
     const card = target.currentCard;
     const titles = buildChoices(card.title, songPool.map((s) => s.title));
     const artists = buildChoices(card.artist, songPool.map((s) => s.artist));
@@ -812,10 +895,18 @@ io.on('connection', (socket) => {
       correctArtistIndex: artists.correctIndex,
     };
     target.phase = PHASES.STEAL_CHOOSING;
+    target.stealDeadline = Date.now() + STEAL_ANSWER_MS;
+
+    // Running out of time is the same outcome as answering wrong, so the
+    // room can never be left waiting on someone who froze.
+    clearTimeout(target.stealTimer);
+    target.stealTimer = setTimeout(() => {
+      if (target.phase === PHASES.STEAL_CHOOSING) resolveSteal(target, false);
+    }, STEAL_ANSWER_MS);
 
     broadcast(target);
     toTv(target, 'pause_music', {});
-    toTv(target, 'steal_attempt', { playerName: player.name });
+    toTv(target, 'steal_attempt', { playerName: player.name, answerMs: STEAL_ANSWER_MS });
     // The options — and which one is right — go only to the stealer's socket.
     io.to(socket.id).emit('steal_choices', { titleOptions: titles.options, artistOptions: artists.options });
     ack?.({ ok: true });
@@ -833,21 +924,7 @@ io.on('connection', (socket) => {
     if (!player || player.id !== claim.playerId) return ack?.({ error: 'This is not your steal to answer.' });
 
     const correct = payload.titleIndex === claim.correctTitleIndex && payload.artistIndex === claim.correctArtistIndex;
-
-    if (correct) {
-      // The stealer takes over the turn and now has to place the card themselves.
-      target.placerId = player.id;
-      target.phase = PHASES.STEAL_PLACING;
-      toTv(target, 'steal_result', { success: true, playerName: claim.playerName });
-    } else {
-      target.stealBlocked.add(player.id);
-      target.stealClaim = null;
-      target.phase = PHASES.PLAYING;
-      toTv(target, 'steal_result', { success: false, playerName: claim.playerName });
-      toTv(target, 'resume_music', {});
-    }
-
-    broadcast(target);
+    resolveSteal(target, correct);
     ack?.({ ok: true, correct });
   });
 
@@ -884,14 +961,12 @@ io.on('connection', (socket) => {
       // A stealer who vanishes mid-choice would otherwise leave the room
       // stuck waiting on an answer that's never coming.
       if (target.phase === PHASES.STEAL_CHOOSING && target.stealClaim?.playerId === player.id) {
-        target.stealClaim = null;
-        target.phase = PHASES.PLAYING;
-        toTv(target, 'resume_music', {});
+        resolveSteal(target, false);
       }
 
       // If the room emptied out during the lobby, drop the room entirely.
       if (target.phase === PHASES.LOBBY && !connectedPlayers(target).length && !target.tvSockets.size) {
-        clearTimeout(target.revealTimer);
+        clearTimers(target);
         rooms.delete(target.code);
         return;
       }
@@ -921,7 +996,7 @@ setInterval(() => {
   for (const [code, target] of rooms) {
     const empty = !target.tvSockets.size && !connectedPlayers(target).length;
     if (empty && target.createdAt < cutoff) {
-      clearTimeout(target.revealTimer);
+      clearTimers(target);
       rooms.delete(code);
     }
   }
