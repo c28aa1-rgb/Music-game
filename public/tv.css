@@ -792,29 +792,48 @@
    Steal clock — sits under the now-playing block during a song.
    -------------------------------------------------------------------------- */
 
+/*
+ * Parked on the right of the now-playing row. The left column already carries
+ * the disc, the title, the waveform and the progress bar; hanging a countdown
+ * off the bottom of that stack made it a wall.
+ */
 .stealclock {
   display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
-  margin: 0 0 0.7rem;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-left: auto;
+  padding-left: clamp(1rem, 3vw, 3rem);
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.stealclock__label {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--muted);
 }
 
 .stealclock__value {
   font-family: var(--font-display);
-  font-size: clamp(1.2rem, 2vw, 1.7rem);
-  letter-spacing: 0;
+  /* Room to be big now that it has its own column. */
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  line-height: 0.9;
   color: var(--muted);
   transition: color 200ms var(--ease);
+  font-variant-numeric: tabular-nums;
 }
 
-/* Once stealing is live the whole line switches on. */
+/* Once stealing is live the whole block switches on. */
 .stealclock--open .stealclock__label { color: var(--accent-2); }
+
 .stealclock--open .stealclock__value {
+  /* A word, not a number — it doesn't need the same weight as a countdown. */
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  letter-spacing: 0.04em;
   color: var(--accent-2);
   animation: steal-live 1.8s ease-in-out infinite;
 }
@@ -1049,4 +1068,10 @@
   .lobby__players { justify-content: center; }
   .nowplaying { flex-direction: column; text-align: center; }
   .progress, .nowplaying__wave { margin-left: auto; margin-right: auto; }
+  .stealclock {
+    margin-left: 0;
+    padding-left: 0;
+    align-items: center;
+    text-align: center;
+  }
 }

@@ -89,13 +89,6 @@
         <p class="eyebrow" id="np-eyebrow">Now playing</p>
         <p class="display nowplaying__title" id="np-title">??? — ?????</p>
         <p class="nowplaying__sub" id="np-sub">Nobody knows the year yet.</p>
-
-        <!-- Counts down to the moment stealing opens, then reports it's live. -->
-        <p class="stealclock" id="steal-clock" hidden>
-          <span class="stealclock__label" id="steal-clock-label">Steals open in</span>
-          <span class="stealclock__value" id="steal-clock-value">15</span>
-        </p>
-
         <div class="nowplaying__wave" aria-hidden="true">
           <div class="wave is-idle" id="wave"></div>
         </div>
@@ -103,6 +96,13 @@
           <div class="progress__fill" id="progress-fill"></div>
         </div>
         <p class="readout nowplaying__time"><span id="np-elapsed">0:00</span></p>
+      </div>
+
+      <!-- Counts down to the moment stealing opens, then reports it's live.
+           Kept on the right, away from the now-playing column. -->
+      <div class="stealclock" id="steal-clock" hidden>
+        <span class="stealclock__label" id="steal-clock-label">Steals open in</span>
+        <span class="stealclock__value" id="steal-clock-value">15</span>
       </div>
     </section>
 

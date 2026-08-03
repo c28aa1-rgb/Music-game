@@ -78,15 +78,16 @@
         <h2 class="display place__title">Where does it go?</h2>
       </header>
 
-      <!-- A picker wheel: your years run top to bottom, oldest first. Scroll
-           until the slot you want is centred. Rows shrink and fade with
-           distance so the choice in the middle is unmistakable. -->
+      <!-- A picker wheel. Your years run top to bottom, oldest first, and the
+           new card sits permanently in the middle — scrolling moves the years
+           past it, so what you're choosing is how many fall above and below.
+           Only ever one gap, so the list stays tight however many cards. -->
       <div class="wheel" id="wheel">
-        <div class="wheel__beam" aria-hidden="true"></div>
         <div class="wheel__scroll" id="wheel-scroll" tabindex="0"
              role="listbox" aria-label="Choose where this song goes">
           <div class="wheel__rail" id="wheel-rail"></div>
         </div>
+        <div class="wheel__card" aria-hidden="true"><span>?</span></div>
       </div>
 
       <div class="dock">

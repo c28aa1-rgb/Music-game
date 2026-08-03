@@ -84,12 +84,6 @@
   const SFX = {
     unlock,
 
-    /** Two rising blips: the steal button just went live. */
-    stealOpen() {
-      tone({ freq: 880, type: 'sine', duration: 0.09, peak: 0.5 });
-      tone({ freq: 1320, type: 'sine', start: 0.1, duration: 0.13, peak: 0.45 });
-    },
-
     /** Someone hit steal. A stab and a rising swell — the room should look up. */
     stealClaimed() {
       noise({ duration: 0.18, peak: 0.55, frequency: 2600, q: 0.7 });

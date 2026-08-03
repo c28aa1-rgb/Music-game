@@ -174,6 +174,9 @@ const SCREENS = ['screen-join', 'screen-lobby', 'screen-waiting', 'screen-place'
 
 function show(id) {
   for (const screen of SCREENS) el(screen).hidden = screen !== id;
+  // The steal countdown only makes sense on the waiting screen; left running it
+  // would keep ticking against a button nobody can see.
+  if (id !== 'screen-waiting') clearInterval(stealCountdown);
 }
 
 function render() {
@@ -183,8 +186,12 @@ function render() {
     case 'lobby': return renderLobby();
     case 'game_over': return renderOver();
     case 'revealing': return renderReveal();
-    // The intro belongs to the TV; phones just wait through it.
-    case 'turn_intro': return renderWaiting();
+    // The intro and the verdict belong to the TV; phones wait them out. Not
+    // handing the placer their wheel back until the verdict is over is the
+    // point — otherwise they can commit a card while the room is still
+    // reading the result.
+    case 'turn_intro':
+    case 'steal_verdict': return renderWaiting();
     case 'steal_choosing':
       return state.stealClaim?.playerId === me.id ? renderStealChoice() : renderWaiting();
     default:
@@ -203,7 +210,20 @@ function renderLobby() {
   for (const p of state.players) {
     const item = document.createElement('li');
     item.className = `roster__item${p.id === me.id ? ' roster__item--you' : ''}${p.connected ? '' : ' roster__item--offline'}`;
-    item.innerHTML = `<span>${escapeHtml(p.name)}</span>${p.isHost ? '<span class="roster__tag">host</span>' : ''}`;
+    item.innerHTML = `<span>${escapeHtml(p.name)}</span>`;
+
+    if (p.isHost) {
+      item.insertAdjacentHTML('beforeend', '<span class="roster__tag">host</span>');
+    } else if (me.isHost && p.connected) {
+      // Only the current host can hand it off, and only to someone actually here.
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'roster__action';
+      button.textContent = 'Make host';
+      button.addEventListener('click', () => send('transfer_host', { playerId: p.id }));
+      item.appendChild(button);
+    }
+
     list.appendChild(item);
   }
 
@@ -230,17 +250,29 @@ function renderWaiting() {
   const placer = state.players.find((p) => p.id === state.placerId);
   const playing = state.phase === 'playing';
   const intro = state.phase === 'turn_intro';
+  const verdict = state.phase === 'steal_verdict' ? state.stealOutcome : null;
   const stealerName = state.stealClaim?.playerName;
 
-  el('waiting-eyebrow').textContent = intro ? 'Next up' : playing ? 'Listening' : 'Hold on';
-  el('waiting-title').textContent = playing || intro
-    ? (placer ? `${placer.name} is up` : 'Waiting')
-    : (stealerName ? `${stealerName} is naming it` : 'Waiting');
-  el('waiting-note').textContent = intro
-    ? 'The next song is about to start.'
-    : playing
-      ? 'A song is playing on the TV. No year, no title, no clues.'
-      : (stealerName ? `${stealerName} is picking their answer. Music is paused.` : 'The table is sorting something out.');
+  if (verdict) {
+    const mine = verdict.playerName === me.name;
+    el('waiting-eyebrow').textContent = verdict.success ? 'Stolen' : 'Denied';
+    el('waiting-title').textContent = verdict.success
+      ? (mine ? 'You got it' : `${verdict.playerName} got it`)
+      : (mine ? 'Not this time' : `${verdict.playerName} missed`);
+    el('waiting-note').textContent = verdict.success
+      ? 'The card goes to them to place.'
+      : 'The song picks up where it left off.';
+  } else {
+    el('waiting-eyebrow').textContent = intro ? 'Next up' : playing ? 'Listening' : 'Hold on';
+    el('waiting-title').textContent = playing || intro
+      ? (placer ? `${placer.name} is up` : 'Waiting')
+      : (stealerName ? `${stealerName} is naming it` : 'Waiting');
+    el('waiting-note').textContent = intro
+      ? 'The next song is about to start.'
+      : playing
+        ? 'A song is playing on the TV. No year, no title, no clues.'
+        : (stealerName ? `${stealerName} is picking their answer. Music is paused.` : 'The table is sorting something out.');
+  }
 
   const wave = el('waiting-wave');
   if (!wave.childElementCount) buildWave(wave, 28);
@@ -298,7 +330,7 @@ function renderStealButton(playing) {
 // Placement wheel
 // ---------------------------------------------------------------------------
 
-/** Row height in px. Must match .wrow / .wslot in the stylesheet. */
+/** Year row height in px. Must match .wrow in the stylesheet. */
 const ROW_H = 62;
 
 function renderPlace() {
@@ -334,19 +366,18 @@ function buildWheel(timeline) {
   const rail = el('wheel-rail');
   rail.innerHTML = '';
 
-  // Half a viewport of padding top and bottom, so the first and last slots
-  // can still reach the centre beam.
   const pad = document.createElement('div');
   pad.className = 'wheel__pad';
   rail.appendChild(pad);
 
+  // marker, year, marker, year … marker. The markers are the snap targets;
+  // the years are just labels that part around the fixed centre card.
   for (let i = 0; i <= timeline.length; i++) {
-    const slot = document.createElement('div');
-    slot.className = 'wslot';
-    slot.dataset.gap = String(i);
-    slot.setAttribute('role', 'option');
-    slot.innerHTML = '<span class="wslot__mark">?</span>';
-    rail.appendChild(slot);
+    const mark = document.createElement('div');
+    mark.className = 'wmark';
+    mark.dataset.gap = String(i);
+    mark.setAttribute('role', 'option');
+    rail.appendChild(mark);
 
     const card = timeline[i];
     if (!card) continue;
@@ -364,13 +395,14 @@ function buildWheel(timeline) {
 }
 
 /**
- * Half a viewport of padding at each end, so the first and last slots can
- * still reach the centre beam.
+ * Half a viewport of padding at each end, so the boundaries before the first
+ * year and after the last can still reach the centre. The markers are
+ * zero-height, so this is exactly half the scroller rather than half a row.
  */
 function sizeWheelPadding() {
   const scroller = el('wheel-scroll');
   const pads = el('wheel-rail').querySelectorAll('.wheel__pad');
-  const height = Math.max(0, (scroller.clientHeight - ROW_H) / 2);
+  const height = Math.max(0, scroller.clientHeight / 2);
   let changed = false;
   pads.forEach((pad) => {
     const next = `${height}px`;
@@ -394,19 +426,21 @@ if (window.ResizeObserver) {
 
 function scrollToGap(index, smooth = true) {
   const scroller = el('wheel-scroll');
-  const slot = el('wheel-rail').querySelector(`.wslot[data-gap="${index}"]`);
-  if (!slot) return;
-  const target = slot.offsetTop - (scroller.clientHeight - slot.offsetHeight) / 2;
-  scroller.scrollTo({ top: target, behavior: smooth ? 'smooth' : 'auto' });
+  const mark = el('wheel-rail').querySelector(`.wmark[data-gap="${index}"]`);
+  if (!mark) return;
+  scroller.scrollTo({ top: mark.offsetTop - scroller.clientHeight / 2, behavior: smooth ? 'smooth' : 'auto' });
   // Snap picks this up on settle, but update immediately so the label is right.
   selectedGap = index;
   updateWheel();
 }
 
+/** How far the years part to make room for the card sitting between them. */
+const GAP_H = 74;
+
 /**
- * Scales and fades every row by its distance from the centre beam, and works
- * out which slot is currently selected. Called on every scroll frame, so it
- * only touches inline styles — no layout reads beyond the offsets it needs.
+ * Parts the years around the centre card, fades them off with distance, and
+ * works out which boundary is currently under it. Runs on every scroll frame,
+ * so it only writes inline custom properties — no layout thrash.
  */
 function updateWheel() {
   const scroller = el('wheel-scroll');
@@ -421,21 +455,26 @@ function updateWheel() {
     if (node.classList.contains('wheel__pad')) continue;
 
     const nodeCentre = node.offsetTop + node.offsetHeight / 2;
-    const distance = Math.abs(nodeCentre - centre);
-    // Fall off over roughly three rows, then hold — far rows stay legible
-    // rather than collapsing to nothing.
-    const falloff = Math.min(distance / (ROW_H * 3), 1);
-    node.style.setProperty('--s', String(1 - falloff * 0.32));
-    node.style.setProperty('--o', String(1 - falloff * 0.62));
+    const offset = nodeCentre - centre;
 
-    if (node.classList.contains('wslot') && distance < bestDistance) {
-      bestDistance = distance;
-      bestGap = Number(node.dataset.gap);
+    if (node.classList.contains('wmark')) {
+      const distance = Math.abs(offset);
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        bestGap = Number(node.dataset.gap);
+      }
+      continue;
     }
-  }
 
-  for (const node of rail.querySelectorAll('.wslot')) {
-    node.classList.toggle('wslot--active', Number(node.dataset.gap) === bestGap);
+    // Years above the centre slide up, years below slide down — that split is
+    // the gap the card occupies, and it's always in the middle.
+    node.style.setProperty('--shift', `${offset < 0 ? -GAP_H / 2 : GAP_H / 2}px`);
+
+    // Fall off over roughly three rows, then hold, so distant years stay
+    // legible rather than collapsing to nothing.
+    const falloff = Math.min(Math.abs(offset) / (ROW_H * 3), 1);
+    node.style.setProperty('--s', String(1 - falloff * 0.3));
+    node.style.setProperty('--o', String(1 - falloff * 0.6));
   }
 
   selectedGap = bestGap;

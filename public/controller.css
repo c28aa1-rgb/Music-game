@@ -161,6 +161,27 @@
   color: var(--accent);
 }
 
+.roster__action {
+  margin-left: auto;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.roster__action:hover,
+.roster__action:active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 /* --------------------------------------------------------------------------
    Steal — one question per screen, six seconds for both.
    -------------------------------------------------------------------------- */
@@ -332,10 +353,10 @@
 /* ==========================================================================
    PLACEMENT — the wheel
 
-   Your years run top to bottom, oldest first, with a slot between each pair.
-   Scroll until the slot you want sits under the beam. Rows shrink and fade
-   with distance from centre, so the row you're choosing is unmistakable and
-   the list stays readable whether you hold two cards or twenty.
+   The new card is fixed in the centre and the years scroll past it, parting
+   around it as they cross. There is only ever one gap, so a long timeline
+   stays as tight as a short one — and since a year is never itself a target,
+   there's nothing to select but the space between two of them.
    ========================================================================== */
 
 .screen--place {
@@ -355,32 +376,16 @@
   position: relative;
   flex: 1 1 auto;
   min-height: 0;
-  /* Rows scroll under the beam and fade out top and bottom, so the list can
-     run off the edge without looking cut off. */
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent);
-  mask-image: linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent);
-}
-
-/* The selection line. Fixed at the centre; the list moves, not the beam. */
-.wheel__beam {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 62px;
-  transform: translateY(-50%);
-  border-top: 1px solid var(--accent);
-  border-bottom: 1px solid var(--accent);
-  background: var(--accent-glow);
-  opacity: 0.28;
-  pointer-events: none;
-  z-index: 1;
+  /* Years fade out top and bottom, so the list can run off the edge without
+     looking cut off. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
 }
 
 /*
  * Pinned rather than height:100% — as a percentage it resolved against an
  * indefinite flex height and the scroller grew with its own content, which
- * broke the padding maths that centres the end slots.
+ * broke the padding maths that centres the ends.
  */
 .wheel__scroll {
   position: absolute;
@@ -410,51 +415,51 @@
   font-family: var(--font-display);
   font-size: 1.9rem;
   color: var(--text);
-  /* Driven from JS as the list scrolls. */
-  transform: scale(var(--s, 1));
+  /* --shift parts the years around the card; --s and --o fall off with
+     distance. All three are driven from JS as the list scrolls. */
+  transform: translateY(var(--shift, 0px)) scale(var(--s, 1));
   opacity: var(--o, 1);
-  transition: color 160ms var(--ease);
+  transition: transform 200ms var(--ease);
   will-change: transform, opacity;
 }
 
-/* A slot the new card can go into. These are the snap targets. */
-.wslot {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 62px;
+/*
+ * Zero-height markers sitting on each boundary between years, including
+ * before the first and after the last. They're what the scroll snaps to —
+ * a boundary is the actual choice, and no year is ever a target.
+ */
+.wmark {
+  height: 0;
   flex: 0 0 auto;
   scroll-snap-align: center;
-  transform: scale(var(--s, 1));
-  opacity: var(--o, 1);
-  will-change: transform, opacity;
 }
 
-.wslot__mark {
+/* The card being placed. Fixed dead centre; the years move around it. */
+.wheel__card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 92px;
+  height: 58px;
+  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 54px;
-  height: 40px;
-  border: 1px dashed var(--line-strong);
-  border-radius: 999px;
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  color: var(--muted);
-  transition: all 200ms var(--spring);
-}
-
-.wslot--active .wslot__mark {
-  width: 74px;
-  height: 48px;
-  border-style: solid;
-  border-color: var(--accent);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
   background: var(--surface);
-  color: var(--accent);
-  box-shadow: 0 6px 18px rgba(27, 42, 63, 0.18);
+  box-shadow: 0 8px 24px rgba(27, 42, 63, 0.22), 0 0 0 6px var(--accent-glow);
+  pointer-events: none;
+  z-index: 2;
 }
 
-/* Spacers so the first and last slot can reach the centre of the viewport. */
+.wheel__card span {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  color: var(--accent);
+}
+
+/* Spacers so the first and last boundary can reach the centre. */
 .wheel__pad { flex: 0 0 auto; }
 
 .wheel__readout {

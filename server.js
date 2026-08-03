@@ -18,16 +18,42 @@ const express = require('express');
 const QRCode = require('qrcode');
 const { Server } = require('socket.io');
 
-const PORT = Number(process.env.PORT) || 3000;
-const TARGET_CARDS = Number(process.env.TARGET_CARDS) || 10;
+/**
+ * `Number(x) || fallback` silently discards an explicit 0 — 0 is falsy, so
+ * STEAL_LOCK_MS=0 in .env would quietly become 15000 instead of "no lockout".
+ * This only falls back when the variable is genuinely unset or unparseable.
+ */
+function envInt(name, fallback) {
+  const raw = process.env[name];
+  if (raw === undefined || raw === '') return fallback;
+  const n = Number(raw);
+  return Number.isFinite(n) ? n : fallback;
+}
+
+const PORT = envInt('PORT', 3000);
+const TARGET_CARDS = envInt('TARGET_CARDS', 10);
 /** How long the reveal stays up before the game moves itself on. */
-const REVEAL_MS = Number(process.env.REVEAL_MS) || 5000;
+const REVEAL_MS = envInt('REVEAL_MS', 5000);
 /** "Alex is up" breathing room between the reveal and the next song. */
-const INTRO_MS = Number(process.env.INTRO_MS) || 3000;
+const INTRO_MS = envInt('INTRO_MS', 3000);
 /** Dead time at the start of a song where nobody may steal. */
-const STEAL_LOCK_MS = Number(process.env.STEAL_LOCK_MS) || 15000;
+const STEAL_LOCK_MS = envInt('STEAL_LOCK_MS', 15000);
 /** How long a stealer gets to pick both answers once they've claimed. */
-const STEAL_ANSWER_MS = Number(process.env.STEAL_ANSWER_MS) || 6000;
+const STEAL_ANSWER_MS = envInt('STEAL_ANSWER_MS', 6000);
+/**
+ * How long the steal verdict owns the room. This is a real phase rather than a
+ * TV-only animation: if play resumed the instant the answer landed, the placer
+ * could commit a card while the verdict was still on screen, and the reveal
+ * that followed would be cut short by a timer that had already been running.
+ */
+const VERDICT_MS = envInt('VERDICT_MS', 2800);
+/**
+ * Extra songs required beyond the player count before a game may start. Kept
+ * generous by default so a real game has variety; the discard pile recycling
+ * wrong guesses means it's no longer load-bearing for "won't the game just
+ * end abruptly", so it's fine to loosen for a small custom set — or a test.
+ */
+const MIN_DECK_BUFFER = envInt('MIN_DECK_BUFFER', 8);
 /**
  * Overridable so a test run can point at a throwaway pool and never touch the
  * resolved one. Resolving takes a while and losing it is genuinely costly.
@@ -36,7 +62,11 @@ const SONGS_PATH = process.env.SONGS_FILE
   ? path.resolve(__dirname, process.env.SONGS_FILE)
   : path.join(__dirname, 'songs.json');
 const BACKUP_PATH = `${SONGS_PATH.replace(/\.json$/, '')}.backup.json`;
-const CATALOG_PATH = path.join(__dirname, 'song-catalog.json');
+// Overridable for the same reason as SONGS_PATH — lets a test point at a tiny
+// throwaway catalog instead of exercising the real one.
+const CATALOG_PATH = process.env.CATALOG_FILE
+  ? path.resolve(__dirname, process.env.CATALOG_FILE)
+  : path.join(__dirname, 'song-catalog.json');
 const SETS_PATH = path.join(__dirname, 'sets.json');
 
 const app = express();
@@ -182,6 +212,8 @@ const PHASES = {
   TURN_INTRO: 'turn_intro',
   PLAYING: 'playing',
   STEAL_CHOOSING: 'steal_choosing',
+  /** The result is on screen and nobody acts until it has been seen. */
+  STEAL_VERDICT: 'steal_verdict',
   STEAL_PLACING: 'steal_placing',
   REVEALING: 'revealing',
   GAME_OVER: 'game_over',
@@ -214,6 +246,8 @@ function createRoom() {
     placerId: null,
     deck: [],
     deckIndex: 0,
+    /** Wrong guesses land here and get reshuffled in once the deck runs dry. */
+    discardPile: [],
     /**
      * Set while a steal is in progress. Server-side this also holds the full
      * multiple-choice options and which index is correct; publicState()
@@ -232,6 +266,10 @@ function createRoom() {
     introTimer: null,
     /** Fires when a stealer runs out of time to answer. */
     stealTimer: null,
+    /** Fires when the verdict has been on screen long enough. */
+    verdictTimer: null,
+    /** { success, playerName } while the verdict is showing. */
+    stealOutcome: null,
     /** When the steal window opens, and when the current answer is due. */
     stealOpensAt: 0,
     stealDeadline: 0,
@@ -275,6 +313,8 @@ function publicState(room) {
     revealMs: REVEAL_MS,
     introMs: INTRO_MS,
     stealAnswerMs: STEAL_ANSWER_MS,
+    verdictMs: VERDICT_MS,
+    stealOutcome: room.stealOutcome,
     // Relative, not absolute: the phone's clock need not agree with the
     // server's, and each client just counts down locally from receipt.
     stealOpensInMs: Math.max(0, room.stealOpensAt - Date.now()),
@@ -291,7 +331,8 @@ function publicState(room) {
     stealBlocked: Array.from(room.stealBlocked),
     playbackFailed: room.playbackFailed,
     winner: room.winner,
-    cardsLeft: Math.max(0, room.deck.length - room.deckIndex),
+    // Includes the discard pile, since those cards are still coming back.
+    cardsLeft: Math.max(0, room.deck.length - room.deckIndex) + room.discardPile.length,
     lastReveal: room.lastReveal,
     players: room.players.map((p) => ({
       id: p.id,
@@ -340,7 +381,7 @@ function buildChoices(correctValue, pool, count = 6) {
 
 function startGame(room) {
   const playable = activeSongs();
-  const needed = room.players.length + 8;
+  const needed = room.players.length + MIN_DECK_BUFFER;
   if (playable.length < needed) {
     const total = playableSongs().length;
     return {
@@ -352,6 +393,7 @@ function startGame(room) {
 
   room.deck = shuffle(playable);
   room.deckIndex = 0;
+  room.discardPile = [];
   room.round = 1;
   room.currentPlayerIndex = 0;
   room.winner = null;
@@ -372,27 +414,39 @@ function clearTimers(room) {
   clearTimeout(room.revealTimer);
   clearTimeout(room.introTimer);
   clearTimeout(room.stealTimer);
+  clearTimeout(room.verdictTimer);
   room.revealTimer = null;
   room.introTimer = null;
   room.stealTimer = null;
+  room.verdictTimer = null;
 }
 
 function startTurn(room) {
   clearTimers(room);
 
   if (room.deckIndex >= room.deck.length) {
-    // Ran out of songs — whoever is furthest along takes it.
-    const best = room.players.slice().sort((a, b) => b.timeline.length - a.timeline.length)[0];
-    room.winner = best ? { id: best.id, name: best.name, score: best.timeline.length } : null;
-    room.phase = PHASES.GAME_OVER;
-    room.currentCard = null;
-    broadcast(room);
-    return;
+    if (room.discardPile.length) {
+      // Wrong guesses don't leave the game — reshuffle them back in as a
+      // fresh deck rather than ending things early.
+      room.deck = shuffle(room.discardPile);
+      room.discardPile = [];
+      room.deckIndex = 0;
+    } else {
+      // Every song has either been recycled away or correctly placed
+      // somewhere — nothing left anywhere. Whoever is furthest along takes it.
+      const best = room.players.slice().sort((a, b) => b.timeline.length - a.timeline.length)[0];
+      room.winner = best ? { id: best.id, name: best.name, score: best.timeline.length } : null;
+      room.phase = PHASES.GAME_OVER;
+      room.currentCard = null;
+      broadcast(room);
+      return;
+    }
   }
 
   room.currentCard = room.deck[room.deckIndex++];
   room.placerId = currentPlayer(room)?.id || null;
   room.stealClaim = null;
+  room.stealOutcome = null;
   room.stealBlocked = new Set();
   room.lastReveal = null;
   room.playbackFailed = false;
@@ -420,9 +474,13 @@ function beginPlayback(room) {
 }
 
 /**
- * Settle a steal, whether the answer came in or the clock ran out. The TV
- * plays the verdict and only then resumes the music, so the result isn't
- * stepped on by the song coming back.
+ * Settle a steal, whether the answer came in or the clock ran out.
+ *
+ * The result gets its own phase for a couple of seconds. Handing the turn
+ * straight back would let the placer commit a card while the verdict was still
+ * up on the TV, and the reveal that followed would then be racing a timer that
+ * had already been running — which is how a turn could appear to end seconds
+ * after it resumed.
  */
 function resolveSteal(room, correct) {
   const claim = room.stealClaim;
@@ -432,17 +490,35 @@ function resolveSteal(room, correct) {
   room.stealTimer = null;
   room.stealDeadline = 0;
 
+  room.stealOutcome = { success: correct, playerName: claim.playerName };
+  room.phase = PHASES.STEAL_VERDICT;
+
+  toTv(room, 'steal_result', { success: correct, playerName: claim.playerName });
+  broadcast(room);
+
+  clearTimeout(room.verdictTimer);
+  room.verdictTimer = setTimeout(() => finishSteal(room, correct), VERDICT_MS);
+}
+
+/** Hand the turn back once the verdict has been seen, and restart the song. */
+function finishSteal(room, correct) {
+  if (room.phase !== PHASES.STEAL_VERDICT) return;
+  const claim = room.stealClaim;
+  if (!claim) return;
+
   if (correct) {
     // The stealer takes over the turn and now has to place the card themselves.
     room.placerId = claim.playerId;
     room.phase = PHASES.STEAL_PLACING;
   } else {
     room.stealBlocked.add(claim.playerId);
-    room.stealClaim = null;
     room.phase = PHASES.PLAYING;
   }
 
-  toTv(room, 'steal_result', { success: correct, playerName: claim.playerName });
+  room.stealClaim = null;
+  room.stealOutcome = null;
+
+  toTv(room, 'resume_music', {});
   broadcast(room);
 }
 
@@ -461,7 +537,14 @@ function resolvePlacement(room, player, gapIndex) {
   if (correct) {
     player.timeline.splice(gapIndex, 0, { ...card });
     player.timeline.sort((a, b) => a.year - b.year);
+  } else {
+    // Doesn't vanish — it's back in circulation once the deck runs dry.
+    room.discardPile.push(card);
   }
+
+  // Read the phase, not stealClaim: the claim is cleared when the verdict ends,
+  // which is before a successful stealer ever gets to place.
+  const wasSteal = room.phase === PHASES.STEAL_PLACING;
 
   room.phase = PHASES.REVEALING;
   room.lastReveal = {
@@ -470,7 +553,7 @@ function resolvePlacement(room, player, gapIndex) {
     gapIndex,
     placerId: player.id,
     placerName: player.name,
-    wasSteal: room.stealClaim !== null,
+    wasSteal,
   };
   room.currentCard = null;
   room.stealClaim = null;
@@ -804,6 +887,23 @@ io.on('connection', (socket) => {
     ack?.({ ok: true });
   });
 
+  /** Hand host duties to someone else, on purpose rather than by disconnecting. */
+  socket.on('transfer_host', (payload = {}, ack) => {
+    const target = room();
+    if (!target) return ack?.({ error: 'That game has ended.' });
+    const player = findPlayerBySocket(target, socket.id);
+    if (!player || player.id !== target.hostId) return ack?.({ error: 'Only the host can hand off host.' });
+
+    const next = findPlayer(target, payload.playerId);
+    if (!next) return ack?.({ error: 'That player is not in this game.' });
+    if (!next.connected) return ack?.({ error: `${next.name} is not connected right now.` });
+    if (next.id === target.hostId) return ack?.({ error: `${next.name} is already the host.` });
+
+    target.hostId = next.id;
+    broadcast(target);
+    ack?.({ ok: true });
+  });
+
   socket.on('skip_song', (payload, ack) => {
     const target = room();
     if (!target) return ack?.({ error: 'That game has ended.' });
@@ -816,6 +916,7 @@ io.on('connection', (socket) => {
     // Put the skipped song back at the bottom rather than burning it.
     if (target.currentCard) target.deck.push(target.currentCard);
     target.stealClaim = null;
+    target.stealOutcome = null;
     target.stealBlocked = new Set();
     startTurn(target);
     ack?.({ ok: true });
