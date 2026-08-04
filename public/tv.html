@@ -199,6 +199,16 @@
     </div>
   </div>
 
+  <!-- Match point ---------------------------------------------------------- -->
+  <!-- Sits above the reveal overlay: the moment someone comes within one card
+       of winning is the moment the rest of the table needs to know, and that
+       moment happens while the reveal is still on screen. -->
+  <div id="announce" class="announce" role="status" hidden>
+    <span class="announce__flare" aria-hidden="true"></span>
+    <span class="announce__name" id="announce-name"></span>
+    <span class="announce__text">has <strong>1 card</strong> remaining</span>
+  </div>
+
   <div id="toast" class="toast" role="status" hidden></div>
 
   <script src="https://sdk.scdn.co/spotify-player.js"></script>

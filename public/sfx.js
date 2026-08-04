@@ -121,6 +121,22 @@
       tone({ freq: 520, endFreq: 300, type: 'sine', duration: 0.16, peak: 0.4 });
     },
 
+    /**
+     * Somebody is one card from winning. Deliberately not a happy sound — it
+     * is a warning to everyone else — so it climbs and then hangs unresolved
+     * on a bare fifth instead of landing on a major chord.
+     */
+    matchPoint() {
+      noise({ duration: 0.5, peak: 0.22, frequency: 5200, q: 0.5 });
+      [440, 587.33, 659.25].forEach((freq, i) => {
+        tone({ freq, type: 'triangle', start: i * 0.13, duration: 0.16, peak: 0.5 });
+      });
+      // The held pair, left hanging.
+      tone({ freq: 659.25, type: 'triangle', start: 0.39, duration: 1.1, peak: 0.5 });
+      tone({ freq: 988, type: 'triangle', start: 0.39, duration: 1.1, peak: 0.34 });
+      tone({ freq: 164.81, type: 'sine', start: 0.39, duration: 1.2, peak: 0.42 });
+    },
+
     /** Somebody won. */
     fanfare() {
       [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {

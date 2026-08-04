@@ -752,6 +752,7 @@ function render() {
   renderNowPlaying();
   renderGroove();
   renderPlayerBar();
+  renderMatchPoint();
   renderOverlay();
 
   shownPhase = state.phase;
@@ -874,12 +875,54 @@ function renderGroove() {
     container.appendChild(item);
   });
 
+  fitGroove();
+
   // Keep a freshly placed card in view on long timelines.
   if (justPlaced !== null) {
     requestAnimationFrame(() => {
       container.querySelector('.tcard--new')?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     });
   }
+}
+
+/**
+ * Shrink the timeline until it fits the screen.
+ *
+ * A full-size row runs out of width somewhere around the eighth card, and a
+ * won game needs ten — so without this the closing stretch of every game is
+ * played against a timeline that has slid halfway off the screen.
+ *
+ * The natural width is measured rather than calculated: the card size is a
+ * clamp() of viewport units, so the only thing that reliably knows how wide a
+ * row wants to be is the browser that just laid it out.
+ */
+function fitGroove() {
+  const wrap = document.querySelector('.groove-wrap');
+  const scroll = el('groove-scroll');
+  const groove = el('groove');
+  if (!wrap || !scroll || !groove) return;
+
+  // Measure at full size, or each pass would compound the last one's shrink.
+  wrap.style.setProperty('--tscale', '1');
+
+  const available = scroll.clientWidth;
+  const needed = groove.scrollWidth;
+  if (!available || !needed) return;
+
+  // A couple of pixels of slack, so rounding cannot leave a scrollbar behind.
+  const scale = (available - 4) / needed;
+  // Past this the text stops being readable from a sofa, and scrolling — which
+  // still works — is the better failure. Ten cards never gets near it.
+  const FLOOR = 0.55;
+  wrap.style.setProperty('--tscale', String(Math.max(FLOOR, Math.min(1, scale))));
+}
+
+// The fit depends on the viewport, so it has to be redone when that changes.
+window.addEventListener('resize', () => { if (state && state.phase !== 'lobby') fitGroove(); });
+
+/** One card short of winning. */
+function isMatchPoint(player) {
+  return state.phase !== 'game_over' && player.score === state.targetCards - 1;
 }
 
 function renderPlayerBar() {
@@ -891,12 +934,61 @@ function renderPlayerBar() {
     if (p.id === state.placerId) classes.push('pplayer--active');
     if (!p.connected) classes.push('pplayer--offline');
     if (state.stealBlocked.includes(p.id)) classes.push('pplayer--blocked');
+    const matchPoint = isMatchPoint(p);
+    if (matchPoint) classes.push('pplayer--matchpoint');
     pill.className = classes.join(' ');
+    // The announcement is gone in a few seconds; the tag is what keeps the
+    // table aware that this person wins on their next correct card.
     pill.innerHTML = `
       <span class="pplayer__name">${escapeHtml(p.name)}</span>
-      <span class="pplayer__count">${p.score}</span>`;
+      <span class="pplayer__count">${p.score}</span>
+      ${matchPoint ? '<span class="pplayer__flag">1 to win</span>' : ''}`;
     bar.appendChild(pill);
   }
+}
+
+/**
+ * Call out the moment somebody comes within one card of winning.
+ *
+ * Tracked as a set difference rather than a threshold test, because a failed
+ * steal can knock a player back down — and if they climb to one-away a second
+ * time, that deserves announcing again just as much as the first time did.
+ */
+let matchPointSeen = null;
+let announceTimer = null;
+
+function renderMatchPoint() {
+  const now = new Set(state.players.filter(isMatchPoint).map((p) => p.id));
+
+  // A TV that reloads mid-game, or joins one already in progress, must not
+  // announce a position that was reached before it was watching.
+  if (matchPointSeen === null) {
+    matchPointSeen = now;
+    return;
+  }
+
+  const arrived = state.players.find((p) => now.has(p.id) && !matchPointSeen.has(p.id));
+  matchPointSeen = now;
+  if (arrived) announceMatchPoint(arrived.name);
+}
+
+function announceMatchPoint(name) {
+  clearTimeout(announceTimer);
+  const node = el('announce');
+
+  // Let the reveal say "Correct" first — two things landing on the same frame
+  // reads as a glitch, and this is the bigger of the two.
+  announceTimer = setTimeout(() => {
+    el('announce-name').textContent = name;
+    node.hidden = false;
+    // Restart the entrance even if the banner is somehow still up.
+    node.classList.remove('is-in');
+    void node.offsetWidth;
+    node.classList.add('is-in');
+    SFX.matchPoint();
+
+    announceTimer = setTimeout(() => { node.hidden = true; }, 4200);
+  }, 1200);
 }
 
 // ---------------------------------------------------------------------------

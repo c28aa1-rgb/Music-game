@@ -163,6 +163,12 @@ either correctly placed on someone's timeline or discarded-and-reused with
 nothing left anywhere does the game fall back to declaring whoever has the
 most cards the winner.
 
+**One card from the target and the TV says so.** The player's name is announced
+across the screen, a cue sounds, and their pill in the player bar turns amber
+with an expanding ring and a *1 to win* tag that stays there until they either
+win or lose a card to a failed steal. The timeline is also at its longest around
+then, so it scales itself down to keep all ten cards on screen at once.
+
 First to **10 cards** wins. Change it with `TARGET_CARDS` in `.env`.
 `MIN_DECK_BUFFER` (default 8 — extra songs required beyond the player count
 before a game may start) is about giving a game variety now that recycling
@@ -362,6 +368,22 @@ drop-lines. A kept card flies down off the reveal and slams into place.
   in the UA stylesheet and loses to any author rule that sets `display` —
   including `.btn` and `.dock`. Without the override in `theme.css`,
   `el.hidden = true` silently does nothing to a flex element.
+- **The timeline shrinks to fit, and `min-width: 0` is what makes that possible.**
+  A grid item's automatic minimum size is its content, so a long timeline did not
+  scroll — it widened `.groove-wrap` past its track and dragged the topbar, the
+  now-playing block and the player bar off the side of the screen with it. That
+  starts at the eighth card on a 1280px screen. With the overflow correctly
+  belonging to `.groove-scroll`, `fitGroove()` then measures the natural width
+  against the available width and sets `--tscale`, which every dimension in the
+  row is expressed as a fraction of. Ten cards lands around 0.93 on a 1080p
+  screen and 0.74 at 1280px; below 0.55 it stops shrinking and scrolls instead.
+  The width is measured rather than computed, because the card size is a
+  `clamp()` of viewport units and only the browser knows what that came out as.
+- **Match point is announced once per arrival, not once per render.** Reaching
+  one card from the target is tracked as a set of player ids and diffed, so a
+  re-render does not re-announce, a TV that reloads mid-game does not announce a
+  position it never saw being reached, and a player knocked back by a failed
+  steal gets announced again when they climb back up.
 - **Two songs from the same year can go either side of each other.** The
   placement check uses `>=` / `<=`, so when a drawn card ties with one already on
   the timeline, both positions count as correct — same as the physical game.

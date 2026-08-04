@@ -266,6 +266,11 @@
   display: flex;
   align-items: center;
   gap: 1.5rem;
+  /* A nowrap row's minimum width is the sum of its children, and a grid item
+     cannot be narrower than that — so on a small screen this row alone would
+     set the width of the whole stage and push everything else off the side.
+     Wrapping lets it give way instead. */
+  flex-wrap: wrap;
 }
 
 .topbar__mark {
@@ -519,13 +524,33 @@
    drop-lines and years set above.
    -------------------------------------------------------------------------- */
 
+/*
+ * --tscale shrinks the whole timeline as it fills up.
+ *
+ * At full size a 10-card timeline wants around 130% of the width it has, so
+ * the last few cards used to slide off behind a scrollbar — on a screen whose
+ * entire job is showing the timeline at a glance. Every dimension below is
+ * expressed as a fraction of this one number, so fitGroove() can measure the
+ * overflow once and shrink the row to fit without anything drifting out of
+ * proportion with anything else.
+ */
 .groove-wrap {
-  --year-h: 62px;
-  --band-h: 22px;
+  --tscale: 1;
+  --year-h: calc(62px * var(--tscale));
+  --band-h: calc(22px * var(--tscale));
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-height: 0;
+  /*
+   * Without this the row does not scroll — it widens. A grid item's automatic
+   * minimum size is its content, so a long timeline pushed this wrapper past
+   * its track and stretched the whole stage with it: the topbar, the player
+   * bar and the now-playing block all went with it. min-width: 0 is what makes
+   * the overflow belong to .groove-scroll, which is the only thing that should
+   * ever be wider than the screen.
+   */
+  min-width: 0;
 }
 
 .groove-owner {
@@ -553,7 +578,7 @@
   position: relative;
   min-width: 100%;
   width: max-content;
-  padding: 0 1.5rem;
+  padding: 0 calc(1.5rem * var(--tscale));
 }
 
 .groove__surface {
@@ -589,14 +614,14 @@
   position: relative;
   display: flex;
   align-items: flex-start;
-  gap: clamp(0.7rem, 1.4vw, 1.4rem);
+  gap: calc(clamp(0.7rem, 1.4vw, 1.4rem) * var(--tscale));
 }
 
 .tcard {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: clamp(112px, 11vw, 168px);
+  width: calc(clamp(112px, 11vw, 168px) * var(--tscale));
   flex: 0 0 auto;
   scroll-snap-align: center;
   animation: card-land 520ms var(--spring) both;
@@ -608,10 +633,10 @@
   justify-content: center;
   height: var(--year-h);
   font-family: var(--font-display);
-  font-size: clamp(1.3rem, 2vw, 2rem);
+  font-size: calc(clamp(1.3rem, 2vw, 2rem) * var(--tscale));
   color: var(--accent);
   line-height: 1;
-  padding-bottom: 0.3rem;
+  padding-bottom: calc(0.3rem * var(--tscale));
 }
 
 .tcard__node {
@@ -635,13 +660,14 @@
 
 .tcard__drop {
   width: 1px;
-  height: 28px;
+  height: calc(28px * var(--tscale));
   background: linear-gradient(to bottom, var(--accent), var(--line));
 }
 
 .tcard__body {
   width: 100%;
-  min-height: 76px;
+  min-height: calc(76px * var(--tscale));
+  padding: calc(0.6rem * var(--tscale)) calc(0.7rem * var(--tscale)) calc(0.7rem * var(--tscale));
   transition: transform 260ms var(--spring), border-color 260ms var(--ease);
   transform-origin: top center;
 }
@@ -651,8 +677,11 @@
   border-color: var(--line-strong);
 }
 
-.tcard .card__title { font-size: clamp(0.75rem, 0.85vw, 0.92rem); }
-.tcard .card__artist { font-size: clamp(0.68rem, 0.75vw, 0.8rem); margin-top: 0.2rem; }
+.tcard .card__title { font-size: calc(clamp(0.75rem, 0.85vw, 0.92rem) * var(--tscale)); }
+.tcard .card__artist {
+  font-size: calc(clamp(0.68rem, 0.75vw, 0.8rem) * var(--tscale));
+  margin-top: calc(0.2rem * var(--tscale));
+}
 .tcard .card__title, .tcard .card__artist { margin-block: 0; }
 
 /* The card that just landed: drops in from the rail and glows. */
@@ -733,6 +762,44 @@
 .pplayer--offline { opacity: 0.38; }
 
 .pplayer--blocked .pplayer__name { text-decoration: line-through; }
+
+/* One card from winning. Amber rather than the usual blue, and a ring that
+   keeps expanding out of the pill so it catches the eye from across a room. */
+.pplayer--matchpoint {
+  position: relative;
+  border-color: var(--accent-2);
+  background: var(--surface);
+}
+
+.pplayer--matchpoint .pplayer__name,
+.pplayer--matchpoint .pplayer__count { color: var(--accent-2); }
+
+.pplayer--matchpoint::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border: 2px solid var(--accent-2);
+  border-radius: 999px;
+  pointer-events: none;
+  animation: matchpulse 1.7s var(--ease) infinite;
+}
+
+.pplayer__flag {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--on-accent-2);
+  background: var(--accent-2);
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+@keyframes matchpulse {
+  0% { opacity: 0.85; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.22); }
+}
 
 @keyframes breathe {
   0%, 100% { box-shadow: 0 0 0 0 transparent; }
@@ -1402,6 +1469,64 @@
   margin-top: 0.7rem;
   color: var(--accent);
   font-size: 0.88rem;
+}
+
+/* --------------------------------------------------------------------------
+   Match point announcement
+   -------------------------------------------------------------------------- */
+
+/* Above the reveal overlay (30) and the sets panel (40), below the confetti
+   (60) — it has to be readable over whatever is already on screen. */
+.announce {
+  position: fixed;
+  z-index: 50;
+  top: 6vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  padding: 1rem 2.2rem;
+  border: 2px solid var(--accent-2);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: 0 18px 60px var(--accent-2-glow);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.announce.is-in { animation: announce-in 520ms var(--spring) both; }
+
+.announce__name {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.8rem);
+  line-height: 1;
+  color: var(--accent-2);
+}
+
+.announce__text {
+  font-size: clamp(1rem, 1.5vw, 1.4rem);
+  color: var(--text);
+}
+
+.announce__text strong { color: var(--accent-2); }
+
+/* A single sweep across the banner as it lands. */
+.announce__flare {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  /* Parked off the left edge, so it is invisible until the sweep runs. */
+  left: -40%;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, var(--accent-2-glow), transparent);
+}
+
+.announce.is-in .announce__flare { animation: sheen 1.5s var(--ease) 320ms; }
+
+@keyframes announce-in {
+  0% { opacity: 0; transform: translate(-50%, -140%) scale(0.9); }
+  100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
 }
 
 /* Toast */
