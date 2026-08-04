@@ -161,13 +161,22 @@ runs dry — so the game keeps going on whatever cards it has rather than ending
 early because a run of guesses happened to be wrong. Only if every song is
 either correctly placed on someone's timeline or discarded-and-reused with
 nothing left anywhere does the game fall back to declaring whoever has the
-most cards the winner.
+most cards the winner — and since nobody crossed the target in that ending, it
+is the one that can genuinely be shared. A level top score is reported as a
+draw and named as one on both screens, rather than quietly crowning whichever
+player happened to sort first.
 
 **One card from the target and the TV says so.** The player's name is announced
 across the screen, a cue sounds, and their pill in the player bar turns amber
 with an expanding ring and a *1 to win* tag that stays there until they either
 win or lose a card to a failed steal. The timeline is also at its longest around
 then, so it scales itself down to keep all ten cards on screen at once.
+
+When it ends, the TV says so outright: the trophy drops, the name lands, and
+**wins** tracks itself out underneath in amber, over the confetti. A shared
+ending swaps all of that for a handshake and **draw**, with everyone who tied
+named. The phones say the same thing from the other side — *You win*, *You
+draw*, or *Charlie wins*.
 
 First to **10 cards** wins. Change it with `TARGET_CARDS` in `.env`.
 `MIN_DECK_BUFFER` (default 8 — extra songs required beyond the player count

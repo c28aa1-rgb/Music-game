@@ -1252,12 +1252,33 @@
 
 .win__score { color: var(--accent-2); }
 
-/* Staggered so the name lands first and the score follows it in, timed with
+/* The actual verdict. Tracked out wide so it reads as a statement rather than
+   a label, and indented by one tracking step because letter-spacing adds the
+   gap after the last letter too, which otherwise sits it off-centre. */
+.win__verb {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 3.2rem);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  color: var(--accent-2);
+}
+
+/* Staggered so the name lands, then the verdict, then the score — timed with
    the run-up in SFX.victory(). */
 .win--enter .win__trophy { animation: trophy-drop 900ms var(--spring) both; }
 .win--enter .winner-name { animation: win-pop 700ms var(--spring) 200ms both; }
-.win--enter .win__score { animation: win-pop 700ms var(--spring) 520ms both; }
-.win--enter .overlay__sub { animation: fade 600ms var(--ease) 1.4s both; }
+.win--enter .win__verb { animation: verb-in 620ms var(--ease) 560ms both; }
+.win--enter .win__score { animation: win-pop 700ms var(--spring) 900ms both; }
+.win--enter .overlay__sub { animation: fade 600ms var(--ease) 1.8s both; }
+
+/* Pulls itself together out of the letter-spacing. */
+@keyframes verb-in {
+  0% { opacity: 0; letter-spacing: 1.4em; text-indent: 1.4em; }
+  100% { opacity: 1; letter-spacing: 0.42em; text-indent: 0.42em; }
+}
 
 @keyframes trophy-drop {
   0% { transform: translateY(-60vh) rotate(-25deg); opacity: 0; }

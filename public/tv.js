@@ -1175,15 +1175,28 @@ function showWinnerOverlay() {
   }
 
   const winner = state.winner;
+  // Only the ran-out-of-songs ending can be a draw; crossing the target is
+  // always one person on their own.
+  const drawn = winner?.tiedWith?.length > 1 ? winner.tiedWith : null;
+
   el('overlay').classList.add('overlay--win');
   el('overlay-inner').innerHTML = `
     <div class="win${first ? ' win--enter' : ''}">
       <p class="eyebrow">Game over</p>
-      <p class="win__trophy" aria-hidden="true">🏆</p>
-      <p class="winner-name">${escapeHtml(winner ? winner.name : 'Nobody')}</p>
-      <h2 class="overlay__headline win__score">${winner ? `${winner.score} cards` : 'Out of songs'}</h2>
+      <p class="win__trophy" aria-hidden="true">${drawn ? '🤝' : (winner ? '🏆' : '🎵')}</p>
+      <p class="winner-name">${escapeHtml(drawn ? nameList(drawn) : (winner ? winner.name : 'Nobody'))}</p>
+      <p class="win__verb">${drawn ? 'draw' : 'wins'}</p>
+      <h2 class="overlay__headline win__score">${winner
+        ? `${winner.score} card${winner.score === 1 ? '' : 's'}${drawn ? ' each' : ''}`
+        : 'The crate is empty'}</h2>
       <p class="overlay__sub">The host can start another game from their phone.</p>
     </div>`;
+}
+
+/** "Ann & Bo", "Ann, Bo & Charlie" — rather than a string of ampersands. */
+function nameList(names) {
+  if (names.length <= 2) return names.join(' & ');
+  return `${names.slice(0, -1).join(', ')} & ${names[names.length - 1]}`;
 }
 
 // ---------------------------------------------------------------------------

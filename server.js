@@ -450,8 +450,21 @@ function startTurn(room) {
     } else {
       // Every song has either been recycled away or correctly placed
       // somewhere — nothing left anywhere. Whoever is furthest along takes it.
-      const best = room.players.slice().sort((a, b) => b.timeline.length - a.timeline.length)[0];
-      room.winner = best ? { id: best.id, name: best.name, score: best.timeline.length } : null;
+      //
+      // Nobody crossed the target here, so this is the one ending that can be a
+      // genuine draw. Sorting and taking the first would crown whoever happened
+      // to sort highest, and the TV would announce it as a clean win.
+      const ranked = room.players.slice().sort((a, b) => b.timeline.length - a.timeline.length);
+      const best = ranked[0];
+      const level = best ? ranked.filter((p) => p.timeline.length === best.timeline.length) : [];
+      room.winner = best
+        ? {
+          id: best.id,
+          name: best.name,
+          score: best.timeline.length,
+          tiedWith: level.length > 1 ? level.map((p) => p.name) : null,
+        }
+        : null;
       room.phase = PHASES.GAME_OVER;
       room.currentCard = null;
       broadcast(room);

@@ -602,10 +602,24 @@ function renderReveal() {
 function renderOver() {
   show('screen-over');
   const winner = state.winner;
-  el('over-title').textContent = winner
-    ? (winner.id === me.id ? 'You win' : `${winner.name} wins`)
-    : 'Out of songs';
-  el('over-note').textContent = winner ? `${winner.score} cards on the timeline.` : 'The crate is empty.';
+  // Running the crate dry is the only ending that can be shared, and claiming
+  // a clean win to everyone in a four-way tie would be a lie on every phone
+  // except one.
+  const drawn = winner?.tiedWith?.length > 1 ? winner.tiedWith : null;
+
+  if (drawn) {
+    const names = drawn.length <= 2
+      ? drawn.join(' & ')
+      : `${drawn.slice(0, -1).join(', ')} & ${drawn[drawn.length - 1]}`;
+    el('over-title').textContent = drawn.includes(me.name) ? 'You draw' : 'It’s a draw';
+    el('over-note').textContent = `${names} — ${winner.score} cards each.`;
+  } else if (winner) {
+    el('over-title').textContent = winner.id === me.id ? 'You win' : `${winner.name} wins`;
+    el('over-note').textContent = `${winner.score} card${winner.score === 1 ? '' : 's'} on the timeline.`;
+  } else {
+    el('over-title').textContent = 'Out of songs';
+    el('over-note').textContent = 'The crate is empty.';
+  }
 
   const list = el('over-list');
   list.innerHTML = '';
